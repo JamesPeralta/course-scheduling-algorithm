@@ -49,7 +49,6 @@ public class Parser {
         }
     }
 
-
     public static Department parse(String pathToFile) {
         Department department = new Department();
         try {
@@ -68,6 +67,9 @@ public class Parser {
                 }
                 if(line.equals("Courses:")) {
                     parseCourses(reader, department);
+                }
+                if(line.equals("Labs:")) {
+                    parseLabs(reader, department);
                 }
 
                 line = reader.readLine();
