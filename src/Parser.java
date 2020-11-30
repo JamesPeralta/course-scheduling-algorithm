@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.*;
 import java.io.*;
 
@@ -10,12 +11,14 @@ public class Parser {
 
     private static void parseSlots(BufferedReader reader, Department department, boolean isCourse) throws IOException {
         String line = reader.readLine();
-        while(line.length() > 0) {
-            String[] row = line.split(",");
+        while(!line.equals("")) {
+            String[] row = cleanRow(line);
+            System.out.println(Arrays.toString(row));
             if(isCourse) department.addCourseSlot(new CourseSlot(days.indexOf(row[0]), times.indexOf(row[1]), 
                                                     Integer.parseInt(row[2]), Integer.parseInt(row[3])));
             else department.addLabSlot(new LabSlot(days.indexOf(row[0]), times.indexOf(row[1]), 
                                                     Integer.parseInt(row[2]), Integer.parseInt(row[3])));
+            line = reader.readLine();
         }
     }
 
@@ -25,9 +28,18 @@ public class Parser {
             BufferedReader reader = new BufferedReader(new FileReader(pathToFile));
             String line = reader.readLine();
             while(line != null) {
-                if(line.equals("Name:")) department.setName(reader.readLine());
-                if(line.equals("Course slots:")) parseSlots(reader, department, true);
-                if(line.equals("Lab slots:")) parseSlots(reader, department, false);
+                line = line.trim();
+                if(line.equals("Name:")) {
+                    department.setName(reader.readLine());
+                }
+                else if (line.equals("Course slots:")){
+                    parseSlots(reader, department, true);
+                }
+                else if (line.equals("Lab slots:")) {
+                    parseSlots(reader, department, false);
+                }
+
+                line = reader.readLine();
             }
 
             reader.close();
@@ -39,5 +51,14 @@ public class Parser {
         }
 
         return department;
+    }
+
+    public static String[] cleanRow(String row) {
+        String[] rowArr = row.split(",");
+        for (int i = 0; i < rowArr.length; i++) {
+            rowArr[i] = rowArr[i].trim();
+        }
+
+        return rowArr;
     }
 }
