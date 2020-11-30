@@ -28,4 +28,12 @@ public class Department {
     public void addCourseSlot(CourseSlot cs) {
         courseSlots.add(cs);
     }
+
+    public ArrayList<Course> getCourses() {return courses; };
+
+    public ArrayList<Lab> getLabs() {return labs; };
+
+    public ArrayList<CourseSlot> getCourseSlots() {return courseSlots; };
+
+    public ArrayList<LabSlot> getLabSlots() {return labSlots; };
 }
