@@ -1,4 +1,5 @@
-import java.lang.reflect.Array;
+import DataStructures.*;
+
 import java.util.*;
 import java.io.*;
 
@@ -12,8 +13,8 @@ public class Parser {
     private static void parseSlots(BufferedReader reader, Department department, boolean isCourse) throws IOException {
         String line = reader.readLine();
         while(!line.equals("")) {
-            String[] row = cleanRow(line);
-            System.out.println(Arrays.toString(row));
+            String[] row = line.split(",");
+            cleanRow(row);
             if(isCourse) department.addCourseSlot(new CourseSlot(days.indexOf(row[0]), times.indexOf(row[1]), 
                                                     Integer.parseInt(row[2]), Integer.parseInt(row[3])));
             else department.addLabSlot(new LabSlot(days.indexOf(row[0]), times.indexOf(row[1]), 
@@ -23,14 +24,26 @@ public class Parser {
     }
 
     private static Course parseCourse(String str) {
-        String[] row = str.split(" ");
-        if(row.length > 2) return new Course(row[0], Integer.parseInt(row[1]), Integer.parseInt(row[3]));
+        String[] row = str.split("\\s+");
+        cleanRow(row);
+        if(row.length > 2) return new Course(row[0] + " " + row[1], Integer.parseInt(row[3]));
         else return new Course(row[0], Integer.parseInt(row[1]));
     }
 
     private static Lab parseLab(String str) {
-        String[] row = str.split("TUT");
-        return new Lab(parseCourse(row[0]), Integer.parseInt(row[1]));
+        String[] row = str.split("\\s+");
+        cleanRow(row);
+        if (row.length == 5) {
+            String course = row[0] + " " + row[1];
+            String section = row[2] + " " + row[3];
+            String number = row[5];
+            return new Lab(course, section, Integer.parseInt(number));
+        }
+        else {
+            String course = row[0] + " " + row[1];
+            String number = row[3];
+            return new Lab(course, Integer.parseInt(number));
+        }
     }
 
     private static void parseCourses(BufferedReader reader, Department department) throws IOException{
@@ -59,10 +72,10 @@ public class Parser {
                 if(line.equals("Name:")) {
                     department.setName(reader.readLine());
                 }
-                else if (line.equals("Course slots:")){
+                else if (line.equals("DataStructures.Course slots:")){
                     parseSlots(reader, department, true);
                 }
-                else if (line.equals("Lab slots:")) {
+                else if (line.equals("DataStructures.Lab slots:")) {
                     parseSlots(reader, department, false);
                 }
                 if(line.equals("Courses:")) {
@@ -86,12 +99,9 @@ public class Parser {
         return department;
     }
 
-    public static String[] cleanRow(String row) {
-        String[] rowArr = row.split(",");
+    public static void cleanRow(String[] rowArr) {
         for (int i = 0; i < rowArr.length; i++) {
             rowArr[i] = rowArr[i].trim();
         }
-
-        return rowArr;
     }
 }

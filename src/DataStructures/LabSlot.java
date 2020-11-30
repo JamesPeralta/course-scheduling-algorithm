@@ -1,3 +1,5 @@
+package DataStructures;
+
 public class LabSlot {
     private int day;
     private int time;

@@ -1,3 +1,5 @@
+package DataStructures;
+
 public class CourseSlot {
     private int day;
     private int time;

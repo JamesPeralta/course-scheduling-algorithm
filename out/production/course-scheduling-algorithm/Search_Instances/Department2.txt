@@ -1,7 +1,7 @@
 Name:
 department2
 
-Course slots:
+DataStructures.Course slots:
 MO,  8:00, 2, 1
 MO,  9:00, 5, 0
 MO, 10:00, 5, 0
@@ -24,7 +24,7 @@ TU, 15:30, 5, 0
 TU, 17:00, 5, 0
 TU, 18:30, 1, 0
 
-Lab slots:
+DataStructures.Lab slots:
 MO,  8:00, 2, 1
 MO,  9:00, 6, 3
 MO, 10:00, 6, 3
