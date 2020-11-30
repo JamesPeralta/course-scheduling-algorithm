@@ -16,8 +16,37 @@ public class Parser {
                                                     Integer.parseInt(row[2]), Integer.parseInt(row[3])));
             else department.addLabSlot(new LabSlot(days.indexOf(row[0]), times.indexOf(row[1]), 
                                                     Integer.parseInt(row[2]), Integer.parseInt(row[3])));
+            line = reader.readLine();
         }
     }
+
+    private static Course parseCourse(String str) {
+        String[] row = str.split(" ");
+        if(row.length > 2) return new Course(row[0], Integer.parseInt(row[1]), Integer.parseInt(row[3]));
+        else return new Course(row[0], Integer.parseInt(row[1]));
+    }
+
+    private static Lab parseLab(String str) {
+        String[] row = str.split("TUT");
+        return new Lab(parseCourse(row[0]), Integer.parseInt(row[1]));
+    }
+
+    private static void parseCourses(BufferedReader reader, Department department) throws IOException{
+        String line = reader.readLine();
+        while(line.length() > 0) {
+            department.addCourse(parseCourse(line));
+            line = reader.readLine();
+        }
+    }
+
+    private static void parseLabs(BufferedReader reader, Department department) throws IOException{
+        String line = reader.readLine();
+        while(line.length() > 0) {
+            department.addLab(parseLab(line));
+            line = reader.readLine();
+        }
+    }
+
 
     public static Department parse(String pathToFile) {
         Department department = new Department();
@@ -28,6 +57,7 @@ public class Parser {
                 if(line.equals("Name:")) department.setName(reader.readLine());
                 if(line.equals("Course slots:")) parseSlots(reader, department, true);
                 if(line.equals("Lab slots:")) parseSlots(reader, department, false);
+                if(line.equals("Courses:")) parseCourses(reader, department);
             }
 
             reader.close();
