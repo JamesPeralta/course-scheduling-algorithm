@@ -27,4 +27,8 @@ public class Lab {
     public int getTut() {
         return tut;
     }
+
+    public String getTutString() {
+        return "TUT " + Integer.toString(tut);
+    }
 }

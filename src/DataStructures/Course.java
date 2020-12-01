@@ -9,11 +9,15 @@ public class Course {
         this.section = section;
     }
 
-    public String getCourse() {
+    public String getCourseName() {
         return course;
     }
 
-    public int getSection() {
+    public int getSectionNumber() {
         return section;
+    }
+
+    public String getSectionString(){
+        return "LEC " + Integer.toString(section);
     }
 }
