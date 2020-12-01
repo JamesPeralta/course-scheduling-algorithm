@@ -31,11 +31,27 @@ public class Department {
         courseSlots.add(cs);
     }
 
-    public ArrayList<Course> getCourses() {return courses; };
+    public ArrayList<Course> getCourses() {
+        ArrayList<Course> copy = (ArrayList<Course>) this.courses.clone();
+        Collections.shuffle(copy);
+        return copy;
+    };
 
-    public ArrayList<Lab> getLabs() {return labs; };
+    public ArrayList<Lab> getLabs() {
+        ArrayList<Lab> copy = (ArrayList<Lab>) this.labs.clone();
+        Collections.shuffle(copy);
+        return copy;
+    };
 
-    public ArrayList<CourseSlot> getCourseSlots() {return courseSlots; };
+    public ArrayList<CourseSlot> getCourseSlots() {
+        ArrayList<CourseSlot> copy = (ArrayList<CourseSlot>) this.courseSlots.clone();
+        Collections.shuffle(copy);
+        return copy;
+    };
 
-    public ArrayList<LabSlot> getLabSlots() {return labSlots; };
+    public ArrayList<LabSlot> getLabSlots() {
+        ArrayList<LabSlot> copy = (ArrayList<LabSlot>) this.labSlots.clone();
+        Collections.shuffle(copy);
+        return copy;
+    };
 }

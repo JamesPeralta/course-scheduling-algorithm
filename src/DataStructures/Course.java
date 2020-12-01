@@ -8,4 +8,12 @@ public class Course {
         this.course = course;
         this.section = section;
     }
+
+    public String getCourse() {
+        return course;
+    }
+
+    public int getSection() {
+        return section;
+    }
 }

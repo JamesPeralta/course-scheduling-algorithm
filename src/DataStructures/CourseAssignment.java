@@ -8,4 +8,12 @@ public class CourseAssignment {
         this.course = course;
         this.courseSlot = null;
     }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public CourseSlot getCourseSlot() {
+        return courseSlot;
+    }
 }

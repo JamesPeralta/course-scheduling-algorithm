@@ -13,19 +13,19 @@ public class CourseSlot {
         this.coursemin = coursemin;
     }
 
-    public int getCoursemax() {
-        return coursemax;
-    }
-
-    public int getCoursemin() {
-        return coursemin;
-    }
-
     public int getDay() {
         return day;
     }
 
     public int getTime() {
         return time;
+    }
+
+    public int getCoursemax() {
+        return coursemax;
+    }
+
+    public int getCoursemin() {
+        return coursemin;
     }
 }

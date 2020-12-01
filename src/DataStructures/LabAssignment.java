@@ -8,4 +8,12 @@ public class LabAssignment {
         this.lab = lab;
         this.labSlot = null;
     }
+
+    public Lab getLab() {
+        return lab;
+    }
+
+    public LabSlot getLabSlot() {
+        return labSlot;
+    }
 }

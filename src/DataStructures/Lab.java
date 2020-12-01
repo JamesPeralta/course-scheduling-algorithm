@@ -16,4 +16,15 @@ public class Lab {
         this.tut = tut;
     }
 
+    public String getOfCourse() {
+        return ofCourse;
+    }
+
+    public String getOfSection() {
+        return ofSection;
+    }
+
+    public int getTut() {
+        return tut;
+    }
 }
