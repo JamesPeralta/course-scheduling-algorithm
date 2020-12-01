@@ -26,14 +26,52 @@ public class Prob {
         }
     }
 
+    public void assignCourse(int index, CourseSlot slot) {
+        courses.get(index).assignSlot(slot);
+    }
+
+    public ArrayList<CourseAssignment> getCourses() {
+        return courses;
+    }
+
+    public ArrayList<LabAssignment> getLabs() {
+        return labs;
+    }
+
+    public void unassignCourse(int index){
+        courses.get(index).unassignSlot();
+    }
+
+    public void assignLab(int index, LabSlot slot) {
+        labs.get(index).assignSlot(slot);
+    }
+
+    public void unassignLab(int index){
+        labs.get(index).unassignSlot();
+    }
+
+    public Boolean coursesFilled() {
+        if (courses.get(courses.size()-1).getCourseSlot() == null) {
+            return false;
+        }
+        return true;
+    }
+
+    public Boolean labsFilled() {
+        if (labs.get(labs.size()-1).getLabSlot() == null) {
+            return false;
+        }
+        return true;
+    }
+
     public String toString(){
         String output = "";
         output += "________________________________\n";
         for (CourseAssignment course: this.courses) {
             String courseName = course.getCourse().getCourseName();
             String courseNumber = course.getCourse().getSectionString();
-            String assignmentDay = course.getCourseSlot() != null ? Integer.toString(course.getCourseSlot().getDay()) : "None";
-            String assignmentTime = course.getCourseSlot() != null ? Integer.toString(course.getCourseSlot().getTime()) : "None";
+            String assignmentDay = course.getCourseSlot() != null ? course.getCourseSlot().getDayString() : "None";
+            String assignmentTime = course.getCourseSlot() != null ? course.getCourseSlot().getTimeString() : "None";
 
             if (assignmentDay.equals("None")) {
                 output += courseName + " " + courseNumber + ": " + assignmentDay + "\n";
@@ -47,8 +85,8 @@ public class Prob {
             String labCourse = lab.getLab().getOfCourse();
             String labSection = lab.getLab().getOfSection();
             String labNumber = lab.getLab().getTutString();
-            String assignmentDay = lab.getLabSlot() != null ? Integer.toString(lab.getLabSlot().getDay()) : "None";
-            String assignmentTime = lab.getLabSlot() != null ? Integer.toString(lab.getLabSlot().getTime()) : "None";
+            String assignmentDay = lab.getLabSlot() != null ? lab.getLabSlot().getDayString() : "None";
+            String assignmentTime = lab.getLabSlot() != null ? lab.getLabSlot().getTimeString() : "None";
 
             String labString = "";
             if (labSection == null) {

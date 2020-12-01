@@ -16,4 +16,11 @@ public class CourseAssignment {
     public CourseSlot getCourseSlot() {
         return courseSlot;
     }
+
+    public void assignSlot(CourseSlot slot){
+        courseSlot = slot;
+    }
+    public void unassignSlot(){
+        courseSlot = null;
+    }
 }

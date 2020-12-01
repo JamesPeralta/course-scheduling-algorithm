@@ -16,4 +16,11 @@ public class LabAssignment {
     public LabSlot getLabSlot() {
         return labSlot;
     }
+
+    public void assignSlot(LabSlot slot){
+        labSlot = slot;
+    }
+    public void unassignSlot(){
+        labSlot = null;
+    }
 }
