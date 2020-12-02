@@ -1,26 +1,38 @@
 package Or_Tree;
 
 import DataStructures.Department;
+import Utility.RandomChoice;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import java.util.*;
 
 public class GenePool {
     private ArrayList<Prob> pool;
-    private ArrayList<Double> weights;
+    private RandomChoice randomChoice;
 
-    public GenePool(Department department) {
+    public GenePool(Department department, int populationSize) {
         pool = new ArrayList<Prob>();
         // Generate Samples
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < populationSize; i++) {
             pool.add(OrTreeBasedSearch.generateSample(department));
         }
 
-        // Generate weights for roulette
-        weights = new ArrayList<Double>();
-        weights.add((double) 1);
-        for (int i = 1; i < 50; i++) {
-            weights.add(weights.get(i - 1) * 0.90);
+        // Sort by fitness
+
+        // Generate random choice weight
+        double[] weights = new double[populationSize];
+        weights[0] = 1.0;
+        for (int i = 1; i < populationSize; i++) {
+            weights[i] = weights[i - 1] * 0.90;
         }
+        randomChoice = new RandomChoice(weights);
+    }
+
+    public Prob selectRandom() {
+        return pool.get(randomChoice.pickIndex());
+    }
+
+    @Override
+    public String toString() {
+        return pool.toString();
     }
 }

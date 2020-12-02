@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public class Prob {
+public class Prob implements Comparable<Prob>{
     private ArrayList<CourseAssignment> courses;
     private ArrayList<LabAssignment> labs;
+    private double fitness;
 
     public Prob(Department department) {
         this.courses = new ArrayList<CourseAssignment>();
         this.labs = new ArrayList<LabAssignment>();
+        Random rand = new Random();
+        fitness = rand.nextInt(100);
 
         setUnassignedCourses(department.getCourses());
         setUnassignedLabs(department.getLabs());
@@ -130,6 +133,7 @@ public class Prob {
         orderProb();
         String output = "";
         output += "________________________________\n";
+        output += "Fitness: " + Double.toString(fitness) + "\n";
         for (CourseAssignment course: this.courses) {
             String courseName = course.getCourse().getCourseName();
             String courseNumber = course.getCourse().getSectionString();
@@ -168,5 +172,10 @@ public class Prob {
         }
         output += "________________________________\n";
         return output;
+    }
+
+    @Override
+    public int compareTo(Prob o) {
+        return (int) (this.fitness - o.fitness);
     }
 }
