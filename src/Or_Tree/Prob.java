@@ -1,6 +1,8 @@
 package Or_Tree;
 import DataStructures.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 public class Prob {
     private ArrayList<CourseAssignment> courses;
@@ -14,6 +16,9 @@ public class Prob {
         setUnassignedLabs(department.getLabs());
     }
 
+    /*
+    Getters and Setters
+     */
     private void setUnassignedCourses(ArrayList<Course> courses) {
         for (Course course: courses) {
             this.courses.add(new CourseAssignment(course));
@@ -64,7 +69,65 @@ public class Prob {
         return true;
     }
 
+    /*
+    Genetic Operators
+    */
+    public Prob crossover(Prob mate, Department department) {
+        Prob child = new Prob(department);
+        this.orderProb();
+        mate.orderProb();
+        child.orderProb();
+
+        // Crossover Course Slots
+        for (int i = 0; i < courses.size(); i++) {
+            if (i < (courses.size() / 2)) {
+                child.assignCourse(i, this.courses.get(i).getCourseSlot());
+            }
+            else {
+                child.assignCourse(i, mate.courses.get(i).getCourseSlot());
+            }
+        }
+
+        // Crossover Lab Slots
+        for (int i = 0; i < labs.size(); i++) {
+            if (i < (courses.size() / 2)) {
+                child.assignLab(i, this.labs.get(i).getLabSlot());
+            }
+            else {
+                child.assignLab(i, mate.labs.get(i).getLabSlot());
+            }
+        }
+
+        return child;
+    }
+
+    public void mutate(Department department) {
+        Random rand = new Random();
+        ArrayList<CourseSlot> courseSlots = department.getCourseSlots();
+        ArrayList<LabSlot> labSlots = department.getLabSlots();
+
+        // Mutate Course Slots
+        for (int i = 0; i < courses.size(); i++) {
+            if (rand.nextDouble() < 0.20) {
+                this.assignCourse(i, courseSlots.get(rand.nextInt(courseSlots.size())));
+            }
+        }
+
+        // Mutate Lab Slots
+        for (int i = 0; i < labs.size(); i++) {
+            if (rand.nextDouble() < 0.20) {
+                this.assignLab(i, labSlots.get(rand.nextInt(labSlots.size())));
+            }
+        }
+    }
+
+    public void orderProb() {
+        Collections.sort(courses);
+        Collections.sort(labs);
+    }
+
     public String toString(){
+        orderProb();
         String output = "";
         output += "________________________________\n";
         for (CourseAssignment course: this.courses) {

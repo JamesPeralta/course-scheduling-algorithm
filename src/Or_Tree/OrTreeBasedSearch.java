@@ -24,11 +24,9 @@ public class OrTreeBasedSearch {
             Collections.shuffle(copy);
             for (CourseSlot courseSlot: copy) {
                 prob.assignCourse(depth, courseSlot);
-//                courseSlots.remove(courseSlot);
                 if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses)){
                     return true;
                 }
-//                courseSlots.add(courseSlot);
                 prob.unassignCourse(depth);
             }
         }
@@ -37,11 +35,9 @@ public class OrTreeBasedSearch {
             Collections.shuffle(copy);
             for (LabSlot labSlot: copy) {
                 prob.assignLab(depth - maxCourses - 1, labSlot);
-//                labSlots.remove(labSlot);
                 if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses)){
                     return true;
                 }
-//                labSlots.add(labSlot);
                 prob.unassignLab(depth - maxCourses - 1);
             }
         }

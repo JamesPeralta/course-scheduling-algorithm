@@ -27,6 +27,22 @@ public class Lab extends ClassElement {
         return ofSection;
     }
 
+    public String getFullTutName() {
+        String labCourse = getOfCourse();
+        String labSection = getOfSection();
+        String labNumber = getTutString();
+
+        String labString = "";
+        if (labSection == null) {
+            labString = labCourse + " " + labNumber;
+        }
+        else {
+            labString = labCourse + " " + labSection + " " + labNumber;
+        }
+
+        return labString;
+    }
+
     public int getTut() {
         return tut;
     }

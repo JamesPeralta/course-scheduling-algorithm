@@ -1,6 +1,6 @@
 package DataStructures;
 
-public class LabAssignment {
+public class LabAssignment implements Comparable<LabAssignment>{
     private Lab lab;
     private LabSlot labSlot;
 
@@ -22,5 +22,10 @@ public class LabAssignment {
     }
     public void unassignSlot(){
         labSlot = null;
+    }
+
+    @Override
+    public int compareTo(LabAssignment o) {
+        return o.getLab().getFullTutName().compareTo(this.getLab().getFullTutName());
     }
 }
