@@ -1,6 +1,8 @@
 package DataStructures;
 
-public class CourseAssignment {
+import java.util.Comparator;
+
+public class CourseAssignment implements Comparable<CourseAssignment> {
     private Course course;
     private CourseSlot courseSlot;
 
@@ -22,5 +24,10 @@ public class CourseAssignment {
     }
     public void unassignSlot(){
         courseSlot = null;
+    }
+
+    @Override
+    public int compareTo(CourseAssignment o) {
+        return o.getCourse().getCourseName().compareTo(this.course.getCourseName());
     }
 }

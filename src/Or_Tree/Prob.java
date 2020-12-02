@@ -1,6 +1,7 @@
 package Or_Tree;
 import DataStructures.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Prob {
     private ArrayList<CourseAssignment> courses;
@@ -65,6 +66,8 @@ public class Prob {
     }
 
     public String toString(){
+        Collections.sort(courses);
+        Collections.sort(labs);
         String output = "";
         output += "________________________________\n";
         for (CourseAssignment course: this.courses) {
