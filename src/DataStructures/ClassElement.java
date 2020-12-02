@@ -4,6 +4,7 @@ import java.util.*;
 
 public class ClassElement {
     private ArrayList<ClassElement> nonCompatible = new ArrayList<>();
+    private ArrayList<ClassElement> compatible = new ArrayList<>();
 
     public ClassElement() {
 
@@ -11,6 +12,10 @@ public class ClassElement {
 
     public void addNonCompatible(ClassElement e) {
         this.nonCompatible.add(e);
+    }
+
+    public void addCompatible(ClassElement e) {
+        this.compatible.add(e);
     }
 
     public ArrayList<ClassElement> getNonCompatible() {

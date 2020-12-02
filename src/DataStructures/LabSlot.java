@@ -13,6 +13,7 @@ public class LabSlot {
     private int time;
     private int coursemax;
     private int coursemin;
+    private int assigned;
 
     public LabSlot(int day, int time, int coursemax, int coursemin) {
         this.day = day;
@@ -37,7 +38,15 @@ public class LabSlot {
         return time;
     }
 
+    public int getAssigned() {
+        return assigned;
+    }
+
     public String getDayString() {return days.get(day);}
 
     public String getTimeString() {return times.get(time);}
+
+    public boolean equalByValue(int day, int time) {
+        return this.day == day && this.time == time;
+    }
 }

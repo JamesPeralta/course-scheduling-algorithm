@@ -6,6 +6,7 @@ public class Course extends ClassElement {
     private String course;
     private int section;    
     private HashMap<CourseSlot,Integer> preferences = new HashMap<>();
+    private ArrayList<CourseSlot> unwanted = new ArrayList<>();
 
 
     public Course(String course, int section) {
@@ -32,4 +33,13 @@ public class Course extends ClassElement {
     public boolean equals(Course c) {
         return this.course.equals(c.getCourseName()) && (this.section == c.getSectionNumber());
     }
+
+    public void addUnwanted(CourseSlot c) {
+        this.unwanted.add(c);
+    }
+
+    public void addPreference(CourseSlot ls, int value) {
+        preferences.put(ls, value);
+    }
+
 }
