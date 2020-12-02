@@ -2,6 +2,7 @@ package Or_Tree;
 import DataStructures.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class Prob {
     private ArrayList<CourseAssignment> courses;
@@ -98,6 +99,26 @@ public class Prob {
         }
 
         return child;
+    }
+
+    public void mutate(Department department) {
+        Random rand = new Random();
+        ArrayList<CourseSlot> courseSlots = department.getCourseSlots();
+        ArrayList<LabSlot> labSlots = department.getLabSlots();
+
+        // Mutate Course Slots
+        for (int i = 0; i < courses.size(); i++) {
+            if (rand.nextDouble() < 0.20) {
+                this.assignCourse(i, courseSlots.get(rand.nextInt(courseSlots.size())));
+            }
+        }
+
+        // Mutate Lab Slots
+        for (int i = 0; i < labs.size(); i++) {
+            if (rand.nextDouble() < 0.20) {
+                this.assignLab(i, labSlots.get(rand.nextInt(labSlots.size())));
+            }
+        }
     }
 
     public void orderProb() {
