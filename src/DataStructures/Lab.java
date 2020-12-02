@@ -62,7 +62,29 @@ public class Lab extends ClassElement {
     }
 
     public void addPreference(LabSlot ls, int value) {
-        preferences.put(ls, value);
+        if(ls != null) preferences.put(ls, value);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append(getFullTutName());
+
+        str.append("\n\tPreferred Slots:");
+
+        preferences.forEach((k,v) -> {
+            str.append("\n\t\t");
+            str.append(k.toStringMin() + " ");
+            str.append(v);
+        });
+
+        str.append("\n\tUnwanted Slots:");
+
+        for (LabSlot labSlot : unwanted) {
+            str.append("\n\t\t");
+            str.append(labSlot.toStringMin());
+        }
+
+        return str.toString();
+    }
 }

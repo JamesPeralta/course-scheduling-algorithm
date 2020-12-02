@@ -49,4 +49,13 @@ public class LabSlot {
     public boolean equalByValue(int day, int time) {
         return this.day == day && this.time == time;
     }
+
+    @Override
+    public String toString() {
+        return toStringMin() + ", " + coursemax + ", " + coursemin;
+    }
+
+    public String toStringMin() {
+        return days.get(day) + ", " + times.get(time);
+    }
 }

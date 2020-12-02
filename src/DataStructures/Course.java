@@ -26,10 +26,6 @@ public class Course extends ClassElement {
         return "LEC " + Integer.toString(section);
     }
 
-    public String toString() {
-        return course + " " + section;
-    }
-
     public boolean equals(Course c) {
         return this.course.equals(c.getCourseName()) && (this.section == c.getSectionNumber());
     }
@@ -38,8 +34,30 @@ public class Course extends ClassElement {
         this.unwanted.add(c);
     }
 
-    public void addPreference(CourseSlot ls, int value) {
-        preferences.put(ls, value);
+    public void addPreference(CourseSlot cs, int value) {
+        if(cs != null) preferences.put(cs, value);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append(course).append(" ").append(getSectionString());
+
+        str.append("\n\tPreferred Slots:");
+
+        preferences.forEach((k,v) -> {
+            str.append("\n\t\t");
+            str.append(k.toStringMin() + " ");
+            str.append(v);
+        });
+
+        str.append("\n\tUnwanted Slots:");
+
+        for (CourseSlot courseSlot : unwanted) {
+            str.append("\n\t\t");
+            str.append(courseSlot.toStringMin());
+        }
+
+        return str.toString();
+    }
 }
