@@ -1,9 +1,12 @@
 package DataStructures;
 
-public class Lab {
+import java.util.*;
+
+public class Lab extends ClassElement {
     private String ofCourse;
     private String ofSection;
     private int tut;
+    private HashMap<LabSlot,Integer> preferences = new HashMap<>();
 
     public Lab(String course, String section, int tut) {
         this.ofCourse = course;
@@ -30,5 +33,9 @@ public class Lab {
 
     public String getTutString() {
         return "TUT " + Integer.toString(tut);
+    }
+
+    public boolean equals(Lab l) {
+        return this.ofCourse.equals(l.getOfCourse()) && this.ofSection.equals(l.getOfSection()) && (tut == l.getTut());
     }
 }

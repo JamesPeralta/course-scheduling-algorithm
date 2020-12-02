@@ -61,6 +61,33 @@ public class Parser {
             line = reader.readLine();
         }
     }
+    
+    private static void parseCompatibility(BufferedReader reader, Department department) throws IOException {
+        String line = reader.readLine();
+        while(line.length() > 0) {
+            String[] row = line.split(",");
+            ClassElement a,b;
+
+            if(row[0].contains("TUT")) a = department.findLab(parseLab(row[0]));
+            else a = department.findCourse(parseCourse(row[0]));
+
+            if(row[1].contains("TUT")) b = department.findLab(parseLab(row[1]));
+            else b = department.findCourse(parseCourse(row[1]));
+
+            a.addNonCompatible(b);
+            b.addNonCompatible(a);
+
+            line = reader.readLine();
+        }
+    }
+
+    private static void parseUnwanted(BufferedReader reader, Department department) throws IOException {
+
+    }
+
+    private static void parsePreference(BufferedReader reader, Department department) throws IOException {
+
+    }
 
     public static Department parse(String pathToFile) {
         Department department = new Department();
@@ -72,10 +99,10 @@ public class Parser {
                 if(line.equals("Name:")) {
                     department.setName(reader.readLine());
                 }
-                else if (line.equals("DataStructures.Course slots:")){
+                else if (line.equals("Course slots:")){
                     parseSlots(reader, department, true);
                 }
-                else if (line.equals("DataStructures.Lab slots:")) {
+                else if (line.equals("Lab slots:")) {
                     parseSlots(reader, department, false);
                 }
                 if(line.equals("Courses:")) {
@@ -83,6 +110,15 @@ public class Parser {
                 }
                 if(line.equals("Labs:")) {
                     parseLabs(reader, department);
+                }
+                if(line.equals("Not compatible:")) {
+                    parseCompatibility(reader, department);
+                }
+                if(line.equals("Unwanted:")) {
+                    parseUnwanted(reader, department);
+                }
+                if(line.equals("Preferences:")) {
+                    parsePreference(reader, department);
                 }
 
                 line = reader.readLine();

@@ -54,4 +54,18 @@ public class Department {
         Collections.shuffle(copy);
         return copy;
     };
+
+    public Course findCourse(Course c) {
+        for(Course i : courses) {
+            if(i.equals(c)) return i;
+        }
+        return null;
+    }
+
+    public Lab findLab(Lab c) {
+        for(Lab i : labs) {
+            if(i.equals(c)) return i;
+        }
+        return null;
+    }
 }
