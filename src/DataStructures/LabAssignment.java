@@ -26,6 +26,6 @@ public class LabAssignment implements Comparable<LabAssignment>{
 
     @Override
     public int compareTo(LabAssignment o) {
-        return o.getLab().getFullTutName().compareTo(o.getLab().getFullTutName());
+        return o.getLab().getFullTutName().compareTo(this.getLab().getFullTutName());
     }
 }
