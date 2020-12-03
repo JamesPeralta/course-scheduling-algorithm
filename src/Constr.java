@@ -57,9 +57,47 @@ public class Constr {
         }
     }
 
-    public void check813(){
+   public void check813(){
         for (int i = 0; i < course.size(); i++){
-            //if (course.get(i).getCourse().get)
+            if (course.get(i).getCourse().getCourseName().equals("813")){
+                if (course.get(i).getCourseSlot().getTimeString().equals("18:00") && course.get(i).getCourseSlot().getDayString().equals("TU")){
+                }
+                else{
+                    valid = false;
+                }
+                for(int j = 0; j < course.size(); j++){
+                    if(course.get(j).getCourse().getCourseName().equals("313") && course.get(j).getCourseSlot().equals(course.get(i).getCourseSlot())){
+                        valid = false;
+                    }
+                }
+                for(int j = 0; j < course.size(); j++){
+                    if(lab.get(j).getLab().getOfCourse().equals("313") && lab.get(j).getLabSlot().toString().equals(course.get(i).getCourseSlot().toString())){
+                        valid = false;
+                    }
+                }
+            }
+        }
+    }
+
+    public void check913(){
+        for (int i = 0; i < course.size(); i++){
+            if (course.get(i).getCourse().getCourseName().equals("913")){
+                if (course.get(i).getCourseSlot().getTimeString().equals("18:00") && course.get(i).getCourseSlot().getDayString().equals("TU")){
+                }
+                else{
+                    valid = false;
+                }
+                for(int j = 0; j < course.size(); j++){
+                    if(course.get(j).getCourse().getCourseName().equals("413") && course.get(j).getCourseSlot().equals(course.get(i).getCourseSlot())){
+                        valid = false;
+                    }
+                }
+                for(int j = 0; j < course.size(); j++){
+                    if(lab.get(j).getLab().getOfCourse().equals("413") && lab.get(j).getLabSlot().toString().equals(course.get(i).getCourseSlot().toString())){
+                        valid = false;
+                    }
+                }
+            }
         }
     }
 
