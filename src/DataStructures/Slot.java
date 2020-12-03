@@ -14,12 +14,12 @@ public class Slot {
     private int max;
     private int min;
 
-    public Slot(int day, int time, int max, int min) {
-        this.day = day;
-        this.time = time;
-        this.max = max;
-        this.min = min;
-    }
+//    public Slot(int day, int time, int max, int min) {
+//        this.day = day;
+//        this.time = time;
+//        this.max = max;
+//        this.min = min;
+//    }
 
     public int getDay() {
         return day;

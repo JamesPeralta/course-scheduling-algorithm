@@ -2,9 +2,10 @@ package DataStructures;
 
 import java.util.*;
 
-public class CourseAssignment implements Comparable<CourseAssignment> {
+public class CourseAssignment implements Comparable<CourseAssignment>, Assigment {
     private Course course;
     private CourseSlot courseSlot;
+    
 
     public CourseAssignment(Course course) {
         this.course = course;
@@ -18,6 +19,8 @@ public class CourseAssignment implements Comparable<CourseAssignment> {
     public CourseSlot getCourseSlot() {
         return courseSlot;
     }
+    
+    
 
     public String getAssignmentAsString() {
         String assignmentDay = getCourseSlot() != null ? getCourseSlot().getDayString() : "None";
@@ -42,4 +45,9 @@ public class CourseAssignment implements Comparable<CourseAssignment> {
     public int compareTo(CourseAssignment o) {
         return this.course.getFullCourseName().compareTo(o.getCourse().getFullCourseName());
     }
+    @Override
+	public Slot getCurrentSlot() {
+		// need to return the Slot Object so we can compare it 
+		return (Slot) this.courseSlot;
+	}
 }

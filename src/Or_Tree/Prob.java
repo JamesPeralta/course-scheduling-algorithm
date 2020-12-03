@@ -1,9 +1,7 @@
 package Or_Tree;
 import DataStructures.*;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Random;
 
 public class Prob implements Comparable<Prob>{
@@ -130,33 +128,92 @@ public class Prob implements Comparable<Prob>{
         Collections.sort(courses);
         Collections.sort(labs);
     }
+    
+    
+    /**
+     * will return the bound depending on how many soft contrainsts it breaks 
+     * 
+     * @return
+     */
+    public int eval() {
+    	
+    	int pen_coursemin = 0;
+    	
+    	int pen_labsmin = 0;
+    	
+    	// each slot will have a courseMin(s) and a labMax(s)
+    	
+    	// for everone of our slots 
+    	for(CourseAssignment assign : this.courses) {
+    		
+    		
+    	}
+    	
+    	// for each of the labs slots 
+    	for(LabAssignment assign: this.labs) {
+    		
+    	}
+    	
+    	
+    	
+    	
+    	
+    	int bound = 0;
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	return bound;
+    }
+    
+    
 
     public String toString(){
         orderProb();
         String output = "";
         output += "________________________________\n";
         output += "Fitness: " + Double.toString(fitness) + "\n";
-        Collections.sort(this.courses);
-        Collections.sort(this.labs);
         for (CourseAssignment course: this.courses) {
-            String semiCourseName = course.getCourse().getCourseName();
-            String courseSection = course.getCourse().getSectionString();
-            String courseName = course.getCourse().getFullCourseName();
-            String courseAssignment = course.getAssignmentAsString();
-            output += courseName + " : " + courseAssignment + "\n";
-            for (LabAssignment lab: this.labs) {
-                if (lab.getLab().getOfCourse().equals(semiCourseName)) {
-                    String labSection = lab.getLab().getOfSection();
-                    if (labSection.equals("") || labSection.equals(courseSection)) {
-                        String labName = lab.getLab().getFullTutName();
-                        String labAssignment = lab.getAssignmentAsString();
-                        output += labName + " : " + labAssignment + "\n";
-                    }
-                }
+            String courseName = course.getCourse().getCourseName();
+            String courseNumber = course.getCourse().getSectionString();
+            String assignmentDay = course.getCourseSlot() != null ? course.getCourseSlot().getDayString() : "None";
+            String assignmentTime = course.getCourseSlot() != null ? course.getCourseSlot().getTimeString() : "None";
+
+            if (assignmentDay.equals("None")) {
+                output += courseName + " " + courseNumber + ": " + assignmentDay + "\n";
+            }
+            else {
+                output += courseName + " " + courseNumber + ": " + assignmentDay + " " + assignmentTime + "\n";
+            }
+        }
+
+        for (LabAssignment lab: this.labs) {
+            String labCourse = lab.getLab().getOfCourse();
+            String labSection = lab.getLab().getOfSection();
+            String labNumber = lab.getLab().getTutString();
+            String assignmentDay = lab.getLabSlot() != null ? lab.getLabSlot().getDayString() : "None";
+            String assignmentTime = lab.getLabSlot() != null ? lab.getLabSlot().getTimeString() : "None";
+
+            String labString = "";
+            if (labSection == null) {
+                labString = labCourse + " " + labNumber;
+            }
+            else {
+                labString = labCourse + " " + labSection + " " + labNumber;
+            }
+
+            if (assignmentDay.equals("None")) {
+                output += labString + ": " + assignmentDay + "\n";
+            }
+            else {
+                output += labString + ": " + assignmentDay + " " + assignmentTime + "\n";
             }
         }
         output += "________________________________\n";
-
         return output;
     }
 

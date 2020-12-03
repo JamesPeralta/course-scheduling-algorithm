@@ -123,7 +123,7 @@ public class Parser {
 
             if(row[1].contains("TUT") || row[1].contains("LAB")) b = department.findLab(parseLab(row[1]));
             else b = department.findCourse(parseCourse(row[1]));
-
+            
             a.addCompatible(b);
             b.addCompatible(a);
 

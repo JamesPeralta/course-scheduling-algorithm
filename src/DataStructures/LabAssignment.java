@@ -1,6 +1,6 @@
 package DataStructures;
 
-public class LabAssignment implements Comparable<LabAssignment>{
+public class LabAssignment implements Comparable<LabAssignment>, Assigment{
     private Lab lab;
     private LabSlot labSlot;
 
@@ -40,4 +40,10 @@ public class LabAssignment implements Comparable<LabAssignment>{
     public int compareTo(LabAssignment o) {
         return this.getLab().getFullTutName().compareTo(o.getLab().getFullTutName());
     }
+
+	@Override
+	public Slot getCurrentSlot() {
+		// need to return the Slot Object so we can compare it 
+		return (Slot) this.labSlot;
+	}
 }
