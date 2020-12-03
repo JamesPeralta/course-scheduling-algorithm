@@ -28,13 +28,35 @@ public class Constr {
 
     public void checkCourseMax() {
         for (int i = 0; i < course.size(); i++) {
-            
+            Integer value = assignedinCourses.get(course.get(i).getCourseSlot());
+            if (value == null){
+                assignedinCourses.put(course.get(i).getCourseSlot(), 1);
+            }
+            else{
+                assignedinCourses.put(course.get(i).getCourseSlot(), assignedinCourses.get(course.get(i).getCourseSlot()) + 1);
+            }
+        }
+        for (int i = 0; i < course.size(); i++){
+            if(course.get(i).getCourseSlot().getCoursemax() < assignedinCourses.get(course.get(i).getCourseSlot())){
+                valid = false;
+            }
         }
     }
 
     public void checkLabMax() {
+        for (int i = 0; i < lab.size(); i++) {
+            Integer value = assignedinLabs.get(lab.get(i).getLabSlot());
+            if (value == null){
+                assignedinLabs.put(lab.get(i).getLabSlot(), 1);
+            }
+            else{
+                assignedinLabs.put(lab.get(i).getLabSlot(), assignedinLabs.get(lab.get(i).getLabSlot()) + 1);
+            }
+        }
         for (int i = 0; i < lab.size(); i++){
-
+            if(lab.get(i).getLabSlot().getCoursemax() < assignedinLabs.get(lab.get(i).getLabSlot())){
+                valid = false;
+            }
         }
     }
 
