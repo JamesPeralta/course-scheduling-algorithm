@@ -68,4 +68,18 @@ public class Department {
         }
         return null;
     }
+
+    public CourseSlot findCourseSlot(int day, int time) {
+        for(CourseSlot i : courseSlots) {
+            if(i.equalByValue(day, time)) return i;
+        }
+        return null;
+    }
+
+    public LabSlot findLabSlot(int day, int time) {
+        for(LabSlot i : labSlots) {
+            if(i.equalByValue(day, time)) return i;
+        }
+        return null;
+    }
 }

@@ -1,6 +1,6 @@
 package DataStructures;
 
-import java.util.Comparator;
+import java.util.*;
 
 public class CourseAssignment implements Comparable<CourseAssignment> {
     private Course course;

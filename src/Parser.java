@@ -33,7 +33,7 @@ public class Parser {
     private static Lab parseLab(String str) {
         String[] row = str.split("\\s+");
         cleanRow(row);
-        if (row.length == 5) {
+        if (row.length == 6) {
             String course = row[0] + " " + row[1];
             String section = row[2] + " " + row[3];
             String number = row[5];
@@ -67,11 +67,12 @@ public class Parser {
         while(line.length() > 0) {
             String[] row = line.split(",");
             ClassElement a,b;
+            cleanRow(row);
 
-            if(row[0].contains("TUT")) a = department.findLab(parseLab(row[0]));
+            if(row[0].contains("TUT") || row[0].contains("LAB")) a = department.findLab(parseLab(row[0]));
             else a = department.findCourse(parseCourse(row[0]));
 
-            if(row[1].contains("TUT")) b = department.findLab(parseLab(row[1]));
+            if(row[1].contains("TUT") || row[1].contains("LAB")) b = department.findLab(parseLab(row[1]));
             else b = department.findCourse(parseCourse(row[1]));
 
             a.addNonCompatible(b);
@@ -82,11 +83,52 @@ public class Parser {
     }
 
     private static void parseUnwanted(BufferedReader reader, Department department) throws IOException {
+        String line = reader.readLine();
+        while(line.length() > 0) {
+            String[] row = line.split(",");
+            cleanRow(row);
 
+            if(row[0].contains("TUT") || row[0].contains("LAB")) {
+                department.findLab(parseLab(row[0])).addUnwanted(department.findLabSlot(days.indexOf(row[1]), times.indexOf(row[2])));
+            } else department.findCourse(parseCourse(row[0])).addUnwanted(department.findCourseSlot(days.indexOf(row[1]), times.indexOf(row[2])));
+
+            line = reader.readLine();
+        }
     }
 
-    private static void parsePreference(BufferedReader reader, Department department) throws IOException {
+    private static void parsePreferences(BufferedReader reader, Department department) throws IOException {
+        String line = reader.readLine();
+        while(line.length() > 0) {
+            String[] row = line.split(",");
+            cleanRow(row);
 
+            if(row[2].contains("TUT") || row[2].contains("LAB")) {
+                department.findLab(parseLab(row[2])).addPreference(
+                    department.findLabSlot(days.indexOf(row[0]), times.indexOf(row[1])), Integer.parseInt(row[3]));
+            } else department.findCourse(parseCourse(row[2])).addPreference(
+                    department.findCourseSlot(days.indexOf(row[0]), times.indexOf(row[1])), Integer.parseInt(row[3]));
+            line = reader.readLine();
+        }
+    }
+
+    private static void parsePairs(BufferedReader reader, Department department) throws IOException {
+        String line = reader.readLine();
+        while(line.length() > 0) {
+            String[] row = line.split(",");
+            ClassElement a,b;
+            cleanRow(row);
+
+            if(row[0].contains("TUT") || row[0].contains("LAB")) a = department.findLab(parseLab(row[0]));
+            else a = department.findCourse(parseCourse(row[0]));
+
+            if(row[1].contains("TUT") || row[1].contains("LAB")) b = department.findLab(parseLab(row[1]));
+            else b = department.findCourse(parseCourse(row[1]));
+
+            a.addCompatible(b);
+            b.addCompatible(a);
+
+            line = reader.readLine();
+        }
     }
 
     public static Department parse(String pathToFile) {
@@ -118,7 +160,10 @@ public class Parser {
                     parseUnwanted(reader, department);
                 }
                 if(line.equals("Preferences:")) {
-                    parsePreference(reader, department);
+                    parsePreferences(reader, department);
+                }
+                if(line.equals("Pair:")) {
+                    parsePairs(reader, department);
                 }
 
                 line = reader.readLine();

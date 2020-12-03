@@ -13,6 +13,7 @@ public class CourseSlot {
     private int time;
     private int coursemax;
     private int coursemin;
+    private int assigned = 0;
 
     public CourseSlot(int day, int time, int coursemax, int coursemin) {
         this.day = day;
@@ -37,7 +38,24 @@ public class CourseSlot {
         return coursemin;
     }
 
+    public int getAssigned() {
+        return assigned;
+    }
+
     public String getDayString() {return days.get(day);}
 
     public String getTimeString() {return times.get(time);}
+
+    public boolean equalByValue(int day, int time) {
+        return this.day == day && this.time == time;
+    }
+
+    @Override
+    public String toString() {
+        return toStringMin() + ", " + coursemax + ", " + coursemin;
+    }
+
+    public String toStringMin() {
+        return days.get(day) + ", " + times.get(time);
+    }
 }
