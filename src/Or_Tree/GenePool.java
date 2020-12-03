@@ -17,6 +17,7 @@ public class GenePool {
         }
 
         // Sort by fitness
+        Collections.sort(pool);
 
         // Generate random choice weight
         double[] weights = new double[populationSize];
