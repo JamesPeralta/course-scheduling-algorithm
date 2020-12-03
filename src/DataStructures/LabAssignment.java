@@ -24,8 +24,20 @@ public class LabAssignment implements Comparable<LabAssignment>{
         labSlot = null;
     }
 
+    public String getAssignmentAsString() {
+        String assignmentDay = getLabSlot() != null ? getLabSlot().getDayString() : "None";
+        String assignmentTime = getLabSlot() != null ? getLabSlot().getTimeString() : "None";
+
+        if (assignmentDay.equals("None")) {
+            return assignmentDay;
+        }
+        else {
+            return assignmentDay + ", " + assignmentTime;
+        }
+    }
+
     @Override
     public int compareTo(LabAssignment o) {
-        return o.getLab().getFullTutName().compareTo(this.getLab().getFullTutName());
+        return this.getLab().getFullTutName().compareTo(o.getLab().getFullTutName());
     }
 }

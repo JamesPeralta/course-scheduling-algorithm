@@ -23,7 +23,18 @@ public class Course extends ClassElement {
     }
 
     public String getSectionString() {
-        return "LEC " + Integer.toString(section);
+        if (section < 10) {
+            return "LEC 0" + Integer.toString(section);
+        }
+        else {
+            return "LEC " + Integer.toString(section);
+        }
+    }
+
+    public String getFullCourseName() {
+        String courseName = getCourseName();
+        String courseNumber = getSectionString();
+        return courseName + " " + courseNumber;
     }
 
     public boolean equals(Course c) {

@@ -1,0 +1,13 @@
+Custom1 Output:
+Eval-value: 0
+CPSC 433 LEC 01             : MO, 9:00
+CPSC 433 LEC 01 TUT 01      : MO, 8:00
+CPSC 567 LEC 01             : MO,  8:00
+CPSC 567 TUT 01             : MO,  9:00
+
+Custom1 Output:
+Eval-value: 0
+CPSC 433 LEC 01             : MO, 9:00
+CPSC 433 LEC 01 TUT 01      : MO, 8:00
+CPSC 567 LEC 01             : MO,  8:00
+CPSC 567 TUT 01             : MO,  9:00
