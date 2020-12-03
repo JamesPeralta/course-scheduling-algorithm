@@ -19,6 +19,18 @@ public class CourseAssignment implements Comparable<CourseAssignment> {
         return courseSlot;
     }
 
+    public String getAssignmentAsString() {
+        String assignmentDay = getCourseSlot() != null ? getCourseSlot().getDayString() : "None";
+        String assignmentTime = getCourseSlot() != null ? getCourseSlot().getTimeString() : "None";
+
+        if (assignmentDay.equals("None")) {
+            return assignmentDay;
+        }
+        else {
+            return assignmentDay + ", " + assignmentTime;
+        }
+    }
+
     public void assignSlot(CourseSlot slot){
         courseSlot = slot;
     }
@@ -28,6 +40,6 @@ public class CourseAssignment implements Comparable<CourseAssignment> {
 
     @Override
     public int compareTo(CourseAssignment o) {
-        return o.getCourse().getCourseName().compareTo(this.course.getCourseName());
+        return this.course.getFullCourseName().compareTo(o.getCourse().getFullCourseName());
     }
 }

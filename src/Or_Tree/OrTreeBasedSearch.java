@@ -34,11 +34,11 @@ public class OrTreeBasedSearch {
             List<LabSlot> copy = new ArrayList<>(labSlots);
             Collections.shuffle(copy);
             for (LabSlot labSlot: copy) {
-                prob.assignLab(depth - maxCourses - 1, labSlot);
+                prob.assignLab(depth - maxCourses, labSlot);
                 if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses)){
                     return true;
                 }
-                prob.unassignLab(depth - maxCourses - 1);
+                prob.unassignLab(depth - maxCourses);
             }
         }
 
