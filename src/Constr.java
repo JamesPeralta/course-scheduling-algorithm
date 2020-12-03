@@ -59,7 +59,7 @@ public class Constr {
 
     public void check813(){
         for (int i = 0; i < course.size(); i++){
-            if (course.get(i).getCourse().get)
+            //if (course.get(i).getCourse().get)
         }
     }
 
