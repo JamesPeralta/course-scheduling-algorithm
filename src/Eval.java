@@ -33,6 +33,9 @@ public class Eval {
     // here are the differnent penalties for each bound
     private int pen_coursemin = 0;
     private int pen_labsmin = 0;
+    private int pen_pair = 0;
+    private int pen_section = 0;
+    
     
     
     /**
@@ -142,6 +145,8 @@ public class Eval {
 	 */
 	private void checkPreference() {
 		
+		
+		
 	}
 	
 	/**
@@ -178,6 +183,7 @@ public class Eval {
 						
 					}else {
 						// the pair occurs on a differnt time slot 
+						this.bound += this.pen_pair;
 					}
 					
 					
@@ -205,8 +211,11 @@ public class Eval {
 					if(dayMatch && timeMatch) {
 						// then we have found that the pair is at the same time 
 						
+						// 
 					}else {
 						// the lab does not appear at the same time so we igore it 
+						this.bound += this.pen_pair;
+						
 					}
 					
 					
@@ -223,10 +232,14 @@ public class Eval {
 	 * pen_section to the Eval-value of an assignment assign.
 	 */
 	private void checkSimislarSections() {
-		// we need to make sure that all of a section is not at the same time 
 		
+		// example we have l01, l02, l03
 		
-		// want to guarentee that there is 
+		/**
+		 * say that l01 and l02 are at the same time 
+		 * then we give a penalty for l01 and l02 but not when checking l02 to l02
+		 */
+		
 		
 	}
 	

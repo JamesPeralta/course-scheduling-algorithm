@@ -22,14 +22,14 @@ public class Prob implements Comparable<Prob>{
     /*
     Getters and Setters
      */
-    private void setUnassignedCourses(ArrayList<Course> courses) {
-        for (Course course: courses) {
+    private void setUnassignedCourses(ArrayList<CourseInstance> courses) {
+        for (CourseInstance course: courses) {
             this.courses.add(new CourseAssignment(course));
         }
     }
 
-    private void setUnassignedLabs(ArrayList<Lab> labs) {
-        for (Lab lab: labs) {
+    private void setUnassignedLabs(ArrayList<LabSection> labs) {
+        for (LabSection lab: labs) {
             this.labs.add(new LabAssignment(lab));
         }
     }

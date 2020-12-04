@@ -1,15 +1,15 @@
 package DataStructures;
 
 public class LabAssignment implements Comparable<LabAssignment>, Assigment{
-    private Lab lab;
+    private LabSection lab;
     private LabSlot labSlot;
 
-    public LabAssignment(Lab lab) {
+    public LabAssignment(LabSection lab) {
         this.lab = lab;
         this.labSlot = null;
     }
 
-    public Lab getLab() {
+    public LabSection getLab() {
         return lab;
     }
 
