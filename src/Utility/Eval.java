@@ -38,9 +38,9 @@ public class Eval {
     // here are the different penalties for each bound
     private int pen_coursemin = 0;
     private int pen_labsmin = 0;
-    private int pen_pair = 0;
+    private int pen_pair = 2;
   
-    private int pen_section = 0;
+    private int pen_section = 20;
 
 	public Eval(ArrayList<CourseAssignment> courses, ArrayList<LabAssignment> labs, Department department){
 		this.courses = courses;
@@ -48,13 +48,25 @@ public class Eval {
 		this.department = department;
 		this.bound = 0;
 		
+		
+		this.assigments = new  HashMap<ClassElement,Slot>();
+		// we need to build our class elements to slot thing so we know 
+		for(CourseAssignment course: this.courses) {
+			this.assigments.put(course.getCourse(), course.getCurrentSlot());
+		}
+		// do it for the labs too 
+		for(var lab: this.labs) {
+			this.assigments.put(lab.getLab(), lab.getCurrentSlot());
+		}
+		
+		
+		
+		
 		// Check courses
-		this.checkNumOfAssigment();
-		System.out.println(this.bound);
-		this.checkPreference();
-		System.out.println(this.bound);
-//		this.checkPaired();
-//		this.checkSimilarSections();
+		this.checkNumOfAssigment(); 
+		this.checkPreference(); 
+		this.checkPaired();
+		this.checkSimilarSections();
 	}
 	
 	// the only public 
@@ -145,7 +157,7 @@ public class Eval {
 			int[] scores = new int[keys.length];
 			for(int i =0; i<keys.length;i++) {
 				scores[i] = slotMap.get(slot).get(keys[i]);
-				System.out.println(scores[i]);
+				//System.out.println(scores[i]);
 			}
 			
 			// now with this lists we should sum the array and then subtract the score of 
@@ -163,78 +175,48 @@ public class Eval {
 			
 			this.bound += sum;
 			
-			
-			
-			
 		}
 		
 	
 		
 		
-		
-		// this is the old code imma write some better 
-//		for(CourseAssignment course: this.courses) {
-//			CourseSlot slot =  course.getCourseSlot();
-//			System.out.println(slot);
-//			if (slot == null) {
-//				continue;
-//			}
-//			
-//			// need to change how this works lol 
-//			
-//			 
-//			
-//			if(course.getCourse().getPreference().containsKey(slot)) {
-//				System.out.println("got here");
-//				Object[] keys = course.getCourse().getPreference().keySet().toArray();
-//				int[] scores = new int[keys.length];
-//				for(int i =0; i<keys.length;i++) {
-//					scores[i] = course.getCourse().getPreference().get(keys[i]);
-//					System.out.println(scores[i]);
-//				}
-//				
-//				
-//				// now that its sorted we need to find its places 
-//				int sum = 0;
-//				int targetScore = course.getCourse().getPreference().get(slot);
-//				System.out.println(targetScore);
-//				for(int i =0; i<keys.length;i++) {
-//					// we found it 
-//					if(scores[i] != targetScore) {
-//						sum += scores[i];
-//					}
-//					
-//				}
-//				// add the penalty, for now the penalty is caluclated more so 
-//				// we can easly change this in a function above 
-//				this.bound += sum;
-//			}
-//		}
+
 		
 		
 	}
-
+	
+	/**
+	 * todo is test this thing right here lol 
+	 * test case 
+	 */
 	private void checkPaired() {
-		
+		System.out.println("Chceking Pairs");
 		// for each course assigment
 		for(CourseAssignment courseAssigment: this.courses) {
 			// check to see if there are classes that should be compadible to this  
-			 
+			System.out.println("Checking the pairs for "+  courseAssigment.getCourse().getFullCourseName());
 			if(courseAssigment.getCourse().getCompatible().size() > 0 ) {
+				
 				// for each one see if it is at the same time as its pair 
 				for(ClassElement pair:  courseAssigment.getCourse().getCompatible()) {
+					System.out.println("asdasdasda");
+					System.out.println(pair);
 					// need to find where it is assigned 
 					Slot pairSlot = this.assigments.get(pair);
-
+					
 					// then we can check it to the assugment slot
 					Slot masterSlot =  courseAssigment.getCurrentSlot();
-
+					
 					// then see if the 2 slots are the same 
 					boolean dayMatch = pairSlot.getDayString() == masterSlot.getDayString();
 					boolean timeMatch = pairSlot.getTimeString() == masterSlot.getTimeString();
+					System.out.println("1"+  pairSlot);
+					System.out.println("2"+masterSlot);
 					// if it occurs on a differnt slot then we want it too we should add
 					// the penalty value 
+					
 					if(!( dayMatch && timeMatch )){
+						System.out.println("They do not match");
 						// the pair occurs on a different time slot 
 						this.bound += this.pen_pair;
 					}
@@ -244,7 +226,7 @@ public class Eval {
 		// repeart the same thing above but for labs 
 		for(LabAssignment labAssigment: this.labs) {
 			// see if each one has some comparable 
-			
+			System.out.println("Checking the pairs for "+  labAssigment.getLab().getFullTutName());
 			// then we should check to see if 
 			if(labAssigment.getLab().getCompatible().size() > 0) {
 				for(ClassElement pair:  labAssigment.getLab().getCompatible()) {
@@ -277,6 +259,7 @@ public class Eval {
 	 * to the same comparison as above 
 	 */
 	private void checkSimilarSections() {
+		
 		for(String course: this.department.getCourseMap().keySet()) {
 			ArrayList<CourseInstance> courseSet = this.department.getCourseMap().get(course);
 			// check all the courses 

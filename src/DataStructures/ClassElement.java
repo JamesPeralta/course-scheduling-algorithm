@@ -8,7 +8,7 @@ public class ClassElement {
     private ArrayList<ClassElement> compatible = new ArrayList<>();
 
     public ClassElement() {
-
+    	
     }
 
     public void addNonCompatible(ClassElement e) {

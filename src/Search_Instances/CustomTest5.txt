@@ -1,0 +1,31 @@
+Name:
+Custom1
+
+Course slots:
+MO, 8:00, 2, 1
+MO, 9:00, 2, 1
+
+Lab slots:
+MO, 8:00, 1, 1
+MO, 9:00, 1, 1
+
+Courses:
+CPSC 433 LEC 01
+CPSC 433 LEC 02
+CPSC 567 LEC 01
+
+Labs:
+CPSC 433 LEC 01 TUT 01
+CPSC 567 TUT 01
+
+Not compatible:
+
+Unwanted:
+
+Preferences:
+MO, 8:00, CPSC 433 LEC 01, 10
+MO, 8:00, CPSC 567 LEC 01, 20
+
+Pair:
+
+Partial assignments:
