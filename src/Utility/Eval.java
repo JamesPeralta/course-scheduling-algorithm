@@ -128,38 +128,23 @@ public class Eval {
 				for(int i =0; i<keys.length;i++) {
 					scores[i] = course.getCourse().getPreference().get(keys[i]);
 				}
-
-				Arrays.sort(scores);
-
-				for(int i = 0; i < scores.length / 2; i++){
-		            int temp = scores[i];
-		            scores[i] = scores[scores.length - i -1];
-		            scores[scores.length -i -1] = temp;
-		        }
 				
 				// now that its sorted we need to find its places 
-				int position = 1;
+				int sum = 0;
 				int targetScore = course.getCourse().getPreference().get(slot);
 				for(int i =0; i<keys.length;i++) {
 					// we found it 
-					if(scores[i] == targetScore) {
-						break;
+					if(scores[i] != targetScore) {
+						sum += scores[i];
 					}
 					
-					// if it is not the same as the last one we should incriment it 
-					// by one 
-					if(i>0) {
-						// if we are beyhond the first one lets see if the first one is the same 
-						// as the last one 
-						if(scores[i-1] != scores[i]) {
-							position = i+1;
-						}
-					}
+					
+					
 				}
 				
 				// add the penalty, for now the penalty is caluclated more so 
 				// we can easly change this in a function above 
-				this.bound += this.pen_prefernce_calculated(position,scores.length);
+				this.bound += sum;
 			}
 		}
 		
