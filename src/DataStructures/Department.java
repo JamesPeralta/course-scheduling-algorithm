@@ -4,10 +4,11 @@ import java.util.*;
 
 public class Department {
     private String name;
-    private ArrayList<Course> courses = new ArrayList<>();
-    private ArrayList<Lab> labs = new ArrayList<>();
+    private ArrayList<CourseInstance> courses = new ArrayList<>();
+    private ArrayList<LabSection> labs = new ArrayList<>();
     private ArrayList<LabSlot> labSlots = new ArrayList<>();
     private ArrayList<CourseSlot> courseSlots = new ArrayList<>();
+    
 
     public Department() {}
 
@@ -15,11 +16,11 @@ public class Department {
         this.name = name;
     }
 
-    public void addCourse(Course c) {
+    public void addCourse(CourseInstance c) {
         courses.add(c);
     }
 
-    public void addLab(Lab l) {
+    public void addLab(LabSection l) {
         labs.add(l);
     }
 
@@ -31,14 +32,14 @@ public class Department {
         courseSlots.add(cs);
     }
 
-    public ArrayList<Course> getCourses() {
-        ArrayList<Course> copy = (ArrayList<Course>) this.courses.clone();
+    public ArrayList<CourseInstance> getCourses() {
+        ArrayList<CourseInstance> copy = (ArrayList<CourseInstance>) this.courses.clone();
         Collections.shuffle(copy);
         return copy;
     };
 
-    public ArrayList<Lab> getLabs() {
-        ArrayList<Lab> copy = (ArrayList<Lab>) this.labs.clone();
+    public ArrayList<LabSection> getLabs() {
+        ArrayList<LabSection> copy = (ArrayList<LabSection>) this.labs.clone();
         Collections.shuffle(copy);
         return copy;
     };
@@ -55,15 +56,15 @@ public class Department {
         return copy;
     };
 
-    public Course findCourse(Course c) {
-        for(Course i : courses) {
+    public CourseInstance findCourse(CourseInstance c) {
+        for(CourseInstance i : courses) {
             if(i.equals(c)) return i;
         }
         return null;
     }
 
-    public Lab findLab(Lab c) {
-        for(Lab i : labs) {
+    public LabSection findLab(LabSection c) {
+        for(LabSection i : labs) {
             if(i.equals(c)) return i;
         }
         return null;

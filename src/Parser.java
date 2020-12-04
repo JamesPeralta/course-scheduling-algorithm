@@ -23,26 +23,26 @@ public class Parser {
         }
     }
 
-    private static Course parseCourse(String str) {
+    private static CourseInstance parseCourse(String str) {
         String[] row = str.split("\\s+");
         cleanRow(row);
-        if(row.length > 2) return new Course(row[0] + " " + row[1], Integer.parseInt(row[3]));
-        else return new Course(row[0], Integer.parseInt(row[1]));
+        if(row.length > 2) return new CourseInstance(row[0] + " " + row[1], Integer.parseInt(row[3]));
+        else return new CourseInstance(row[0], Integer.parseInt(row[1]));
     }
 
-    private static Lab parseLab(String str) {
+    private static LabSection parseLab(String str) {
         String[] row = str.split("\\s+");
         cleanRow(row);
         if (row.length == 6) {
             String course = row[0] + " " + row[1];
             String section = row[2] + " " + row[3];
             String number = row[5];
-            return new Lab(course, section, Integer.parseInt(number));
+            return new LabSection(course, section, Integer.parseInt(number));
         }
         else {
             String course = row[0] + " " + row[1];
             String number = row[3];
-            return new Lab(course, Integer.parseInt(number));
+            return new LabSection(course, Integer.parseInt(number));
         }
     }
 

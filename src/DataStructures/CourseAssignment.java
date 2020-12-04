@@ -3,16 +3,16 @@ package DataStructures;
 import java.util.*;
 
 public class CourseAssignment implements Comparable<CourseAssignment>, Assigment {
-    private Course course;
+    private CourseInstance course;
     private CourseSlot courseSlot;
     
 
-    public CourseAssignment(Course course) {
+    public CourseAssignment(CourseInstance course) {
         this.course = course;
         this.courseSlot = null;
     }
 
-    public Course getCourse() {
+    public CourseInstance getCourse() {
         return course;
     }
 
