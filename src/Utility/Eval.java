@@ -157,7 +157,7 @@ public class Eval {
 			
 			// now if the currentAssigment to this slot exists in the course map the 
 			// we should substract its score 
-			if(slotMap.get(slot).containsKey(currenAssigment.getCourse())) {
+			if(currenAssigment != null &&  slotMap.get(slot).containsKey(currenAssigment.getCourse())) {
 				sum -= slotMap.get(slot).get(currenAssigment.getCourse());
 			}
 			
@@ -215,6 +215,8 @@ public class Eval {
 	}
 
 	private void checkPaired() {
+		
+		// for each course assigment
 		for(CourseAssignment courseAssigment: this.courses) {
 			// check to see if there are classes that should be compadible to this  
 			 
@@ -230,18 +232,16 @@ public class Eval {
 					// then see if the 2 slots are the same 
 					boolean dayMatch = pairSlot.getDayString() == masterSlot.getDayString();
 					boolean timeMatch = pairSlot.getTimeString() == masterSlot.getTimeString();
-					if(dayMatch && timeMatch) {
-						// then we have found that the pair is at the same time 
-						
-					}else {
+					// if it occurs on a differnt slot then we want it too we should add
+					// the penalty value 
+					if(!( dayMatch && timeMatch )){
 						// the pair occurs on a different time slot 
 						this.bound += this.pen_pair;
 					}
 				}
 			}
 		}
-		// we need to loop though the list
-			// do the same for the labs 
+		// repeart the same thing above but for labs 
 		for(LabAssignment labAssigment: this.labs) {
 			// see if each one has some comparable 
 			
@@ -270,7 +270,12 @@ public class Eval {
 				
 		}
 	}
-
+	/**
+	 * Checks for similar sections and avoids checking the same pair of course sections twice 
+	 * 
+	 * there might be an issue compairing the courses, in that case we need to go and change it 
+	 * to the same comparison as above 
+	 */
 	private void checkSimilarSections() {
 		for(String course: this.department.getCourseMap().keySet()) {
 			ArrayList<CourseInstance> courseSet = this.department.getCourseMap().get(course);
@@ -302,6 +307,8 @@ public class Eval {
 						
 						// now check to see if the courses are the same ones 
 						if(course1 != null && course2 != null) {
+							// if the are at the same time then we add the penalty since we want them 
+							// at seperate times 
 							if(course1 == course2) {
 								this.bound += this.pen_section;
 							}
