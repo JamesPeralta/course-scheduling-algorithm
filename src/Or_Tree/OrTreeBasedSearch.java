@@ -1,5 +1,6 @@
 package Or_Tree;
 import DataStructures.*;
+import Utility.Constr;
 
 import java.util.*;
 
@@ -10,7 +11,6 @@ public class OrTreeBasedSearch {
         Prob newInstance = new Prob(department);
         int maxDepth = courseSlots.size();
         erw(newInstance, courseSlots, labSlots, 0, maxDepth);
-
         return newInstance;
     }
 
@@ -18,6 +18,10 @@ public class OrTreeBasedSearch {
         if (prob.coursesFilled() && prob.labsFilled()) {
             return true;
         }
+
+        System.out.println(prob.getCourses());
+        Constr constr = new Constr(prob.getCourses(), prob.getLabs());
+        System.out.println(constr.isValid());
 
         if (!prob.coursesFilled()) {
             List<CourseSlot> copy = new ArrayList<>(courseSlots);

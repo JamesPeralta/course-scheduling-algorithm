@@ -1,5 +1,6 @@
+package Utility;
+
 import java.util.*;
-import Or_Tree.*;
 import DataStructures.*;
 
 public class Constr {
@@ -26,8 +27,6 @@ public class Constr {
         checkLectureNine();
         check813();
         check913();
-        
-
     }
     //checks if courseMax is borken
     public void checkCourseMax() {
@@ -40,7 +39,12 @@ public class Constr {
                 assignedinCourses.put(course.get(i).getCourseSlot(), assignedinCourses.get(course.get(i).getCourseSlot()) + 1); //updates value 
             }
         }
+
         for (int i = 0; i < course.size(); i++){
+            if (course.get(i).getCourseSlot() == null) {
+                continue;
+            }
+
             if(course.get(i).getCourseSlot().getCoursemax() < assignedinCourses.get(course.get(i).getCourseSlot())){ //check each course in the hashmap and see if coursemax is broken
                 valid = false;
             }
@@ -59,6 +63,10 @@ public class Constr {
             }
         }
         for (int i = 0; i < lab.size(); i++){
+            if (lab.get(i).getLabSlot() == null) {
+                continue;
+            }
+
             if(lab.get(i).getLabSlot().getCoursemax() < assignedinLabs.get(lab.get(i).getLabSlot())){
                 valid = false;
             }
@@ -69,9 +77,20 @@ public class Constr {
     public void checkAssign(){
         for(int i = 0; i < course.size(); i++){
             for(int j = 0; j < lab.size(); j++){
+                if (course.get(i).getCourseSlot() == null || lab.get(j).getLabSlot() == null) {
+                    continue;
+                }
+
                 if((course.get(i).getCourseSlot().getDay()) == (lab.get(j).getLabSlot().getDay()) && (course.get(i).getCourseSlot().getTime()) == (lab.get(j).getLabSlot().getTime())){ //check if the course has the same day and time as a lab
-                    if(course.get(i).getCourse().getCourseName().equals(lab.get(j).getLab().getOfCourse()) && (course.get(i).getCourse().getSectionNumber()) == Integer.parseInt(lab.get(j).getLab().getOfSection())){ //checks if the lab corresponds to the same course and are the same section
-                        valid = false;
+                    if(course.get(i).getCourse().getCourseName().equals(lab.get(j).getLab().getOfCourse())){ //checks if the lab corresponds to the same course and are the same section
+                        if (!lab.get(j).getLab().getOfSection().equals("")){
+                            if (course.get(i).getCourse().getSectionString().equals(lab.get(j).getLab().getOfSection())) {
+                                valid = false;
+                            }
+                        }
+                        else {
+                            valid = false;
+                        }
                     }
                 }
             }
@@ -82,6 +101,10 @@ public class Constr {
     //checks if a course is on tuesday at 11:00
     public void checkTuesEleven(){
         for (int i = 0; i < course.size(); i++){
+            if (course.get(i).getCourseSlot() == null) {
+                continue;
+            }
+
             if (course.get(i).getCourseSlot().getTimeString().equals("11:00") && course.get(i).getCourseSlot().getDayString().equals("TU")){ //checks if course is at 11:00 and on a tuesday
                 valid = false;     
             }
@@ -91,6 +114,10 @@ public class Constr {
     //checks if lecture number ends in 9, it must be assigned to an evening slot
     public void checkLectureNine(){
         for (int i = 0; i < course.size(); i++){
+            if (course.get(i).getCourse() == null) {
+                continue;
+            }
+
             if (course.get(i).getCourse().getSectionNumber() == 9){
                 if(course.get(i).getCourseSlot().getTime() < 18){
                     valid = false;
@@ -103,6 +130,10 @@ public class Constr {
     //checks for 813 and if it is assigned at 18:00, and is not associated with any course or lab for 313
     public void check813(){
         for (int i = 0; i < course.size(); i++){
+            if (course.get(i).getCourse() == null) {
+                continue;
+            }
+
             if (course.get(i).getCourse().getCourseName().equals("813")){
                 if (course.get(i).getCourseSlot().getTimeString().equals("18:00") && course.get(i).getCourseSlot().getDayString().equals("TU")){ //checks if course is assigned to 18:00 and on tuesday
                 }
@@ -126,6 +157,10 @@ public class Constr {
     //similar to check813 but for 913 
     public void check913(){
         for (int i = 0; i < course.size(); i++){
+            if (course.get(i).getCourse() == null) {
+                continue;
+            }
+
             if (course.get(i).getCourse().getCourseName().equals("913")){
                 if (course.get(i).getCourseSlot().getTimeString().equals("18:00") && course.get(i).getCourseSlot().getDayString().equals("TU")){//checks if course is assigned to 18:00 and on tuesday
                 }
@@ -146,5 +181,8 @@ public class Constr {
         }
     }
 
+    public boolean isValid(){
+        return this.valid;
+    }
 }
 
