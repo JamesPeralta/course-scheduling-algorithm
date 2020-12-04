@@ -11,17 +11,18 @@ public class OrTreeBasedSearch {
         Prob newInstance = new Prob(department);
         int maxDepth = courseSlots.size();
         erw(newInstance, courseSlots, labSlots, 0, maxDepth);
+
         return newInstance;
     }
 
     public static Boolean erw(Prob prob, Set<CourseSlot> courseSlots, Set<LabSlot> labSlots, int depth, int maxCourses){
+        Constr constr = new Constr(prob.getCourses(), prob.getLabs());
+        if (!constr.isValid()) {
+            return false;
+        }
         if (prob.coursesFilled() && prob.labsFilled()) {
             return true;
         }
-
-        System.out.println(prob.getCourses());
-        Constr constr = new Constr(prob.getCourses(), prob.getLabs());
-        System.out.println(constr.isValid());
 
         if (!prob.coursesFilled()) {
             List<CourseSlot> copy = new ArrayList<>(courseSlots);
