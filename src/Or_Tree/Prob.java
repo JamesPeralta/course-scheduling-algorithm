@@ -22,6 +22,10 @@ public class Prob implements Comparable<Prob>{
     /*
     Getters and Setters
      */
+    public void setFitness(double fitness){
+        this.fitness = fitness;
+    }
+
     private void setUnassignedCourses(ArrayList<CourseInstance> courses) {
         for (CourseInstance course: courses) {
             this.courses.add(new CourseAssignment(course));

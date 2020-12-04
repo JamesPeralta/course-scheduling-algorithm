@@ -1,6 +1,7 @@
 package Or_Tree;
 import DataStructures.*;
 import Utility.Constr;
+import Utility.Eval;
 
 import java.util.*;
 
@@ -12,6 +13,8 @@ public class OrTreeBasedSearch {
         int maxDepth = courseSlots.size();
         erw(newInstance, courseSlots, labSlots, 0, maxDepth);
 
+        Eval eval = new Eval(newInstance.getCourses(), newInstance.getLabs(), department);
+        newInstance.setFitness(eval.getBound());
         return newInstance;
     }
 
