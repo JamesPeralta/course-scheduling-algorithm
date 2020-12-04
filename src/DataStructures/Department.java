@@ -4,10 +4,12 @@ import java.util.*;
 
 public class Department {
     private String name;
-    private ArrayList<CourseInstance> courses = new ArrayList<>();
-    private ArrayList<LabSection> labs = new ArrayList<>();
+    private ArrayList<CourseInstance> coursesSections = new ArrayList<>();
+    private ArrayList<LabSection> labSections = new ArrayList<>();
     private ArrayList<LabSlot> labSlots = new ArrayList<>();
     private ArrayList<CourseSlot> courseSlots = new ArrayList<>();
+    private HashMap<String,ArrayList<CourseInstance>> courses = new HashMap<String,ArrayList<CourseInstance>>();
+    private HashMap<String,ArrayList<LabSection>> labs = new HashMap<String,ArrayList<LabSection>>();
     
 
     public Department() {}
@@ -17,11 +19,30 @@ public class Department {
     }
 
     public void addCourse(CourseInstance c) {
-        courses.add(c);
+    	// add the course section 
+        coursesSections.add(c);
+        
+        // add the class 
+        
+        if(courses.containsKey(c.getCourseName())) {
+        	courses.get(c.getCourseName()).add(c);
+        }else {
+        	courses.put(c.getCourseName(), new ArrayList<CourseInstance>());
+        	courses.get(c.getCourseName()).add(c);
+        }
     }
 
     public void addLab(LabSection l) {
-        labs.add(l);
+        labSections.add(l);
+        
+        
+        // make sure to add it to the lab map 
+        if(labs.containsKey(l.getFullTutName())) {
+        	labs.get(l.getFullTutName()).add(l);
+        }else {
+        	labs.put(l.getFullTutName(), new ArrayList<LabSection>());
+        	labs.get(l.getFullTutName()).add(l);
+        }
     }
 
     public void addLabSlot(LabSlot ls) {
@@ -33,13 +54,13 @@ public class Department {
     }
 
     public ArrayList<CourseInstance> getCourses() {
-        ArrayList<CourseInstance> copy = (ArrayList<CourseInstance>) this.courses.clone();
+        ArrayList<CourseInstance> copy = (ArrayList<CourseInstance>) this.coursesSections.clone();
         Collections.shuffle(copy);
         return copy;
     };
 
     public ArrayList<LabSection> getLabs() {
-        ArrayList<LabSection> copy = (ArrayList<LabSection>) this.labs.clone();
+        ArrayList<LabSection> copy = (ArrayList<LabSection>) this.labSections.clone();
         Collections.shuffle(copy);
         return copy;
     };
@@ -57,14 +78,14 @@ public class Department {
     };
 
     public CourseInstance findCourse(CourseInstance c) {
-        for(CourseInstance i : courses) {
+        for(CourseInstance i : coursesSections) {
             if(i.equals(c)) return i;
         }
         return null;
     }
 
     public LabSection findLab(LabSection c) {
-        for(LabSection i : labs) {
+        for(LabSection i : labSections) {
             if(i.equals(c)) return i;
         }
         return null;
@@ -82,5 +103,11 @@ public class Department {
             if(i.equalByValue(day, time)) return i;
         }
         return null;
+    }
+    public HashMap<String,ArrayList<CourseInstance>> getCourseMap() {
+    	return this.courses;
+    }
+    public HashMap<String,ArrayList<LabSection>>  getLabMap(){
+    	return this.labs;
     }
 }

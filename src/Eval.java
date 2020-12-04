@@ -5,8 +5,11 @@ import java.util.Hashtable;
 
 import DataStructures.ClassElement;
 import DataStructures.CourseAssignment;
+import DataStructures.CourseInstance;
 import DataStructures.CourseSlot;
+import DataStructures.Department;
 import DataStructures.LabAssignment;
+import DataStructures.LabSection;
 import DataStructures.LabSlot;
 import DataStructures.Slot;
 
@@ -26,6 +29,9 @@ public class Eval {
     
     // here are the course elements 
     private ClassElement classElements;
+    
+    // the department 
+    private Department department;
     
     private int bound;
     
@@ -49,13 +55,15 @@ public class Eval {
 			ArrayList<LabSlot> labSlot,
 			ArrayList<CourseAssignment> courses,
 			ArrayList<LabAssignment> labs,
-			ClassElement classElements){
+			ClassElement classElements,
+			Department department){
 		// asign the things 
 		this.courseSlots = courseSlots;
 		this.labSlots = labSlot;
 		this.courses = courses;
 		this.labs = labs;
 		this.classElements = classElements;
+		this.department = department;
 		
 		// inialize the bound value 
 		this.bound = 0;
@@ -239,6 +247,86 @@ public class Eval {
 		 * say that l01 and l02 are at the same time 
 		 * then we give a penalty for l01 and l02 but not when checking l02 to l02
 		 */
+		for(String course: this.department.getCourseMap().keySet()) {
+			ArrayList<CourseInstance> courseSet = this.department.getCourseMap().get(course);
+			// check all the courses 
+			for(int i=0;i<courseSet.size();i++) {
+				// we want to make sure we only check each one once and not muliple 
+				// or else we might get a compound effect for the first ones 
+				for(int j=i;j<courseSet.size();j++) {
+					// just dont check yourself i dont want to get any duplicate values 
+					if(i!=j) {
+						
+						// if they are at the same time then we need to add the bound 
+						
+						Slot course1 = null;
+						Slot course2 = null;
+						
+						for(CourseAssignment thing : this.courses) {
+							// check to see if it is either 
+							if(thing.getCourse() == courseSet.get(i)) {
+								course1 = thing.getCurrentSlot();
+							}else if(thing.getCourse() == courseSet.get(j)) {
+								course2 = thing.getCurrentSlot();
+							}
+							if(course1 != null && course2 != null) {
+								break;
+							}
+							
+						}
+						
+						// now check to see if the courses are the same ones 
+						if(course1 != null && course2 != null) {
+							if(course1 == course2) {
+								this.bound += this.pen_section;
+							}
+						}
+					}
+				}
+			}
+			
+		}
+		
+		
+		
+		// now lets check all of the labs together 
+		for(String lab: this.department.getLabMap().keySet()) {
+			ArrayList<LabSection> labSet = this.department.getLabMap().get(lab);
+			for(int i=0;i<labSet.size();i++) {
+				// we want to make sure we only check each one once and not muliple 
+				// or else we might get a compound effect for the first ones 
+				for(int j=i;j<labSet.size();j++) {
+					// just dont check yourself i dont want to get any duplicate values 
+					if(i!=j) {
+						
+						Slot lab1 = null;
+						Slot lab2 = null;
+						for(LabAssignment thing : this.labs) {
+							if(thing.getLab() == labSet.get(i)) {
+								lab1 = thing.getCurrentSlot();
+							}else if(thing.getLab() == labSet.get(j)) {
+								lab2 = thing.getCurrentSlot();
+							}
+							if(lab1 != null && lab2 != null) {
+								break;
+							}
+						}
+						
+						// now check to see if the courses are the same ones 
+						if(lab1 != null && lab2 != null) {
+							if(lab1 == lab2) {
+								this.bound += this.pen_section;
+							}
+						}
+						
+						
+					}
+				}
+			}
+			
+			
+		}
+		
 		
 		
 	}
