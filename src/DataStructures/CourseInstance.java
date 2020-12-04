@@ -46,6 +46,10 @@ public class CourseInstance extends ClassElement {
         this.unwanted.add(c);
     }
 
+    public ArrayList<CourseSlot> getUnwanted(){
+        return unwanted;
+    }
+    
     public void addPreference(CourseSlot cs, int value) {
         if(cs != null) preferences.put(cs, value);
     }
