@@ -119,6 +119,9 @@ public class Constr {
                     }
                 }
             }
+            if(valid == false){
+                break;
+            }
         }
 
     }
