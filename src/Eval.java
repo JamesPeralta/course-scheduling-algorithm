@@ -1,7 +1,10 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Set;
 
 import DataStructures.ClassElement;
 import DataStructures.CourseAssignment;
@@ -36,21 +39,36 @@ public class Eval {
     private int bound;
     
     
-    // here are the differnent penalties for each bound
+    // here are the different penalties for each bound
     private int pen_coursemin = 0;
     private int pen_labsmin = 0;
     private int pen_pair = 0;
+    private int pen_prefernce = 0;
+    /**
+     * treated as a calculated value for now since depending on 
+     * the position of who wanted the presence we can assign a different score to it 
+     * @param position position in the list 
+     * @param n number of items in the list 
+     * @return
+     */
+    private int pen_prefernce_calculated(int position,int n) {
+    	return  this.pen_prefernce * ( (position-1) / n);
+    }
+    
+    // 
     private int pen_section = 0;
     
     
     
-    /**
-     * extend to inculde pairs, and prefences
-     * @param courseSlots
-     * @param labSlot
-     * @param courses
-     * @param labs
-     */
+   /**
+    * 
+    * @param courseSlots
+    * @param labSlot
+    * @param courses
+    * @param labs
+    * @param classElements
+    * @param department
+    */
 	Eval(ArrayList<CourseSlot> courseSlots,
 			ArrayList<LabSlot> labSlot,
 			ArrayList<CourseAssignment> courses,
@@ -148,11 +166,81 @@ public class Eval {
 	 * which time slots their courses and labs should be scheduled. Naturally, we see this as something 
 	 * that should be treated as soft constraint. Depending on a to-be-determined ranking scheme, each 
 	 * professor will be awarded a certain set of ranking points and he/she can distribute these points over 
-	 * pairs of (course/lab, time slots). Formally, we assume a function preference: (Courses + Labs) x Slots -> 
-	 * Natural numbers that reports those preferences.
+	 * pairs of (course/lab, time slots). Formally, we assume a function preference: 
+	 * (Courses + Labs) x Slots -> Natural numbers that reports those preferences.
 	 */
 	private void checkPreference() {
 		
+		// okay so the goal of this is to maximixe the score of each 
+		
+		
+		// so when the preference is not the highest score avalible there is a penalty added 
+		
+			// the delta from the top will be a higher penalty 
+		
+		
+		
+		// probably the first thing im gonna want to do is create a map of courses 
+		// that maps 
+		
+		
+		// 
+		//HashMap<CourseInstance,HashMap<Slot,Integer>> coursePreferenceMap; 
+		for(CourseAssignment course: this.courses) {
+			CourseSlot slot =  course.getCourseSlot();
+			if(course.getCourse().getPreference().containsKey(slot)) {
+				// for each course just check to see if the prefernce slot exists in the map
+				// and if it does then we should see what order the score is in
+				
+				
+				// create a list of all the scores 
+				var keys = course.getCourse().getPreference().keySet().toArray();
+				int[] scores = new int[keys.length];
+				for(int i =0; i<keys.length;i++) {
+					scores[i] = course.getCourse().getPreference().get(keys[i]);
+				}
+				
+				// now sort the list of scores 
+				Arrays.sort(scores );
+				
+				// reverse the array 
+				for(int i=0; i<scores.length/2; i++){
+		            int temp = scores[i];
+		            scores[i] = scores[scores.length -i -1];
+		            scores[scores.length -i -1] = temp;
+		        }
+				
+				// now that its sorted we need to find its places 
+				int position = 1;
+				int targetScore = course.getCourse().getPreference().get(slot);
+				for(int i =0; i<keys.length;i++) {
+					// we found it 
+					if(scores[i] == targetScore) {
+						break;
+					}
+					
+					// if it is not the same as the last one we should incriment it 
+					// by one 
+					if(i>0) {
+						// if we are beyhond the first one lets see if the first one is the same 
+						// as the last one 
+						if(scores[i-1] != scores[i]) {
+							position = i+1;
+						}
+					}
+				}
+				
+				// add the penalty, for now the penalty is caluclated more so 
+				// we can easly change this in a function above 
+				this.bound += this.pen_prefernce_calculated(position,scores.length);
+				
+				
+				
+			}
+			
+			
+			
+		}
 		
 		
 	}

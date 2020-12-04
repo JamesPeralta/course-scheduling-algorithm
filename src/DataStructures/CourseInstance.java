@@ -72,4 +72,8 @@ public class CourseInstance extends ClassElement {
 
         return str.toString();
     }
+    
+    public HashMap<CourseSlot,Integer> getPreference() {
+    	return this.preferences;
+    }
 }
