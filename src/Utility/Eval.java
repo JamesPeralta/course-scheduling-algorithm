@@ -1,3 +1,4 @@
+package Utility;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,13 +26,12 @@ public class Eval {
     
     
     // we need the array list of the slots so we can get the min and max 
-    private ArrayList<CourseSlot> courseSlots;
-    private ArrayList<LabSlot> labSlots;
+   
     
     private HashMap<ClassElement,Slot> assigments; 
     
     // here are the course elements 
-    private ClassElement classElements;
+   
     
     // the department 
     private Department department;
@@ -69,18 +69,12 @@ public class Eval {
     * @param classElements
     * @param department
     */
-	Eval(ArrayList<CourseSlot> courseSlots,
-			ArrayList<LabSlot> labSlot,
-			ArrayList<CourseAssignment> courses,
-			ArrayList<LabAssignment> labs,
-			ClassElement classElements,
-			Department department){
+	Eval(ArrayList<CourseAssignment> courses,
+		 ArrayList<LabAssignment> labs,
+		 Department department){
 		// asign the things 
-		this.courseSlots = courseSlots;
-		this.labSlots = labSlot;
 		this.courses = courses;
 		this.labs = labs;
-		this.classElements = classElements;
 		this.department = department;
 		
 		// inialize the bound value 
@@ -101,6 +95,11 @@ public class Eval {
 		// differn sections hsould be schudled at differnt times 
 		this.checkSimislarSections();
 		
+	}
+	
+	// the only public 
+	public int getBound() {
+		return this.bound;
 	}
 	
 	private void checkNumOfAssigment() {
@@ -141,7 +140,7 @@ public class Eval {
 		// now check the labs 
 		HashMap<LabSlot, Integer> labsPer = new HashMap<LabSlot, Integer>();
 		for(LabAssignment assigment: this.labs) {
-			if(labsPer.containsKey(assigment)) {
+			if(labsPer.containsKey(assigment.getLabSlot())) {
 				labsPer.put(
 						assigment.getLabSlot(),
 						labsPer.get(assigment.getLabSlot()) + 1
