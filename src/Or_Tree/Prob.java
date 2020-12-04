@@ -63,17 +63,35 @@ public class Prob implements Comparable<Prob>{
     }
 
     public Boolean coursesFilled() {
-        if (courses.get(courses.size()-1).getCourseSlot() == null) {
+        int coursesFilledCount = 0;
+        for (CourseAssignment courseAssignment: courses) {
+            if (courseAssignment.getCourseSlot() != null) {
+                coursesFilledCount += 1;
+            }
+        }
+
+        if (coursesFilledCount == courses.size()) {
+            return true;
+        }
+        else {
             return false;
         }
-        return true;
     }
 
     public Boolean labsFilled() {
-        if (labs.get(labs.size()-1).getLabSlot() == null) {
+        int labsFilledCount = 0;
+        for (LabAssignment labAssignment: labs) {
+            if (labAssignment.getLabSlot() != null) {
+                labsFilledCount += 1;
+            }
+        }
+
+        if (labsFilledCount == labs.size()) {
+            return true;
+        }
+        else {
             return false;
         }
-        return true;
     }
 
     /*

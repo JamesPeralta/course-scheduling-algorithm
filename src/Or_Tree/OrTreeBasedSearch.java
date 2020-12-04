@@ -10,7 +10,7 @@ public class OrTreeBasedSearch {
         Set<CourseSlot> courseSlots  = new HashSet<>(department.getCourseSlots());
         Set<LabSlot> labSlots = new HashSet<>(department.getLabSlots());
         Prob newInstance = new Prob(department);
-        int maxDepth = courseSlots.size();
+        int maxDepth = department.getCourses().size();
         erw(newInstance, courseSlots, labSlots, 0, maxDepth);
 
         Eval eval = new Eval(newInstance.getCourses(), newInstance.getLabs(), department);
