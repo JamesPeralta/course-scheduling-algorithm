@@ -95,9 +95,8 @@ public class Constr {
                 }
             }
         }
-
-
     }
+
     //checks if a course is on tuesday at 11:00
     public void checkTuesEleven(){
         for (int i = 0; i < course.size(); i++){
