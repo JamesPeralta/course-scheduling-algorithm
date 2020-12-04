@@ -47,7 +47,7 @@ public class CourseInstance extends ClassElement {
     }
 
     public ArrayList<CourseSlot> getUnwanted(){
-        return unwanted;
+        return this.unwanted;
     }
     
     public void addPreference(CourseSlot cs, int value) {
