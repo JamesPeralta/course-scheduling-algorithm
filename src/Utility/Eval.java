@@ -39,19 +39,7 @@ public class Eval {
     private int pen_coursemin = 0;
     private int pen_labsmin = 0;
     private int pen_pair = 0;
-    private int pen_prefernce = 0;
-    /**
-     * treated as a calculated value for now since depending on 
-     * the position of who wanted the presence we can assign a different score to it 
-     * @param position position in the list 
-     * @param n number of items in the list 
-     * @return
-     */
-    private int pen_prefernce_calculated(int position,int n) {
-    	return  this.pen_prefernce * ( (position-1) / n);
-    }
-    
-    // 
+  
     private int pen_section = 0;
 
 	public Eval(ArrayList<CourseAssignment> courses, ArrayList<LabAssignment> labs, Department department){
@@ -62,7 +50,9 @@ public class Eval {
 		
 		// Check courses
 		this.checkNumOfAssigment();
+		System.out.println(this.bound);
 		this.checkPreference();
+		System.out.println(this.bound);
 //		this.checkPaired();
 //		this.checkSimilarSections();
 	}
@@ -115,38 +105,111 @@ public class Eval {
 	}
 
 	private void checkPreference() {
+		System.out.println("Checking Prefernece");
+		
+		// we need to make a map of list that tells us for each course slot what 
+		// is the relavent thing 
+		HashMap<CourseSlot, HashMap<CourseInstance,Integer>> slotMap = new HashMap<CourseSlot, HashMap<CourseInstance,Integer>>();
 		for(CourseAssignment course: this.courses) {
-			CourseSlot slot =  course.getCourseSlot();
-
-			if (slot == null) {
-				continue;
-			}
-
-			if(course.getCourse().getPreference().containsKey(slot)) {
-				Object[] keys = course.getCourse().getPreference().keySet().toArray();
-				int[] scores = new int[keys.length];
-				for(int i =0; i<keys.length;i++) {
-					scores[i] = course.getCourse().getPreference().get(keys[i]);
+			// each course can have multiple scores but we want it tied to the same thing 
+			
+			//CourseSlot slot =  course.getCourseSlot();
+			HashMap<CourseSlot, Integer> perference = course.getCourse().getPreference();
+			
+			for(CourseSlot slot: perference.keySet()) {
+				// for each slot pereence per course we should add it to the proper thing 
+				if(slotMap.containsKey(slot)) {
+					slotMap.get(slot).put(course.getCourse(),perference.get(slot) );   
+				}else {
+					slotMap.put(slot, new HashMap<CourseInstance,Integer>());
+					slotMap.get(slot).put(course.getCourse(),perference.get(slot) ); 
 				}
-				
-				// now that its sorted we need to find its places 
-				int sum = 0;
-				int targetScore = course.getCourse().getPreference().get(slot);
-				for(int i =0; i<keys.length;i++) {
-					// we found it 
-					if(scores[i] != targetScore) {
-						sum += scores[i];
-					}
-					
-					
-					
-				}
-				
-				// add the penalty, for now the penalty is caluclated more so 
-				// we can easly change this in a function above 
-				this.bound += sum;
 			}
+			
 		}
+		
+		
+		// for each slot we need to sum 
+		for(CourseSlot slot: slotMap.keySet()) {
+			CourseAssignment currenAssigment = null;
+			// get the current course in that slot 
+			for(CourseAssignment course: this.courses) {
+				if(course.getCourseSlot() == slot) {
+					currenAssigment = course;
+					break;
+				}
+			}
+			
+			// this part sums up all of the scores for that slot 
+			Object[] keys = slotMap.get(slot).keySet().toArray();
+			int[] scores = new int[keys.length];
+			for(int i =0; i<keys.length;i++) {
+				scores[i] = slotMap.get(slot).get(keys[i]);
+				System.out.println(scores[i]);
+			}
+			
+			// now with this lists we should sum the array and then subtract the score of 
+			// the current one 
+			int sum = 0;
+			for(int i =0; i<keys.length;i++) {
+				sum += scores[i];
+			}
+			
+			// now if the currentAssigment to this slot exists in the course map the 
+			// we should substract its score 
+			if(slotMap.get(slot).containsKey(currenAssigment.getCourse())) {
+				sum -= slotMap.get(slot).get(currenAssigment.getCourse());
+			}
+			
+			this.bound += sum;
+			
+			
+			
+			
+		}
+		
+	
+		
+		
+		
+		// this is the old code imma write some better 
+//		for(CourseAssignment course: this.courses) {
+//			CourseSlot slot =  course.getCourseSlot();
+//			System.out.println(slot);
+//			if (slot == null) {
+//				continue;
+//			}
+//			
+//			// need to change how this works lol 
+//			
+//			 
+//			
+//			if(course.getCourse().getPreference().containsKey(slot)) {
+//				System.out.println("got here");
+//				Object[] keys = course.getCourse().getPreference().keySet().toArray();
+//				int[] scores = new int[keys.length];
+//				for(int i =0; i<keys.length;i++) {
+//					scores[i] = course.getCourse().getPreference().get(keys[i]);
+//					System.out.println(scores[i]);
+//				}
+//				
+//				
+//				// now that its sorted we need to find its places 
+//				int sum = 0;
+//				int targetScore = course.getCourse().getPreference().get(slot);
+//				System.out.println(targetScore);
+//				for(int i =0; i<keys.length;i++) {
+//					// we found it 
+//					if(scores[i] != targetScore) {
+//						sum += scores[i];
+//					}
+//					
+//				}
+//				// add the penalty, for now the penalty is caluclated more so 
+//				// we can easly change this in a function above 
+//				this.bound += sum;
+//			}
+//		}
 		
 		
 	}
@@ -171,7 +234,7 @@ public class Eval {
 						// then we have found that the pair is at the same time 
 						
 					}else {
-						// the pair occurs on a differnt time slot 
+						// the pair occurs on a different time slot 
 						this.bound += this.pen_pair;
 					}
 				}
@@ -180,7 +243,7 @@ public class Eval {
 		// we need to loop though the list
 			// do the same for the labs 
 		for(LabAssignment labAssigment: this.labs) {
-			// see if each one has some comparables 
+			// see if each one has some comparable 
 			
 			// then we should check to see if 
 			if(labAssigment.getLab().getCompatible().size() > 0) {
