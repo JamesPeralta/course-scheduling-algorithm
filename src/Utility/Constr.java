@@ -11,6 +11,7 @@ public class Constr {
 
     private HashMap<CourseSlot, Integer> assignedinCourses;
     private HashMap<LabSlot, Integer> assignedinLabs;
+    private ArrayList<CourseSlot> scheduled500;
 
     public Constr(ArrayList<CourseAssignment> courses, ArrayList<LabAssignment> labs) {
         this.course = courses;
@@ -19,14 +20,17 @@ public class Constr {
 
         assignedinCourses = new HashMap<CourseSlot, Integer>();
         assignedinLabs = new HashMap<LabSlot, Integer>();
+        scheduled500 = new ArrayList<CourseSlot>();
 
-        checkCourseMax();
-        checkLabMax();
-        checkAssign();
-        checkTuesEleven();
-        checkLectureNine();
-        check813();
-        check913();
+        if (valid == true) checkCourseMax();
+        if (valid == true) checkLabMax();
+        if (valid == true) checkAssign();
+        if (valid == true) checkTuesEleven();
+        if (valid == true) checkUnwanted();
+        if (valid == true) checkLectureNine();
+        if (valid == true) check813();
+        if (valid == true) check913();
+        if (valid == true) check500();
     }
     //checks if courseMax is borken
     public void checkCourseMax() {
@@ -47,6 +51,7 @@ public class Constr {
 
             if(course.get(i).getCourseSlot().getCoursemax() < assignedinCourses.get(course.get(i).getCourseSlot())){ //check each course in the hashmap and see if coursemax is broken
                 valid = false;
+                break;
             }
         }
     }
@@ -69,6 +74,7 @@ public class Constr {
 
             if(lab.get(i).getLabSlot().getCoursemax() < assignedinLabs.get(lab.get(i).getLabSlot())){
                 valid = false;
+                break;
             }
         }
     }
@@ -86,15 +92,35 @@ public class Constr {
                         if (!lab.get(j).getLab().getOfSection().equals("")){
                             if (course.get(i).getCourse().getSectionString().equals(lab.get(j).getLab().getOfSection())) {
                                 valid = false;
+                                break;
                             }
                         }
                         else {
                             valid = false;
+                            break;
                         }
                     }
                 }
             }
         }
+    }
+
+    public void checkUnwanted(){
+        for (int i = 0; i < course.size(); i++){
+            if(course.get(i).getCourseSlot() == null){
+                continue;
+            }
+            else{
+                ArrayList<CourseSlot> unwantedList = course.get(i).getCourse().getUnwanted();
+                for (int j = 0; j < unwantedList.size(); j++){
+                    if (course.get(i).getCourseSlot().equals(unwantedList.get(j))){
+                        valid = false;
+                        break;
+                    }
+                }
+            }
+        }
+
     }
 
     //checks if a course is on tuesday at 11:00
@@ -105,7 +131,8 @@ public class Constr {
             }
 
             if (course.get(i).getCourseSlot().getTimeString().equals("11:00") && course.get(i).getCourseSlot().getDayString().equals("TU")){ //checks if course is at 11:00 and on a tuesday
-                valid = false;     
+                valid = false; 
+                break;    
             }
         }
     }
@@ -120,6 +147,7 @@ public class Constr {
             if (course.get(i).getCourse().getSectionNumber() == 9){
                 if(course.get(i).getCourseSlot().getTime() < 18){
                     valid = false;
+                    break;
                 }
 
             }
@@ -138,15 +166,18 @@ public class Constr {
                 }
                 else{
                     valid = false;
+                    break;
                 }
                 for(int j = 0; j < course.size(); j++){
                     if(course.get(j).getCourse().getCourseName().equals("313") && course.get(j).getCourseSlot().equals(course.get(i).getCourseSlot())){//checks if 313 course is assigned to the same slot
                         valid = false;
+                        break;
                     }
                 }
                 for(int j = 0; j < course.size(); j++){
                     if(lab.get(j).getLab().getOfCourse().equals("313") && lab.get(j).getLabSlot().toString().equals(course.get(i).getCourseSlot().toString())){//checks if 313 lab is assigned to the same slot
                         valid = false;
+                        break;
                     }
                 }
             }
@@ -165,16 +196,39 @@ public class Constr {
                 }
                 else{
                     valid = false;
+                    break;
                 }
                 for(int j = 0; j < course.size(); j++){
                     if(course.get(j).getCourse().getCourseName().equals("413") && course.get(j).getCourseSlot().equals(course.get(i).getCourseSlot())){//checks if 413 course is assigned to the same slot
                         valid = false;
+                        break;
                     }
                 }
                 for(int j = 0; j < course.size(); j++){
                     if(lab.get(j).getLab().getOfCourse().equals("413") && lab.get(j).getLabSlot().toString().equals(course.get(i).getCourseSlot().toString())){//checks if 413 lab is assigned to the same slot
                         valid = false;
+                        break;
                     }
+                }
+            }
+        }
+    }
+    public void check500(){
+        for (int i = 0; i < course.size(); i++){
+            if(course.get(i).getCourse() == null){
+                continue;
+            }
+            String courseName = course.get(i).getCourse().getCourseName();
+            char firstDigit = courseName.charAt(0);
+            if(firstDigit == '5'){
+                scheduled500.add(course.get(i).getCourseSlot());
+            }
+        }
+        for (int i = 0; i < scheduled500.size(); i++){
+            for (int j = 0; j < scheduled500.size(); j++){
+                if(scheduled500.get(i).equals(scheduled500.get(j))){
+                    valid = false;
+                    break;
                 }
             }
         }
@@ -184,4 +238,5 @@ public class Constr {
         return this.valid;
     }
 }
+
 
