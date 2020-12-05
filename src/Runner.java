@@ -6,14 +6,13 @@ import Or_Tree.Prob;
 import java.util.ArrayList;
 
 public class Runner {
-    private static int generations = 100;
+    private static int generations = 200;
 
     public static void main(String[] args) {
-        Department department = Parser.parse("./src/Abel_Instances/813.txt");
+        Department department = Parser.parse("./src/Abel_Instances/CourseMin.txt");
         GenePool pool = new GenePool(department, new ArrayList<>(), 50);
         Prob bestIndividual = pool.getBestAssignment();
         for (int i = 0; i < generations; i++) {
-
             pool.nextGeneration();
             Prob latestBest = pool.getBestAssignment();
 
@@ -22,7 +21,7 @@ public class Runner {
             }
         }
 
-        System.out.println("OPTIMAL");
+        System.out.println("OPTIMAL Found");
         System.out.println(bestIndividual);
     }
 }
