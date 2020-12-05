@@ -109,7 +109,7 @@ public class Parser {
                     department.findCourseSlot(days.indexOf(row[0]), times.indexOf(row[1])), Integer.parseInt(row[3]));
             line = reader.readLine();
         }
-    }
+    } 
 
     private static void parsePairs(BufferedReader reader, Department department) throws IOException {
         String line = reader.readLine();
@@ -127,6 +127,29 @@ public class Parser {
             a.addCompatible(b);
             b.addCompatible(a);
 
+            line = reader.readLine();
+        }
+    }
+
+    private static void parsePartAssign(BufferedReader reader, Department department) throws IOException{
+        String line = reader.readLine();
+        while(line.length() > 0) {
+            String[] row = line.split(",");
+            cleanRow(row);
+
+
+            if(row[0].contains("TUT") || row[0].contains("LAB")) {
+                department.findLab(parseLab(row[0]));
+                LabAssignment la = new LabAssignment(department.findLab(parseLab(row[0])));
+                la.assignSlot(department.findLabSlot(days.indexOf(row[1]), times.indexOf(row[2])));
+            }
+            else {
+                department.findCourse(parseCourse(row[0]));
+                CourseAssignment la = new CourseAssignment(department.findCourse(parseCourse(row[0])));
+                la.assignSlot(department.findCourseSlot(days.indexOf(row[1]), times.indexOf(row[2])));
+            }
+
+            department.addLab(parseLab(line));
             line = reader.readLine();
         }
     }

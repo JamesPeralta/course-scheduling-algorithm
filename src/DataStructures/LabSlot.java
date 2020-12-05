@@ -10,14 +10,14 @@ public class LabSlot extends Slot{
             "17:00", "18:00", "18:30", "19:00", "20:00"}));
 
     private int day;
-    private int time;
+    private int start_time;
     private int coursemax;
     private int coursemin;
     private int assigned;
 
     public LabSlot(int day, int time, int coursemax, int coursemin) {
         this.day = day;
-        this.time = time;
+        this.start_time = time;
         this.coursemax = coursemax;
         this.coursemin = coursemin;
     }
@@ -35,7 +35,7 @@ public class LabSlot extends Slot{
     }
 
     public int getTime() {
-        return time;
+        return start_time;
     }
 
     public int getAssigned() {
@@ -44,10 +44,10 @@ public class LabSlot extends Slot{
 
     public String getDayString() {return days.get(day);}
 
-    public String getTimeString() {return times.get(time);}
+    public String getTimeString() {return times.get(start_time);}
 
     public boolean equalByValue(int day, int time) {
-        return this.day == day && this.time == time;
+        return this.day == day && this.start_time == time;
     }
 
     @Override
@@ -56,6 +56,6 @@ public class LabSlot extends Slot{
     }
 
     public String toStringMin() {
-        return days.get(day) + ", " + times.get(time);
+        return days.get(day) + ", " + times.get(start_time);
     }
 }

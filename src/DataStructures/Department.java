@@ -10,7 +10,9 @@ public class Department {
     private ArrayList<CourseSlot> courseSlots = new ArrayList<>();
     private HashMap<String,ArrayList<CourseInstance>> courses = new HashMap<String,ArrayList<CourseInstance>>();
     private HashMap<String,ArrayList<LabSection>> labs = new HashMap<String,ArrayList<LabSection>>();
-    
+
+    private ArrayList<LabAssignment> assignedLabs = new ArrayList<>();
+    private ArrayList<CourseAssignment> assignedCourses = new ArrayList<>();
 
     public Department() {}
 
@@ -51,6 +53,14 @@ public class Department {
 
     public void addCourseSlot(CourseSlot cs) {
         courseSlots.add(cs);
+    }
+
+    public void partAssignCourse(CourseAssignment ca) {
+        assignedCourses.add(ca);
+    }
+
+    public void partAssignLab(LabAssignment la) {
+        assignedLabs.add(la);
     }
 
     public ArrayList<CourseInstance> getCourses() {
