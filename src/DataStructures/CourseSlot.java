@@ -1,13 +1,9 @@
 package DataStructures;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
+import Utility.Static;
 
 public class CourseSlot extends Slot{
-    public static ArrayList<String> days = new ArrayList<>(Arrays.asList(new String[]{"MO", "TU", "FR"}));
-    public static ArrayList<String> times = new ArrayList<>(Arrays.asList(new String[]{
-            "8:00", "9:00", "9:30", "10:00", "11:00", "12:00", "12:30", "13:00", "14:00", "15:00", "15:30", "16:00",
-            "17:00", "18:00", "18:30", "19:00", "20:00"}));
 
     private int day;
     private int time;
@@ -42,9 +38,9 @@ public class CourseSlot extends Slot{
         return assigned;
     }
 
-    public String getDayString() {return days.get(day);}
+    public String getDayString() {return Static.days.get(day);}
 
-    public String getTimeString() {return times.get(time);}
+    public String getTimeString() {return Static.times.get(time);}
 
     public boolean equalByValue(int day, int time) {
         return this.day == day && this.time == time;
@@ -56,6 +52,6 @@ public class CourseSlot extends Slot{
     }
 
     public String toStringMin() {
-        return days.get(day) + ", " + times.get(time);
+        return Static.days.get(day) + ", " + Static.times.get(time);
     }
 }

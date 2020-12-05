@@ -2,22 +2,18 @@ import DataStructures.*;
 
 import java.util.*;
 import java.io.*;
+import Utility.Static;
 
 public class Parser {
-    public static ArrayList<String> days = new ArrayList<>(Arrays.asList(new String[]{"MO", "TU", "FR"}));
-    public static ArrayList<String> times = new ArrayList<>(Arrays.asList(new String[]{
-        "8:00", "9:00", "9:30", "10:00", "11:00", "12:00", "12:30", "13:00", "14:00", "15:00", "15:30", "16:00", 
-        "17:00", "18:00", "18:30", "19:00", "20:00"}));
-
 
     private static void parseSlots(BufferedReader reader, Department department, boolean isCourse) throws IOException {
         String line = reader.readLine();
-        while(!line.equals("")) {
+        while(line.length() > 0) {
             String[] row = line.split(",");
             cleanRow(row);
-            if(isCourse) department.addCourseSlot(new CourseSlot(days.indexOf(row[0]), times.indexOf(row[1]), 
+            if(isCourse) department.addCourseSlot(new CourseSlot(Static.days.indexOf(row[0]), Static.times.indexOf(row[1]), 
                                                     Integer.parseInt(row[2]), Integer.parseInt(row[3])));
-            else department.addLabSlot(new LabSlot(days.indexOf(row[0]), times.indexOf(row[1]), 
+            else department.addLabSlot(new LabSlot(Static.days.indexOf(row[0]), Static.times.indexOf(row[1]), 
                                                     Integer.parseInt(row[2]), Integer.parseInt(row[3])));
             line = reader.readLine();
         }
@@ -89,8 +85,10 @@ public class Parser {
             cleanRow(row);
 
             if(row[0].contains("TUT") || row[0].contains("LAB")) {
-                department.findLab(parseLab(row[0])).addUnwanted(department.findLabSlot(days.indexOf(row[1]), times.indexOf(row[2])));
-            } else department.findCourse(parseCourse(row[0])).addUnwanted(department.findCourseSlot(days.indexOf(row[1]), times.indexOf(row[2])));
+                department.findLab(parseLab(row[0])).addUnwanted(
+                    department.findLabSlot(Static.days.indexOf(row[1]), Static.times.indexOf(row[2])));
+            } else department.findCourse(parseCourse(row[0])).addUnwanted(
+                    department.findCourseSlot(Static.days.indexOf(row[1]), Static.times.indexOf(row[2])));
 
             line = reader.readLine();
         }
@@ -104,9 +102,9 @@ public class Parser {
 
             if(row[2].contains("TUT") || row[2].contains("LAB")) {
                 department.findLab(parseLab(row[2])).addPreference(
-                    department.findLabSlot(days.indexOf(row[0]), times.indexOf(row[1])), Integer.parseInt(row[3]));
+                    department.findLabSlot(Static.days.indexOf(row[0]), Static.times.indexOf(row[1])), Integer.parseInt(row[3]));
             } else department.findCourse(parseCourse(row[2])).addPreference(
-                    department.findCourseSlot(days.indexOf(row[0]), times.indexOf(row[1])), Integer.parseInt(row[3]));
+                    department.findCourseSlot(Static.days.indexOf(row[0]), Static.times.indexOf(row[1])), Integer.parseInt(row[3]));
             line = reader.readLine();
         }
     } 
@@ -133,7 +131,8 @@ public class Parser {
 
     private static void parsePartAssign(BufferedReader reader, Department department) throws IOException{
         String line = reader.readLine();
-        while(line.length() > 0) {
+        while(line != null) {
+            if(line.trim().length() == 0) return;
             String[] row = line.split(",");
             cleanRow(row);
 
@@ -141,12 +140,12 @@ public class Parser {
             if(row[0].contains("TUT") || row[0].contains("LAB")) {
                 department.findLab(parseLab(row[0]));
                 LabAssignment la = new LabAssignment(department.findLab(parseLab(row[0])));
-                la.assignSlot(department.findLabSlot(days.indexOf(row[1]), times.indexOf(row[2])));
+                la.assignSlot(department.findLabSlot(Static.days.indexOf(row[1]), Static.times.indexOf(row[2])));
             }
             else {
                 department.findCourse(parseCourse(row[0]));
                 CourseAssignment la = new CourseAssignment(department.findCourse(parseCourse(row[0])));
-                la.assignSlot(department.findCourseSlot(days.indexOf(row[1]), times.indexOf(row[2])));
+                la.assignSlot(department.findCourseSlot(Static.days.indexOf(row[1]), Static.times.indexOf(row[2])));
             }
 
             department.addLab(parseLab(line));
@@ -170,23 +169,26 @@ public class Parser {
                 else if (line.equals("Lab slots:")) {
                     parseSlots(reader, department, false);
                 }
-                if(line.equals("Courses:")) {
+                else if(line.equals("Courses:")) {
                     parseCourses(reader, department);
                 }
-                if(line.equals("Labs:")) {
+                else if(line.equals("Labs:")) {
                     parseLabs(reader, department);
                 }
-                if(line.equals("Not compatible:")) {
+                else if(line.equals("Not compatible:")) {
                     parseCompatibility(reader, department);
                 }
-                if(line.equals("Unwanted:")) {
+                else if(line.equals("Unwanted:")) {
                     parseUnwanted(reader, department);
                 }
-                if(line.equals("Preferences:")) {
+                else if(line.equals("Preferences:")) {
                     parsePreferences(reader, department);
                 }
-                if(line.equals("Pair:")) {
+                else if(line.equals("Pair:")) {
                     parsePairs(reader, department);
+                }
+                else if(line.equals("Partial assignments:")) {
+                    parsePartAssign(reader, department);
                 }
 
                 line = reader.readLine();

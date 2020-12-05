@@ -120,4 +120,12 @@ public class Department {
     public HashMap<String,ArrayList<LabSection>>  getLabMap(){
     	return this.labs;
     }
+
+    public ArrayList<CourseAssignment> getAssignedCourses() {
+        return assignedCourses;
+    }
+
+    public ArrayList<LabAssignment> getAssignedLabs() {
+        return assignedLabs;
+    }
 }
