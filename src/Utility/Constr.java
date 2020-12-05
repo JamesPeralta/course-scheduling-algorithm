@@ -213,6 +213,7 @@ public class Constr {
                 break;
             }
         }
+
         for (int i = 0; i < course.size(); i++){//checks all compatible for course vs lab
             if(course.get(i).getCourse() == null){
                 continue;
