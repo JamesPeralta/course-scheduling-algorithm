@@ -13,6 +13,7 @@ public class Constr {
     private HashMap<CourseSlot, Integer> assignedinCourses;
     private HashMap<LabSlot, Integer> assignedinLabs;
     private ArrayList<CourseSlot> scheduled500;
+    private HashMap<ClassElement, Slot> assignedSlot;
 
     public Constr(Prob prob) {
 
@@ -24,11 +25,22 @@ public class Constr {
         assignedinLabs = new HashMap<LabSlot, Integer>();
         scheduled500 = new ArrayList<CourseSlot>();
 
+        assignedSlot = new  HashMap<ClassElement,Slot>();
+		// we need to build our class elements to slot thing so we know 
+		for(CourseAssignment courses: this.course) {
+			this.assignedSlot.put(courses.getCourse(), courses.getCurrentSlot());
+		}
+		// do it for the labs too 
+		for(var labs: this.lab) {
+			this.assignedSlot.put(labs.getLab(), labs.getCurrentSlot());
+		}
+
         if (valid == true) checkCourseMax();
         if (valid == true) checkLabMax();
         if (valid == true) checkAssign();
         if (valid == true) checkTuesEleven();
         if (valid == true) checkUnwanted();
+        if (valid == true) checkCompatible();
         if (valid == true) checkLectureNine();
         if (valid == true) check813();
         if (valid == true) check913();
@@ -126,6 +138,51 @@ public class Constr {
             }
         }
 
+    }
+    public void checkCompatible(){
+        for (int i = 0; i < course.size(); i++){//checks all compatible for courses
+            if(course.get(i).getCourse() == null){
+                continue;
+            }
+            ArrayList<ClassElement> nonCompatible = course.get(i).getCourse().getNonCompatible();
+            for(int j = 0; j < nonCompatible.size(); j++){
+                Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
+                Slot masterSlot = assignedSlot.get(course.get(i));
+
+                if(pairSlot.getDay() == masterSlot.getDay()){
+                    if(pairSlot.getTime() == masterSlot.getTime()){
+                        valid = false;
+                        break;
+                    }
+                }
+                
+            }
+            if(valid == false){
+                break;
+            }
+        }
+
+        for (int i = 0; i < lab.size(); i++){ //checks all compatible for labs
+            if(lab.get(i).getLab() == null){
+                continue;
+            }
+            ArrayList<ClassElement> nonCompatible = lab.get(i).getLab().getNonCompatible();
+            for(int j = 0; j < nonCompatible.size(); j++){
+                Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
+                Slot masterSlot = assignedSlot.get(lab.get(i));
+
+                if(pairSlot.getDay() == masterSlot.getDay()){
+                    if(pairSlot.getTime() == masterSlot.getTime()){
+                        valid = false;
+                        break;
+                    }
+                }
+                
+            }
+            if(valid == false){
+                break;
+            }
+        }
     }
 
     //checks if a course is on tuesday at 11:00
