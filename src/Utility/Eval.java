@@ -68,6 +68,8 @@ public class Eval {
 		int evalPref = this.checkPreference() * wPref;
 		int evalPair = this.checkPaired() * wPair;
 		int evalSecDiff = this.checkSimilarSections() * wSecDiff;
+		
+		
 
 		this.bound = evalMinFilled + evalPref + evalPair + evalSecDiff;
 	}
@@ -79,23 +81,39 @@ public class Eval {
 	
 	private int checkNumOfAssigment() {
 		int localBound = 0;
+//		System.out.println("=========================================");
 
 		HashMap<CourseSlot, Integer> coursesPer = new HashMap<>();
 		for(CourseAssignment assigment: this.courses) {
 			CourseSlot courseSlot = assigment.getCourseSlot();
 			if (courseSlot == null) {
+				
 				continue;
 			}
-
+			 
 			if(coursesPer.containsKey(courseSlot)) {
+				 
 				coursesPer.put(courseSlot, coursesPer.get(courseSlot) + 1);
 			}
 			else {
+//				System.out.println("We found a new one so set it to 1");
 				coursesPer.put(courseSlot, 1);
 			}
 		}
-		for(CourseSlot slot: coursesPer.keySet()) {
-			if(slot.getCoursemin() > coursesPer.get(slot)) {
+//		System.out.println(coursesPer);
+		// modify this loop so that it counts all the slots not just the ones in the maop 
+		for(CourseSlot slot: this.department.getCourseSlots()) {
+//			System.out.println(slot);
+//			System.out.println(coursesPer.get(slot));
+//			System.out.println(slot.getCoursemin());
+			
+			// if the slot does not exists then we need to see if its min is bigger than 0
+			if(!coursesPer.containsKey(slot)) {
+				
+				if(slot.getCoursemin() != 0) {
+					localBound += this.pen_coursemin;
+				}
+			}else if(slot.getCoursemin() > coursesPer.get(slot)) {
 				localBound += this.pen_coursemin;
 			}
 		}
@@ -144,7 +162,10 @@ public class Eval {
 				}
 			}
 			
+			
 		}
+		//System.out.println(slotMap);
+		
 		
 		
 		// for each slot we need to sum 
