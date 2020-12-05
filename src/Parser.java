@@ -8,7 +8,7 @@ public class Parser {
 
     private static void parseSlots(BufferedReader reader, Department department, boolean isCourse) throws IOException {
         String line = reader.readLine();
-        while(line.length() > 0) {
+        while(line.trim().length() > 0) {
             String[] row = line.split(",");
             cleanRow(row);
             if(isCourse) department.addCourseSlot(new CourseSlot(Static.days.indexOf(row[0]), Static.times.indexOf(row[1]), 
@@ -44,7 +44,7 @@ public class Parser {
 
     private static void parseCourses(BufferedReader reader, Department department) throws IOException{
         String line = reader.readLine();
-        while(line.length() > 0) {
+        while(line.trim().length() > 0) {
             department.addCourse(parseCourse(line));
             line = reader.readLine();
         }
@@ -52,7 +52,7 @@ public class Parser {
 
     private static void parseLabs(BufferedReader reader, Department department) throws IOException{
         String line = reader.readLine();
-        while(line.length() > 0) {
+        while(line.trim().length() > 0) {
             department.addLab(parseLab(line));
             line = reader.readLine();
         }
@@ -60,7 +60,7 @@ public class Parser {
     
     private static void parseCompatibility(BufferedReader reader, Department department) throws IOException {
         String line = reader.readLine();
-        while(line.length() > 0) {
+        while(line.trim().length() > 0) {
             String[] row = line.split(",");
             ClassElement a,b;
             cleanRow(row);
@@ -80,7 +80,7 @@ public class Parser {
 
     private static void parseUnwanted(BufferedReader reader, Department department) throws IOException {
         String line = reader.readLine();
-        while(line.length() > 0) {
+        while(line.trim().length() > 0) {
             String[] row = line.split(",");
             cleanRow(row);
 
@@ -96,7 +96,7 @@ public class Parser {
 
     private static void parsePreferences(BufferedReader reader, Department department) throws IOException {
         String line = reader.readLine();
-        while(line.length() > 0) {
+        while(line.trim().length() > 0) {
             String[] row = line.split(",");
             cleanRow(row);
 
@@ -111,7 +111,7 @@ public class Parser {
 
     private static void parsePairs(BufferedReader reader, Department department) throws IOException {
         String line = reader.readLine();
-        while(line.length() > 0) {
+        while(line.trim().length() > 0) {
             String[] row = line.split(",");
             ClassElement a,b;
             cleanRow(row);
