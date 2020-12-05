@@ -1,7 +1,10 @@
 package Or_Tree;
 import DataStructures.*;
+import Utility.Constr;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Random;
 
 public class Prob implements Comparable<Prob>{
@@ -12,8 +15,7 @@ public class Prob implements Comparable<Prob>{
     public Prob(Department department) {
         this.courses = new ArrayList<CourseAssignment>();
         this.labs = new ArrayList<LabAssignment>();
-        Random rand = new Random();
-        fitness = rand.nextInt(100);
+        this.fitness = 0;
 
         setUnassignedCourses(department.getCourses());
         setUnassignedLabs(department.getLabs());
@@ -22,6 +24,36 @@ public class Prob implements Comparable<Prob>{
     /*
     Getters and Setters
      */
+    public HashMap<CourseInstance, CourseSlot> getCourseAssignments() {
+        HashMap<CourseInstance, CourseSlot> assignmentMap = new HashMap<>();
+        for (CourseAssignment assignment: courses) {
+            if (assignment.getCourseSlot() != null) {
+                assignmentMap.put(assignment.getCourse(), assignment.getCourseSlot());
+            }
+        }
+
+        return assignmentMap;
+    }
+
+    public HashMap<LabSection, LabSlot> getLabAssignments() {
+        HashMap<LabSection, LabSlot> assignmentMap = new HashMap<>();
+        for (LabAssignment assignment: labs) {
+            if (assignment.getLabSlot() != null) {
+                assignmentMap.put(assignment.getLab(), assignment.getLabSlot());
+            }
+        }
+
+        return assignmentMap;
+    }
+
+    public CourseAssignment getCourse(int index) {
+        return courses.get(index);
+    }
+
+    public LabAssignment getLab(int index) {
+        return labs.get(index);
+    }
+
     public void setFitness(double fitness){
         this.fitness = fitness;
     }
@@ -155,6 +187,8 @@ public class Prob implements Comparable<Prob>{
         orderProb();
         String output = "";
         output += "________________________________\n";
+        Constr constr = new Constr(this);
+        output += "Valid: " + constr.isValid() + "\n";
         output += "Fitness: " + Double.toString(fitness) + "\n";
         for (CourseAssignment course: this.courses) {
             String semiCourseName = course.getCourse().getCourseName();

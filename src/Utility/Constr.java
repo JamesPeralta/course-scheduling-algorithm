@@ -2,6 +2,7 @@ package Utility;
 
 import java.util.*;
 import DataStructures.*;
+import Or_Tree.Prob;
 
 public class Constr {
 
@@ -13,9 +14,10 @@ public class Constr {
     private HashMap<LabSlot, Integer> assignedinLabs;
     private ArrayList<CourseSlot> scheduled500;
 
-    public Constr(ArrayList<CourseAssignment> courses, ArrayList<LabAssignment> labs) {
-        this.course = courses;
-        this.lab = labs;
+    public Constr(Prob prob) {
+
+        this.course = prob.getCourses();
+        this.lab = prob.getLabs();
         valid = true;
 
         assignedinCourses = new HashMap<CourseSlot, Integer>();
