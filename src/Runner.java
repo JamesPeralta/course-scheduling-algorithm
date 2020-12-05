@@ -6,16 +6,13 @@ import Or_Tree.Prob;
 import java.util.ArrayList;
 
 public class Runner {
-    private static int generations = 20;
+    private static int generations = 100;
 
     public static void main(String[] args) {
-        Department department = Parser.parse("./src/Abel_Instances/CourseMin.txt");
-        System.out.println(department);
+        Department department = Parser.parse("./src/Abel_Instances/813.txt");
         GenePool pool = new GenePool(department, new ArrayList<>(), 50);
         Prob bestIndividual = pool.getBestAssignment();
         for (int i = 0; i < generations; i++) {
-//            System.out.println("Generation" + i);
-//            System.out.println(bestIndividual);
 
             pool.nextGeneration();
             Prob latestBest = pool.getBestAssignment();
