@@ -232,8 +232,8 @@ public class Eval {
 					Slot masterSlot =  courseAssigment.getCurrentSlot();
 					
 					// then see if the 2 slots are the same 
-					boolean dayMatch = pairSlot.getDayString() == masterSlot.getDayString();
-					boolean timeMatch = pairSlot.getTimeString() == masterSlot.getTimeString();
+					boolean dayMatch = pairSlot.getDayString().equals(masterSlot.getDayString());
+					boolean timeMatch = pairSlot.getTimeString().equals(masterSlot.getTimeString());
 					// if it occurs on a differnt slot then we want it too we should add
 					// the penalty value 
 					
