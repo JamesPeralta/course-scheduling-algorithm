@@ -12,7 +12,7 @@ public class Constr {
 
     private HashMap<CourseSlot, Integer> assignedinCourses;
     private HashMap<LabSlot, Integer> assignedinLabs;
-    private ArrayList<CourseSlot> scheduled500;
+    private ArrayList<CourseAssignment> scheduled500;
     private HashMap<ClassElement, Slot> assignedSlot;
 
     public Constr(Prob prob) {
@@ -23,7 +23,7 @@ public class Constr {
 
         assignedinCourses = new HashMap<CourseSlot, Integer>();
         assignedinLabs = new HashMap<LabSlot, Integer>();
-        scheduled500 = new ArrayList<CourseSlot>();
+        scheduled500 = new ArrayList<CourseAssignment>();
 
         assignedSlot = new  HashMap<ClassElement,Slot>();
 		// we need to build our class elements to slot thing so we know 
@@ -140,44 +140,97 @@ public class Constr {
 
     }
     public void checkCompatible(){
-        for (int i = 0; i < course.size(); i++){//checks all compatible for courses
+        for (int i = 0; i < course.size(); i++){//checks all compatible for course vs course
             if(course.get(i).getCourse() == null){
                 continue;
             }
             ArrayList<ClassElement> nonCompatible = course.get(i).getCourse().getNonCompatible();
             for(int j = 0; j < nonCompatible.size(); j++){
-                Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
-                Slot masterSlot = assignedSlot.get(course.get(i));
-
-                if(pairSlot.getDay() == masterSlot.getDay()){
-                    if(pairSlot.getTime() == masterSlot.getTime()){
-                        valid = false;
-                        break;
+                try{
+                    Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
+                    Slot masterSlot = assignedSlot.get(course.get(i));
+                    if(pairSlot.getDay() == masterSlot.getDay()){
+                        if(pairSlot.getTime() == masterSlot.getTime()){
+                            valid = false;
+                            break;
+                        }
                     }
                 }
-                
+                catch(NullPointerException npe){
+                }  
             }
             if(valid == false){
                 break;
             }
         }
 
-        for (int i = 0; i < lab.size(); i++){ //checks all compatible for labs
+        for (int i = 0; i < lab.size(); i++){ //checks all compatible for lab vs lab
             if(lab.get(i).getLab() == null){
                 continue;
             }
             ArrayList<ClassElement> nonCompatible = lab.get(i).getLab().getNonCompatible();
             for(int j = 0; j < nonCompatible.size(); j++){
-                Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
-                Slot masterSlot = assignedSlot.get(lab.get(i));
+                try{
+                    Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
+                    Slot masterSlot = assignedSlot.get(lab.get(i));
 
-                if(pairSlot.getDay() == masterSlot.getDay()){
-                    if(pairSlot.getTime() == masterSlot.getTime()){
-                        valid = false;
-                        break;
+                    if(pairSlot.getDay() == masterSlot.getDay()){
+                        if(pairSlot.getTime() == masterSlot.getTime()){
+                            valid = false;
+                            break;
+                        }
                     }
                 }
-                
+                catch(NullPointerException npe){
+                } 
+            }
+            if(valid == false){
+                break;
+            }
+        }
+
+        for (int i = 0; i < lab.size(); i++){ //checks all compatible for lab vs course
+            if(lab.get(i).getLab() == null){
+                continue;
+            }
+            ArrayList<ClassElement> nonCompatible = course.get(i).getCourse().getNonCompatible();
+            for(int j = 0; j < nonCompatible.size(); j++){
+                try{
+                    Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
+                    Slot masterSlot = assignedSlot.get(lab.get(i));
+
+                    if(pairSlot.getDay() == masterSlot.getDay()){
+                        if(pairSlot.getTime() == masterSlot.getTime()){
+                            valid = false;
+                            break;
+                        }
+                    }
+                }
+                catch(NullPointerException npe){
+                }    
+            }
+            if(valid == false){
+                break;
+            }
+        }
+        for (int i = 0; i < course.size(); i++){//checks all compatible for course vs lab
+            if(course.get(i).getCourse() == null){
+                continue;
+            }
+            ArrayList<ClassElement> nonCompatible = lab.get(i).getLab().getNonCompatible();
+            for(int j = 0; j < nonCompatible.size(); j++){
+                try{
+                    Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
+                    Slot masterSlot = assignedSlot.get(course.get(i));
+                    if(pairSlot.getDay() == masterSlot.getDay()){
+                        if(pairSlot.getTime() == masterSlot.getTime()){
+                            valid = false;
+                            break;
+                        }
+                    }
+                }
+                catch(NullPointerException npe){
+                }    
             }
             if(valid == false){
                 break;
@@ -202,12 +255,14 @@ public class Constr {
     //checks if lecture number ends in 9, it must be assigned to an evening slot
     public void checkLectureNine(){
         for (int i = 0; i < course.size(); i++){
-            if (course.get(i).getCourse() == null) {
+            if (course.get(i).getCourse() == null){
                 continue;
             }
-
+            if (course.get(i).getCourseSlot() == null) {
+                continue;
+            }
             if (course.get(i).getCourse().getSectionNumber() == 9){
-                if(course.get(i).getCourseSlot().getTime() < 18){
+                if(course.get(i).getCourseSlot().getTime() < 13){
                     valid = false;
                     break;
                 }
@@ -280,19 +335,30 @@ public class Constr {
             if(course.get(i).getCourse() == null){
                 continue;
             }
-            String courseName = course.get(i).getCourse().getCourseName();
-            char firstDigit = courseName.charAt(0);
-            if(firstDigit == '5'){
-                scheduled500.add(course.get(i).getCourseSlot());
+            if(course.get(i).getCourseSlot() == null){
+                continue;
             }
+            String courseName = course.get(i).getCourse().getCourseName();
+            char firstDigit = courseName.charAt(5);
+            
+            if(firstDigit == '5'){
+                scheduled500.add(course.get(i));
+            }   
         }
+
         for (int i = 0; i < scheduled500.size(); i++){
-            for (int j = 0; j < scheduled500.size(); j++){
-                if(scheduled500.get(i).equals(scheduled500.get(j))){
+            try{ 
+                if(scheduled500.get(i).getCourseSlot().getTime() == scheduled500.get(i+1).getCourseSlot().getTime()){
+                    if(scheduled500.get(i).getCourseSlot().getDay() == scheduled500.get(i+1).getCourseSlot().getDay()){
                     valid = false;
                     break;
+                    }
                 }
             }
+            catch(IndexOutOfBoundsException ioe){
+                
+            }
+
         }
     }
 
@@ -300,5 +366,3 @@ public class Constr {
         return this.valid;
     }
 }
-
-
