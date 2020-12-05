@@ -9,7 +9,7 @@ public class Runner {
     private static int generations = 20;
 
     public static void main(String[] args) {
-        Department department = Parser.parse("./src/Search_Instances/ShortExample.txt");
+        Department department = Parser.parse("./src/Search_Instances/CustomTest1.txt");
         GenePool pool = new GenePool(department, new ArrayList<>(), 50);
         Prob bestIndividual = pool.getBestAssignment();
         for (int i = 0; i < generations; i++) {

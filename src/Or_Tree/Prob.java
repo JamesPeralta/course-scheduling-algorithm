@@ -191,8 +191,6 @@ public class Prob implements Comparable<Prob>{
         orderProb();
         String output = "";
         output += "________________________________\n";
-        Constr constr = new Constr(this);
-        output += "Valid: " + constr.isValid() + "\n";
         output += "Fitness: " + Double.toString(fitness) + "\n";
         for (CourseAssignment course: this.courses) {
             String semiCourseName = course.getCourse().getCourseName();
