@@ -2,12 +2,12 @@ Name:
 Pairs  
 
 Course slots:
-MO, 8:00, 2, 1
-MO, 9:00, 1, 1
+MO, 8:00, 2, 0
+MO, 9:00, 2, 0
 
 Lab slots:
-MO, 8:00, 2, 1
-MO, 9:00, 2, 1
+MO, 8:00, 2, 0
+MO, 9:00, 2, 0
 
 Courses:
 CPSC 313 LEC 01

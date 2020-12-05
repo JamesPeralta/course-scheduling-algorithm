@@ -146,18 +146,16 @@ public class Constr {
             }
             ArrayList<ClassElement> nonCompatible = course.get(i).getCourse().getNonCompatible();
             for(int j = 0; j < nonCompatible.size(); j++){
-                try{
-                    Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
-                    Slot masterSlot = assignedSlot.get(course.get(i));
-                    if(pairSlot.getDay() == masterSlot.getDay()){
-                        if(pairSlot.getTime() == masterSlot.getTime()){
-                            valid = false;
-                            break;
-                        }
+                
+                Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
+                Slot masterSlot = assignedSlot.get(course.get(i));
+                if(pairSlot.getDay() == masterSlot.getDay()){
+                    if(pairSlot.getTime() == masterSlot.getTime()){
+                        valid = false;
+                        break;
                     }
                 }
-                catch(NullPointerException npe){
-                }  
+                
             }
             if(valid == false){
                 break;
@@ -170,54 +168,52 @@ public class Constr {
             }
             ArrayList<ClassElement> nonCompatible = lab.get(i).getLab().getNonCompatible();
             for(int j = 0; j < nonCompatible.size(); j++){
-                try{
-                    Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
-                    Slot masterSlot = assignedSlot.get(lab.get(i));
+                 
+                Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
+                Slot masterSlot = assignedSlot.get(lab.get(i));
 
-                    if(pairSlot.getDay() == masterSlot.getDay()){
-                        if(pairSlot.getTime() == masterSlot.getTime()){
-                            valid = false;
-                            break;
-                        }
+                if(pairSlot.getDay() == masterSlot.getDay()){
+                    if(pairSlot.getTime() == masterSlot.getTime()){
+                        valid = false;
+                        break;
                     }
                 }
-                catch(NullPointerException npe){
-                } 
+                 
             }
             if(valid == false){
                 break;
             }
         }
 
-        for (int i = 0; i < lab.size(); i++){ //checks all compatible for lab vs course
-            if(lab.get(i).getLab() == null){
+        for (int i = 0; i < course.size(); i++){ //checks all compatible for lab vs course
+            if(course.get(i).getCourse() == null){
                 continue;
             }
             ArrayList<ClassElement> nonCompatible = course.get(i).getCourse().getNonCompatible();
             for(int j = 0; j < nonCompatible.size(); j++){
-                try{
-                    Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
-                    Slot masterSlot = assignedSlot.get(lab.get(i));
+                
+                Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
+                Slot masterSlot = assignedSlot.get(lab.get(i));
 
-                    if(pairSlot.getDay() == masterSlot.getDay()){
-                        if(pairSlot.getTime() == masterSlot.getTime()){
-                            valid = false;
-                            break;
-                        }
+                if(pairSlot.getDay() == masterSlot.getDay()){
+                    if(pairSlot.getTime() == masterSlot.getTime()){
+                        valid = false;
+                        break;
                     }
                 }
-                catch(NullPointerException npe){
-                }    
+                  
             }
             if(valid == false){
                 break;
             }
         }
 
-        for (int i = 0; i < course.size(); i++){//checks all compatible for course vs lab
-            if(course.get(i).getCourse() == null){
+        for (int i = 0; i < lab.size(); i++){//checks all compatible for course vs lab
+        	if(lab.get(i).getLab() == null){
                 continue;
             }
+            
+            // why are we getting the lab here based on a course index 
             ArrayList<ClassElement> nonCompatible = lab.get(i).getLab().getNonCompatible();
             for(int j = 0; j < nonCompatible.size(); j++){
                 try{

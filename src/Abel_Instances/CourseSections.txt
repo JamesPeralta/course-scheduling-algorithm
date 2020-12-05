@@ -2,20 +2,24 @@ Name:
 CourseSections
 
 Course slots:
-MO, 8:00, 2, 1
-MO, 9:00, 1, 1
+MO, 8:00, 5, 0
+MO, 9:00, 5, 0
+MO, 10:00, 5, 0
 
 Lab slots:
-MO, 8:00, 1, 1
-MO, 9:00, 1,1
+MO, 8:00, 5, 0
+MO, 9:00, 5, 0
 
 Courses:
 CPSC 441 LEC 01
 CPSC 441 LEC 02
+CPSC 441 LEC 03
+CPSC 201 LEC 01
 
 Labs:
 CPSC 441 LEC 01 TUT 01
-CPSC 441 LEC 02 TUT 04
+CPSC 441 LEC 02 TUT 02
+CPSC 441 LEC 02 TUT 03
 
 Not compatible:
 

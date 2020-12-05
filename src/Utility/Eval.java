@@ -66,7 +66,9 @@ public class Eval {
 		// Check courses
 		int evalMinFilled = this.checkNumOfAssigment() * wMinFilled;
 		int evalPref = this.checkPreference() * wPref;
+		
 		int evalPair = this.checkPaired() * wPair;
+		
 		int evalSecDiff = this.checkSimilarSections() * wSecDiff;
 		
 		
