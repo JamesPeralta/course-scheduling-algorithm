@@ -87,4 +87,8 @@ public class LabSection extends ClassElement {
 
         return str.toString();
     }
+    
+    public HashMap<LabSlot,Integer> getPreference() {
+    	return this.preferences;
+    }
 }

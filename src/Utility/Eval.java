@@ -72,7 +72,7 @@ public class Eval {
 		int evalSecDiff = this.checkSimilarSections() * wSecDiff;
 		
 		
-
+		// add the bounds with the weight 
 		this.bound = evalMinFilled + evalPref + evalPair + evalSecDiff;
 	}
 	
@@ -153,7 +153,7 @@ public class Eval {
 		int localSum = 0;
 		// we need to make a map of list that tells us for each course slot what 
 		// is the relavent thing 
-		HashMap<CourseSlot, HashMap<CourseInstance,Integer>> slotMap = new HashMap<CourseSlot, HashMap<CourseInstance,Integer>>();
+		HashMap<CourseSlot, HashMap<CourseInstance,Integer>> courseSlotMap = new HashMap<CourseSlot, HashMap<CourseInstance,Integer>>();
 		for(CourseAssignment course: this.courses) {
 			// each course can have multiple scores but we want it tied to the same thing 
 			
@@ -162,11 +162,11 @@ public class Eval {
 			
 			for(CourseSlot slot: perference.keySet()) {
 				// for each slot pereence per course we should add it to the proper thing 
-				if(slotMap.containsKey(slot)) {
-					slotMap.get(slot).put(course.getCourse(),perference.get(slot) );   
+				if(courseSlotMap.containsKey(slot)) {
+					courseSlotMap.get(slot).put(course.getCourse(),perference.get(slot) );   
 				}else {
-					slotMap.put(slot, new HashMap<CourseInstance,Integer>());
-					slotMap.get(slot).put(course.getCourse(),perference.get(slot) ); 
+					courseSlotMap.put(slot, new HashMap<CourseInstance,Integer>());
+					courseSlotMap.get(slot).put(course.getCourse(),perference.get(slot) ); 
 				}
 			}
 			
@@ -175,9 +175,8 @@ public class Eval {
 		//System.out.println(slotMap);
 		
 		
-		
 		// for each slot we need to sum 
-		for(CourseSlot slot: slotMap.keySet()) {
+		for(CourseSlot slot: courseSlotMap.keySet()) {
 			CourseAssignment currenAssigment = null;
 			// get the current course in that slot 
 			for(CourseAssignment course: this.courses) {
@@ -188,10 +187,10 @@ public class Eval {
 			}
 			
 			// this part sums up all of the scores for that slot 
-			Object[] keys = slotMap.get(slot).keySet().toArray();
+			Object[] keys = courseSlotMap.get(slot).keySet().toArray();
 			int[] scores = new int[keys.length];
 			for(int i =0; i<keys.length;i++) {
-				scores[i] = slotMap.get(slot).get(keys[i]);
+				scores[i] = courseSlotMap.get(slot).get(keys[i]);
 			}
 			
 			// now with this lists we should sum the array and then subtract the score of 
@@ -203,12 +202,67 @@ public class Eval {
 			
 			// now if the currentAssigment to this slot exists in the course map the 
 			// we should substract its score 
-			if(currenAssigment != null &&  slotMap.get(slot).containsKey(currenAssigment.getCourse())) {
-				sum -= slotMap.get(slot).get(currenAssigment.getCourse());
+			if(currenAssigment != null &&  courseSlotMap.get(slot).containsKey(currenAssigment.getCourse())) {
+				sum -= courseSlotMap.get(slot).get(currenAssigment.getCourse());
 			}
 
 			localSum += sum;
 		}
+		
+		
+		
+		// now we need to check each labs slot 
+		HashMap<LabSlot, HashMap<LabSection,Integer>> labSlotMap = new HashMap<LabSlot, HashMap<LabSection,Integer>>();
+		for(LabAssignment lab: this.labs) {
+			HashMap<LabSlot, Integer> perference = lab.getLab().getPreference();
+			
+			for(LabSlot slot: perference.keySet()) {
+				// for each slot pereence per course we should add it to the proper thing 
+				if(labSlotMap.containsKey(slot)) {
+					labSlotMap.get(slot).put(lab.getLab(),perference.get(slot) );   
+				}else {
+					labSlotMap.put(slot, new HashMap<LabSection,Integer>());
+					labSlotMap.get(slot).put(lab.getLab(),perference.get(slot) ); 
+				}
+			}
+			
+		}
+		
+		// now i have that list we need to sum up the scores
+		// for each map 
+		for(LabSlot slot: labSlotMap.keySet()) {
+			LabAssignment currenAssigment = null;
+			// get the current course in that slot 
+			for(LabAssignment lab: this.labs) {
+				if(lab.getLabSlot() == slot) {
+					currenAssigment = lab;
+					break;
+				}
+			}
+			
+			// now that we have found its assigment 
+			Object[] keys = labSlotMap.get(slot).keySet().toArray();
+			int[] scores = new int[keys.length];
+			for(int i =0; i<keys.length;i++) {
+				scores[i] = labSlotMap.get(slot).get(keys[i]);
+			}
+			
+			// now with this lists we should sum the array and then subtract the score of 
+			// the current one 
+			int sum = 0;
+			for(int i =0; i<keys.length;i++) {
+				sum += scores[i];
+			}
+			
+			// now if the currentAssigment to this slot exists in the course map the 
+			// we should substract its score 
+			if(currenAssigment != null &&  labSlotMap.get(slot).containsKey(currenAssigment.getLab())) {
+				sum -= labSlotMap.get(slot).get(currenAssigment.getLab());
+			}
+			
+			localSum += sum;
+		}
+		
 
 		return localSum;
 	}
@@ -246,8 +300,10 @@ public class Eval {
 				}
 			}
 		}
+		
 		// repeart the same thing above but for labs 
 		for(LabAssignment labAssigment: this.labs) {
+			
 			// see if each one has some comparable
 			// then we should check to see if 
 			if(labAssigment.getLab().getCompatible().size() > 0) {
