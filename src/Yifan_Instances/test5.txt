@@ -1,0 +1,30 @@
+Name:
+unwanted
+
+Course slots:
+MO, 8:00, 1, 0
+TU, 8:00, 1, 0
+
+Lab slots:
+MO, 12:00, 1, 0
+TU, 12:00, 1, 0
+
+Courses:
+CPSC 433 LEC 01
+CPSC 453 LEC 01
+
+Labs:
+CPSC 433 LEC 01 LAB 01
+CPSC 453 LEC 01 LAB 01
+
+Not compatible:
+
+Unwanted:
+CPSC 453 LEC 01 LAB 01, MO, 12:00
+CPSC 433 LEC 01, MO, 8:00
+
+Preferences:
+
+Pair:
+
+Partial assignments:

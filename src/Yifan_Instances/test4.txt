@@ -1,0 +1,34 @@
+Name:
+notcomp
+
+Course slots:
+MO, 8:00, 2, 0
+TU, 8:00, 2, 0
+
+Lab slots:
+MO, 8:00, 2, 0
+TU, 12:00, 2, 0
+
+Courses:
+CPSC 433 LEC 01
+CPSC 453 LEC 01
+SENG 300 LEC 01
+
+Labs:
+CPSC 433 LEC 01 LAB 01
+CPSC 453 LEC 01 LAB 01
+SENG 300 LEC 01 LAB 01
+
+Not compatible:
+SENG 300 LEC 01, CPSC 453 LEC 01
+SENG 300 LEC 01 LAB 01, CPSC 433 LEC 01
+SENG 300 LEC 01 LAB 01, CPSC 433 LEC 01 LAB 01
+
+Unwanted:
+
+Preferences:
+MO, 8:00, SENG 300 LEC 01 LAB 01, 10
+
+Pair:
+
+Partial assignments:

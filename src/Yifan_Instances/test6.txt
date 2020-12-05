@@ -1,0 +1,31 @@
+Name:
+lec9
+
+Course slots:
+MO, 8:00, 5, 0
+TU, 8:00, 5, 0
+TU, 17:00, 5, 0
+TU, 18:00, 2, 0
+
+Lab slots:
+
+Courses:
+CPSC 444 LEC 09
+CPSC 433 LEC 01
+CPSC 453 LEC 01
+CPSC 300 LEC 09
+SENG 300 LEC 01
+CPSC 200 LEC 01
+CPSC 200 LEC 02
+
+Labs:
+
+Not compatible:
+
+Unwanted:
+
+Preferences:
+
+Pair:
+
+Partial assignments:
