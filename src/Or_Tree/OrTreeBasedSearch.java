@@ -13,7 +13,7 @@ public class OrTreeBasedSearch {
         int maxDepth = department.getCourses().size();
         erw(newInstance, courseSlots, labSlots, 0, maxDepth, new HashMap<>(), new HashMap<>());
 
-        Eval eval = new Eval(newInstance.getCourses(), newInstance.getLabs(), department);
+        Eval eval = new Eval(newInstance, department);
         newInstance.setFitness(eval.getBound());
         return newInstance;
     }
@@ -27,7 +27,7 @@ public class OrTreeBasedSearch {
         HashMap<CourseInstance, CourseSlot> courseAssignments = prob.getCourseAssignments();
         HashMap<LabSection, LabSlot> labAssignments = prob.getLabAssignments();
         erw(newInstance, courseSlots, labSlots, 0, maxDepth, courseAssignments, labAssignments);
-        Eval eval = new Eval(newInstance.getCourses(), newInstance.getLabs(), department);
+        Eval eval = new Eval(newInstance, department);
         newInstance.setFitness(eval.getBound());
 
         return newInstance;

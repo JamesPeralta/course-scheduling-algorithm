@@ -1,6 +1,7 @@
 package Or_Tree;
 
 import DataStructures.Department;
+import Utility.Eval;
 import Utility.RandomChoice;
 
 import java.util.*;
@@ -29,19 +30,21 @@ public class GenePool {
         }
         randomChoice = new RandomChoice(weights);
 
-        // Test Individuals
+        Collections.sort(pool);
+    }
+
+    public Prob getBestAssignment() {
+        Collections.sort(pool);
+        return this.pool.get(0);
     }
 
     public Prob selectRandom() {
         return pool.get(randomChoice.pickIndex());
     }
 
-    public void testGeneration() {
-        // TODO: Need to implement testing
-    }
-
     public void nextGeneration() {
         ArrayList<Prob> newPool = new ArrayList<>();
+        // Crossover All of them
         for (int i = 0; i < this.populationSize; i++) {
             Prob parent_one = selectRandom();
             Prob parent_two = selectRandom();
@@ -49,8 +52,19 @@ public class GenePool {
             newPool.add(child);
         }
 
+        // Mutate all of them
+        for (int i = 0; i < this.populationSize; i++) {
+            newPool.get(i).mutate(this.department);
+        }
+
+        // Fix All of them
+        for (int i = 0; i < this.populationSize; i++) {
+            newPool.set(i, OrTreeBasedSearch.fixSample(newPool.get(i), this.department));
+        }
+
+        // Sort them
+        Collections.sort(pool);
         pool = newPool;
-        // Test individuals
     }
 
     @Override

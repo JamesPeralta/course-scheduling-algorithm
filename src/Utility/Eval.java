@@ -12,6 +12,7 @@ import DataStructures.LabAssignment;
 import DataStructures.LabSection;
 import DataStructures.LabSlot;
 import DataStructures.Slot;
+import Or_Tree.Prob;
 
 // the eval class
 public class Eval {
@@ -39,16 +40,19 @@ public class Eval {
     private int pen_coursemin = 0;
     private int pen_labsmin = 0;
     private int pen_pair = 2;
-  
     private int pen_section = 20;
 
-	public Eval(ArrayList<CourseAssignment> courses, ArrayList<LabAssignment> labs, Department department){
-		this.courses = courses;
-		this.labs = labs;
+    // Different weights for each soft constraint
+	private int wMinFilled = 1;
+	private int wPref = 1;
+	private int wPair = 1;
+	private int wSecDiff = 1;
+
+	public Eval(Prob prob, Department department){
+		this.courses = prob.getCourses();
+		this.labs = prob.getLabs();
 		this.department = department;
-		this.bound = 0;
-		
-		
+
 		this.assigments = new  HashMap<ClassElement,Slot>();
 		// we need to build our class elements to slot thing so we know 
 		for(CourseAssignment course: this.courses) {
@@ -60,10 +64,12 @@ public class Eval {
 		}
 		
 		// Check courses
-		this.checkNumOfAssigment(); 
-		this.checkPreference(); 
-		this.checkPaired();
-		this.checkSimilarSections();
+		int evalMinFilled = this.checkNumOfAssigment() * wMinFilled;
+		int evalPref = this.checkPreference() * wPref;
+		int evalPair = this.checkPaired() * wPair;
+		int evalSecDiff = this.checkSimilarSections() * wSecDiff;
+
+		this.bound = evalMinFilled + evalPref + evalPair + evalSecDiff;
 	}
 	
 	// the only public 
@@ -71,7 +77,9 @@ public class Eval {
 		return this.bound;
 	}
 	
-	private void checkNumOfAssigment() {
+	private int checkNumOfAssigment() {
+		int localBound = 0;
+
 		HashMap<CourseSlot, Integer> coursesPer = new HashMap<>();
 		for(CourseAssignment assigment: this.courses) {
 			CourseSlot courseSlot = assigment.getCourseSlot();
@@ -88,7 +96,7 @@ public class Eval {
 		}
 		for(CourseSlot slot: coursesPer.keySet()) {
 			if(slot.getCoursemin() > coursesPer.get(slot)) {
-				this.bound += this.pen_coursemin;
+				localBound += this.pen_coursemin;
 			}
 		}
 
@@ -108,12 +116,15 @@ public class Eval {
 		}
 		for(LabSlot slot : labsPer.keySet()) {
 			if(slot.getCoursemin() > labsPer.get(slot)) {
-				this.bound += this.pen_labsmin;
+				localBound += this.pen_labsmin;
 			}
 		}
+
+		return localBound;
 	}
 
-	private void checkPreference() {
+	private int checkPreference() {
+		int localSum = 0;
 		// we need to make a map of list that tells us for each course slot what 
 		// is the relavent thing 
 		HashMap<CourseSlot, HashMap<CourseInstance,Integer>> slotMap = new HashMap<CourseSlot, HashMap<CourseInstance,Integer>>();
@@ -166,24 +177,20 @@ public class Eval {
 			if(currenAssigment != null &&  slotMap.get(slot).containsKey(currenAssigment.getCourse())) {
 				sum -= slotMap.get(slot).get(currenAssigment.getCourse());
 			}
-			
-			this.bound += sum;
-			
-		}
-		
-	
-		
-		
 
-		
-		
+			localSum += sum;
+		}
+
+		return localSum;
 	}
 	
 	/**
 	 * todo is test this thing right here lol 
 	 * test case 
 	 */
-	private void checkPaired() {
+	private int checkPaired() {
+		int localBound = 0;
+
 		// for each course assigment
 		for(CourseAssignment courseAssigment: this.courses) {
 			// check to see if there are classes that should be compadible to this
@@ -205,7 +212,7 @@ public class Eval {
 					
 					if(!( dayMatch && timeMatch )){
 						// the pair occurs on a different time slot 
-						this.bound += this.pen_pair;
+						localBound += this.pen_pair;
 					}
 				}
 			}
@@ -221,8 +228,8 @@ public class Eval {
 					Slot masterSlot =  labAssigment.getCurrentSlot();
 					
 					
-					boolean dayMatch = pairSlot.getDayString() == masterSlot.getDayString();
-					boolean timeMatch = pairSlot.getTimeString() == masterSlot.getTimeString();
+					boolean dayMatch = pairSlot.getDayString().equals(masterSlot.getDayString());
+					boolean timeMatch = pairSlot.getTimeString().equals(masterSlot.getTimeString());
 					
 					if(dayMatch && timeMatch) {
 						// then we have found that the pair is at the same time 
@@ -230,13 +237,14 @@ public class Eval {
 						// 
 					}else {
 						// the lab does not appear at the same time so we igore it 
-						this.bound += this.pen_pair;
+						localBound += this.pen_pair;
 						
 					}
 				}
 			}
-				
 		}
+
+		return localBound;
 	}
 	/**
 	 * Checks for similar sections and avoids checking the same pair of course sections twice 
@@ -244,8 +252,9 @@ public class Eval {
 	 * there might be an issue compairing the courses, in that case we need to go and change it 
 	 * to the same comparison as above 
 	 */
-	private void checkSimilarSections() {
-		
+	private int checkSimilarSections() {
+		int localBound = 0;
+
 		for(String course: this.department.getCourseMap().keySet()) {
 			ArrayList<CourseInstance> courseSet = this.department.getCourseMap().get(course);
 			// check all the courses 
@@ -279,13 +288,12 @@ public class Eval {
 							// if the are at the same time then we add the penalty since we want them 
 							// at seperate times 
 							if(course1 == course2) {
-								this.bound += this.pen_section;
+								localBound += this.pen_section;
 							}
 						}
 					}
 				}
 			}
-			
 		}
 
 		// now lets check all of the labs together 
@@ -314,14 +322,14 @@ public class Eval {
 						// now check to see if the courses are the same ones 
 						if(lab1 != null && lab2 != null) {
 							if(lab1 == lab2) {
-								this.bound += this.pen_section;
+								localBound += this.pen_section;
 							}
 						}
 					}
 				}
 			}
 		}
+
+		return localBound;
 	}
-	
-	
 }

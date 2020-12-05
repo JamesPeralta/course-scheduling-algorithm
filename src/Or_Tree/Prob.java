@@ -58,6 +58,10 @@ public class Prob implements Comparable<Prob>{
         this.fitness = fitness;
     }
 
+    public double getFitness(){
+        return this.fitness;
+    }
+
     private void setUnassignedCourses(ArrayList<CourseInstance> courses) {
         for (CourseInstance course: courses) {
             this.courses.add(new CourseAssignment(course));
