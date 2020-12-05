@@ -37,10 +37,10 @@ public class Eval {
     
     
     // here are the different penalties for each bound
-    private int pen_coursemin = 0;
-    private int pen_labsmin = 0;
-    private int pen_pair = 2;
-    private int pen_section = 20;
+    private int pen_coursemin = 1;
+    private int pen_labsmin = 1;
+    private int pen_pair = 1;
+    private int pen_section = 1;
 
     // Different weights for each soft constraint
 	private int wMinFilled = 1;

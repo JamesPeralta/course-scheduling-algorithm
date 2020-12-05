@@ -169,14 +169,14 @@ public class Prob implements Comparable<Prob>{
 
         // Mutate Course Slots
         for (int i = 0; i < courses.size(); i++) {
-            if (rand.nextDouble() < 0.20) {
+            if (rand.nextDouble() < 0.07) {
                 this.assignCourse(i, courseSlots.get(rand.nextInt(courseSlots.size())));
             }
         }
 
         // Mutate Lab Slots
         for (int i = 0; i < labs.size(); i++) {
-            if (rand.nextDouble() < 0.20) {
+            if (rand.nextDouble() < 0.07) {
                 this.assignLab(i, labSlots.get(rand.nextInt(labSlots.size())));
             }
         }
