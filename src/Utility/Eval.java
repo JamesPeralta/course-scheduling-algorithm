@@ -132,8 +132,14 @@ public class Eval {
 				labsPer.put(labSlot, 1);
 			}
 		}
-		for(LabSlot slot : labsPer.keySet()) {
-			if(slot.getCoursemin() > labsPer.get(slot)) {
+		for(LabSlot slot : this.department.getLabSlots()) {
+			// if we did not find anything assigned to that slot it was a 0 
+			if(!labsPer.containsKey(slot)) {
+				// if the min courses is not 0 then we broke that constraint 
+				if(slot.getCoursemin() != 0) {
+					localBound += this.pen_labsmin;
+				}
+			}else if(slot.getCoursemin() > labsPer.get(slot)) {
 				localBound += this.pen_labsmin;
 			}
 		}
