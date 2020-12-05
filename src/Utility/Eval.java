@@ -59,9 +59,6 @@ public class Eval {
 			this.assigments.put(lab.getLab(), lab.getCurrentSlot());
 		}
 		
-		
-		
-		
 		// Check courses
 		this.checkNumOfAssigment(); 
 		this.checkPreference(); 
@@ -117,8 +114,6 @@ public class Eval {
 	}
 
 	private void checkPreference() {
-		System.out.println("Checking Prefernece");
-		
 		// we need to make a map of list that tells us for each course slot what 
 		// is the relavent thing 
 		HashMap<CourseSlot, HashMap<CourseInstance,Integer>> slotMap = new HashMap<CourseSlot, HashMap<CourseInstance,Integer>>();
@@ -157,7 +152,6 @@ public class Eval {
 			int[] scores = new int[keys.length];
 			for(int i =0; i<keys.length;i++) {
 				scores[i] = slotMap.get(slot).get(keys[i]);
-				//System.out.println(scores[i]);
 			}
 			
 			// now with this lists we should sum the array and then subtract the score of 
@@ -190,17 +184,13 @@ public class Eval {
 	 * test case 
 	 */
 	private void checkPaired() {
-		System.out.println("Chceking Pairs");
 		// for each course assigment
 		for(CourseAssignment courseAssigment: this.courses) {
-			// check to see if there are classes that should be compadible to this  
-			System.out.println("Checking the pairs for "+  courseAssigment.getCourse().getFullCourseName());
+			// check to see if there are classes that should be compadible to this
 			if(courseAssigment.getCourse().getCompatible().size() > 0 ) {
 				
 				// for each one see if it is at the same time as its pair 
 				for(ClassElement pair:  courseAssigment.getCourse().getCompatible()) {
-					System.out.println("asdasdasda");
-					System.out.println(pair);
 					// need to find where it is assigned 
 					Slot pairSlot = this.assigments.get(pair);
 					
@@ -210,13 +200,10 @@ public class Eval {
 					// then see if the 2 slots are the same 
 					boolean dayMatch = pairSlot.getDayString() == masterSlot.getDayString();
 					boolean timeMatch = pairSlot.getTimeString() == masterSlot.getTimeString();
-					System.out.println("1"+  pairSlot);
-					System.out.println("2"+masterSlot);
 					// if it occurs on a differnt slot then we want it too we should add
 					// the penalty value 
 					
 					if(!( dayMatch && timeMatch )){
-						System.out.println("They do not match");
 						// the pair occurs on a different time slot 
 						this.bound += this.pen_pair;
 					}
@@ -225,8 +212,7 @@ public class Eval {
 		}
 		// repeart the same thing above but for labs 
 		for(LabAssignment labAssigment: this.labs) {
-			// see if each one has some comparable 
-			System.out.println("Checking the pairs for "+  labAssigment.getLab().getFullTutName());
+			// see if each one has some comparable
 			// then we should check to see if 
 			if(labAssigment.getLab().getCompatible().size() > 0) {
 				for(ClassElement pair:  labAssigment.getLab().getCompatible()) {
