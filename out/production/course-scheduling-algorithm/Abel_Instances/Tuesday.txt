@@ -1,0 +1,27 @@
+Name:
+Tuesday
+
+Course slots:
+TU, 11:00, 2, 1
+MO,9:00,1, 1
+ 
+Lab slots:
+MO, 9:00, 2, 1
+TU, 10:00,2,1
+
+Courses:
+CPSC 313 LEC 01
+
+Labs:
+CPSC 313 LEC 01 TUT 01
+
+Not compatible:
+
+Unwanted:
+
+Preferences:
+TU, 11:00, CPSC 313 LEC 01, 10 
+
+Pair:
+
+Partial assignments:

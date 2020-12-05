@@ -1,0 +1,75 @@
+CourseMin Output:
+Eval-value: 0
+CPSC 313 LEC 01             : MO, 9:00
+CPSC 313 LEC 01 TUT 01      : MO, 8:00
+CPSC 433 LEC 01             : MO, 8:00
+CPSC 433 TUT 01 TUT 01      : TU, 10:00
+
+
+LabMin Output:
+Eval-value: 0
+CPSC 313 LEC 01             : MO, 8:00
+CPSC 313 LEC 01 TUT 01      : TU, 10:00
+CPSC 433 LEC 01             : MO, 9:00
+CPSC 433 TUT 01 TUT 01      : MO, 8:00
+
+  
+Preferences Output:
+Eval-value: 0
+CPSC 313 LEC 01             : MO, 9:00 
+CPSC 313 LEC 01 TUT 01      : TU, 8:00
+CPSC 433 LEC 01             : MO, 8:00
+CPSC 433 LEC 01 TUT 01      : MO, 9:00
+SENG 311 LEC 01             : MO, 8:00
+SENG 311 LEC 01 TUT 01      : TU, 8:00
+
+
+Pairs Output:
+Eval-value: 0 
+CPSC 313 LEC 01             : MO, 8:00
+CPSC 313 LEC 01 TUT 01      : MO, 9:00
+CPSC 433 LEC 01             : MO, 8:00
+CPSC 433 LEC 01 TUT 01      : MO, 9:00
+
+
+CourseSections Output: 
+Eval-value: 0 
+CPSC 441 LEC 01             : Mo, 8:00
+CPSC 441 LEC 01 TUT 01      : Mo, 9:00
+CPSC 441 LEC 02             : Mo, 9:00
+CPSC 441 LEC 02 TUT 04      : Mo, 8:00
+
+
+500 Output: 
+Eval-value: 0 
+CPSC 510 LEC 01             : MO, 9:00
+CPSC 510 TUT 01             : MO, 8:00
+CPSC 511 LEC 01             : MO, 8:00
+CPSC 511 TUT 01             : TU, 10:00
+
+Tuesday Output:
+Eval-value: 0
+CPSC 311 LEC 01             : MO, 9:00     
+CPSC 311 LEC 01 TUT 01      : TU, 10:00
+
+
+813 Output:
+Eval-value: 0 
+CPSC 813 LEC 01             : TU, 18:00
+CPSC 313 LEC 01             : MO, 9:00
+CPSC 313 LEC 01 TUT 01      : MO, 8:00
+
+
+913 Output:
+Eval-value: 0 
+CPSC 913 LEC 01             : TU, 18:00
+CPSC 413 LEC 01             : MO, 9:00
+CPSC 413 LEC 01 TUT 01      : MO, 8:00
+
+
+Part-Assign Output:
+Eval-value: 0
+CPSC 313 LEC 01             : MO, 8:00
+CPSC 313 LEC 01 TUT 01      : TU, 10:00
+CPSC 433 LEC 01             : MO, 9:00
+CPSC 433 LEC 01 TUT 01      : MO, 8:00

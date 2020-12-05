@@ -9,12 +9,13 @@ public class Runner {
     private static int generations = 20;
 
     public static void main(String[] args) {
-        Department department = Parser.parse("./src/Search_Instances/CustomTest1.txt");
+        Department department = Parser.parse("./src/Abel_Instances/CourseMin.txt");
+        System.out.println(department);
         GenePool pool = new GenePool(department, new ArrayList<>(), 50);
         Prob bestIndividual = pool.getBestAssignment();
         for (int i = 0; i < generations; i++) {
-            System.out.println("Generation" + i);
-            System.out.println(bestIndividual);
+//            System.out.println("Generation" + i);
+//            System.out.println(bestIndividual);
 
             pool.nextGeneration();
             Prob latestBest = pool.getBestAssignment();

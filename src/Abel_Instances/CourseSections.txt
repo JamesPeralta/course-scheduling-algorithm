@@ -1,0 +1,29 @@
+Name:
+CourseSections
+
+Course slots:
+MO, 8:00, 2, 1
+MO, 9:00, 1, 1
+ 
+Lab slots:
+MO, 8:00, 1, 1
+MO, 9:00, 1,1
+
+Courses:
+CPSC 441 LEC 01
+CPSC 441 LEC 02
+
+Labs:
+CPSC 441 LEC 01 TUT 01
+CPSC 441 LEC 02 TUT 04
+
+Not compatible:
+
+Unwanted:
+
+Preferences:
+MO, 8:00, CPSC 441 LEC 01, 5
+
+Pair:
+
+Partial assignments:

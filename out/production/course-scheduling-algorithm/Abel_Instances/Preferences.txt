@@ -1,0 +1,34 @@
+Name:
+Preferences Test 
+
+Course slots:
+MO, 8:00, 2, 1
+MO, 9:00, 1, 1
+ 
+Lab slots:
+TU, 8:00, 2, 1
+Mo, 9:00, 1,1
+
+Courses:
+CPSC 313 LEC 01
+CPSC 433 LEC 01
+SENG 311 LEC 01
+
+Labs:
+CPSC 313 LEC 01 TUT 01
+CPSC 433 LEC 01 TUT 01
+SENG 311 LEC 01 TUT 01
+
+Not compatible:
+
+Unwanted:
+CPSC 433 LEC 01 TUT 01, TU, 8:00 
+
+Preferences:
+Mo, 9:00, CPSC 313 LEC 01, 10
+Mo, 9:00, CPSC 433 LEC 01, 7
+Mo, 9:00, SENG 311 LEC 01, 4
+
+Pair:
+
+Partial assignments:
