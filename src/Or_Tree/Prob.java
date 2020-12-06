@@ -46,12 +46,23 @@ public class Prob implements Comparable<Prob>{
         return assignmentMap;
     }
 
-    public CourseAssignment getCourse(int index) {
-        return courses.get(index);
+    public CourseAssignment getCourse() {
+        for (CourseAssignment assignment: courses) {
+            if (assignment.getCourseSlot() == null) {
+                return assignment;
+            }
+        }
+
+        return null;
     }
 
-    public LabAssignment getLab(int index) {
-        return labs.get(index);
+    public LabAssignment getLab() {
+        for (LabAssignment assignment: labs) {
+            if (assignment.getLabSlot() == null) {
+                return assignment;
+            }
+        }
+        return null;
     }
 
     public void setFitness(double fitness){
@@ -198,16 +209,16 @@ public class Prob implements Comparable<Prob>{
             String courseName = course.getCourse().getFullCourseName();
             String courseAssignment = course.getAssignmentAsString();
             output += courseName + " : " + courseAssignment + "\n";
-            for (LabAssignment lab: this.labs) {
-                if (lab.getLab().getOfCourse().equals(semiCourseName)) {
-                    String labSection = lab.getLab().getOfSection();
-                    if (labSection.equals("") || labSection.equals(courseSection)) {
-                        String labName = lab.getLab().getFullTutName();
-                        String labAssignment = lab.getAssignmentAsString();
-                        output += labName + " : " + labAssignment + "\n";
-                    }
-                }
-            }
+//            for (LabAssignment lab: this.labs) {
+//                if (lab.getLab().getOfCourse().equals(semiCourseName)) {
+//                    String labSection = lab.getLab().getOfSection();
+//                    if (labSection.equals("") || labSection.equals(courseSection)) {
+//                        String labName = lab.getLab().getFullTutName();
+//                        String labAssignment = lab.getAssignmentAsString();
+//                        output += labName + " : " + labAssignment + "\n";
+//                    }
+//                }
+//            }
         }
         output += "________________________________\n";
         return output;

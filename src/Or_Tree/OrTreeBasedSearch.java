@@ -6,12 +6,15 @@ import Utility.Eval;
 import java.util.*;
 
 public class OrTreeBasedSearch {
-    public static Prob generateSample(Department department){
+    public static Prob generateSample(Department department) throws Exception {
         Set<CourseSlot> courseSlots  = new HashSet<>(department.getCourseSlots());
         Set<LabSlot> labSlots = new HashSet<>(department.getLabSlots());
         Prob newInstance = new Prob(department);
         int maxDepth = department.getCourses().size();
-        erw(newInstance, courseSlots, labSlots, 0, maxDepth, new HashMap<>(), new HashMap<>());
+        Boolean found = erw(newInstance, courseSlots, labSlots, 0, maxDepth, new HashMap<>(), new HashMap<>());
+        if (!found) {
+            throw new Exception("Can't make valid instance");
+        }
 
         Eval eval = new Eval(newInstance, department);
         newInstance.setFitness(eval.getBound());
@@ -24,7 +27,7 @@ public class OrTreeBasedSearch {
      * @param department
      * @return
      */
-    public static Prob fixSample(Prob prob, Department department){
+    public static Prob fixSample(Prob prob, Department department) throws Exception {
     	// inializers these are good 
         Set<CourseSlot> courseSlots  = new HashSet<>(department.getCourseSlots());
         Set<LabSlot> labSlots = new HashSet<>(department.getLabSlots());
@@ -38,8 +41,10 @@ public class OrTreeBasedSearch {
         HashMap<LabSection, LabSlot> labAssignments = prob.getLabAssignments();
         System.out.println("Preforming ERW");
         // 
-        erw(newInstance, courseSlots, labSlots, 0, maxDepth, courseAssignments, labAssignments);
-        
+        Boolean found = erw(newInstance, courseSlots, labSlots, 0, maxDepth, courseAssignments, labAssignments);
+        if (!found) {
+            throw new Exception("Can't fix this instance");
+        }
         // eval runs in a known time 
         System.out.println("Running eval");
         Eval eval = new Eval(newInstance, department);
@@ -70,7 +75,8 @@ public class OrTreeBasedSearch {
     	// figure out if we have a valid assigment here 
         Constr constr = new Constr(prob);
         if (!constr.isValid()) {
-        	System.out.println("invalid");
+        	System.out.println("invalid ");
+            System.out.println(prob);
             return false;
         }
         
@@ -83,52 +89,55 @@ public class OrTreeBasedSearch {
         // 
         if (!prob.coursesFilled()) {
             // Try assigning what it was matched to before
-            CourseAssignment assign = prob.getCourse(depth);
+            CourseAssignment assign = prob.getCourse();
             // when the assign in not in the course match map 
             if (courseMatch.containsKey(assign.getCourse())) {
-                prob.assignCourse(depth, courseMatch.get(assign.getCourse()));
+                assign.assignSlot(courseMatch.get(assign.getCourse()));
                 System.out.println("1");
                 // recursivel call 
                 if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses, courseMatch, labMatch)){
                     return true;
                 }
-                prob.unassignCourse(depth);
+                assign.unassignSlot();
             }
             // get a new random assigment for 
             List<CourseSlot> copy = new ArrayList<>(courseSlots);
             Collections.shuffle(copy);
             for (CourseSlot courseSlot: copy) {
-                prob.assignCourse(depth, courseSlot);
+                assign.assignSlot(courseSlot);
                 // recursive call 
-                System.out.println("2");
+                System.out.println("2 " + Integer.toString(depth));
+//                if (40 < depth && depth < 50){
+//                    System.out.println(prob);
+//                }
                 if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses, courseMatch, labMatch)){
                     return true;
                 }
-                prob.unassignCourse(depth);
+                assign.unassignSlot();
             }
         }
         else {
-            LabAssignment assign = prob.getLab(depth - maxCourses);
+            LabAssignment assign = prob.getLab();
             if (labMatch.containsKey(assign.getLab())) {
-                prob.assignLab(depth - maxCourses, labMatch.get(assign.getLab()));
+                assign.assignSlot(labMatch.get(assign.getLab()));
                 // recursive call 
                 System.out.println("3");
                 if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses, courseMatch, labMatch)){
                     return true;
                 }
-                prob.unassignLab(depth - maxCourses);
+                assign.unassignSlot();
             }
 
             List<LabSlot> copy = new ArrayList<>(labSlots);
             Collections.shuffle(copy);
             for (LabSlot labSlot: copy) {
-                prob.assignLab(depth - maxCourses, labSlot);
+                assign.assignSlot(labSlot);
                 // recursivel call 
                 System.out.println("4");
                 if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses, courseMatch, labMatch)){
                     return true;
                 }
-                prob.unassignLab(depth - maxCourses);
+                assign.unassignSlot();
             }
         }
 

@@ -19,7 +19,11 @@ public class GenePool {
 
         if (pool.size() == 0) {
             for (int i = 0; i < populationSize; i++) {
-                pool.add(OrTreeBasedSearch.generateSample(department));
+                try {
+                    pool.add(OrTreeBasedSearch.generateSample(department));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -62,7 +66,11 @@ public class GenePool {
         // Fix All of them
         for (int i = 0; i < this.populationSize; i++) {
         	System.out.println("Fixing the mutation while keeping the assigments the same " + (i+1) + "/" + this.populationSize);
-            newPool.set(i, OrTreeBasedSearch.fixSample(newPool.get(i), this.department));
+            try {
+                newPool.set(i, OrTreeBasedSearch.fixSample(newPool.get(i), this.department));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         System.out.println("Mutation crossover is done ");
 
