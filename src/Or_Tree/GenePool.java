@@ -43,6 +43,7 @@ public class GenePool {
     }
 
     public void nextGeneration() {
+    	System.out.println("starting next generation");
         ArrayList<Prob> newPool = new ArrayList<>();
         // Crossover All of them
         for (int i = 0; i < this.populationSize; i++) {
@@ -51,19 +52,24 @@ public class GenePool {
             Prob child = parent_one.crossover(parent_two, this.department);
             newPool.add(child);
         }
-
+        
+        System.out.println("All childern created");
         // Mutate all of them
         for (int i = 0; i < this.populationSize; i++) {
             newPool.get(i).mutate(this.department);
         }
-
+        System.out.println("All childern Mutated");
         // Fix All of them
         for (int i = 0; i < this.populationSize; i++) {
+        	System.out.println("Fixing the mutation while keeping the assigments the same " + (i+1) + "/" + this.populationSize);
             newPool.set(i, OrTreeBasedSearch.fixSample(newPool.get(i), this.department));
         }
+        System.out.println("Mutation crossover is done ");
 
         // Sort them
         Collections.sort(pool);
+        
+        System.out.println("sorted the stuff ");
         pool = newPool;
     }
 

@@ -10,9 +10,9 @@ public class Runner {
     private static int populationSize = 50;
 
     public static void main(String[] args) {
-        Department department = Parser.parse("./src/Abel_Instances/Test1.txt");
+        Department department = Parser.parse("./src/Search_Instances/Department1.txt");
         GenePool pool = new GenePool(department, new ArrayList<>(), populationSize);
-        System.out.println();
+        System.out.println("Courses parsed and Gene pool is good ");
         Prob bestIndividual = pool.getBestAssignment();
         for (int i = 0; i < generations; i++) {
         	

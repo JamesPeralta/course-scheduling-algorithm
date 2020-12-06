@@ -17,22 +17,48 @@ public class OrTreeBasedSearch {
         newInstance.setFitness(eval.getBound());
         return newInstance;
     }
-
+    
+    /**
+     * this will make an infinite loop sometime 
+     * @param prob
+     * @param department
+     * @return
+     */
     public static Prob fixSample(Prob prob, Department department){
+    	// inializers these are good 
         Set<CourseSlot> courseSlots  = new HashSet<>(department.getCourseSlots());
         Set<LabSlot> labSlots = new HashSet<>(department.getLabSlots());
+        System.out.println("creating a new instance based of the departments");
+        // this will run in TODO find out 
         Prob newInstance = new Prob(department);
+        
+        // these are all linear an non looping 
         int maxDepth = department.getCourses().size();
-
         HashMap<CourseInstance, CourseSlot> courseAssignments = prob.getCourseAssignments();
         HashMap<LabSection, LabSlot> labAssignments = prob.getLabAssignments();
+        System.out.println("Preforming ERW");
+        // 
         erw(newInstance, courseSlots, labSlots, 0, maxDepth, courseAssignments, labAssignments);
+        
+        // eval runs in a known time 
+        System.out.println("Running eval");
         Eval eval = new Eval(newInstance, department);
+        System.out.println("Settings the fitness of the new instance ");
         newInstance.setFitness(eval.getBound());
-
+        System.out.println("Done fixing sample");
         return newInstance;
     }
-
+    /**
+     * 
+     * @param prob
+     * @param courseSlots
+     * @param labSlots
+     * @param depth
+     * @param maxCourses
+     * @param courseMatch
+     * @param labMatch
+     * @return
+     */
     public static Boolean erw(Prob prob,
                               Set<CourseSlot> courseSlots,
                               Set<LabSlot> labSlots,
@@ -40,20 +66,27 @@ public class OrTreeBasedSearch {
                               int maxCourses,
                               HashMap<CourseInstance, CourseSlot> courseMatch,
                               HashMap<LabSection, LabSlot> labMatch){
-
+    	//System.out.println("running ERW");
+    	// figure out if we have a valid assigment here 
         Constr constr = new Constr(prob);
         if (!constr.isValid()) {
             return false;
         }
+        
+        // make sure we have assgined all the classes here 
         if (prob.coursesFilled() && prob.labsFilled()) {
             return true;
         }
-
+        
+        
+        // 
         if (!prob.coursesFilled()) {
             // Try assigning what it was matched to before
             CourseAssignment assign = prob.getCourse(depth);
             if (courseMatch.containsKey(assign.getCourse())) {
                 prob.assignCourse(depth, courseMatch.get(assign.getCourse()));
+                
+                // recursivel call 
                 if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses, courseMatch, labMatch)){
                     return true;
                 }
@@ -64,6 +97,7 @@ public class OrTreeBasedSearch {
             Collections.shuffle(copy);
             for (CourseSlot courseSlot: copy) {
                 prob.assignCourse(depth, courseSlot);
+                // recursive call 
                 if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses, courseMatch, labMatch)){
                     return true;
                 }
@@ -74,6 +108,7 @@ public class OrTreeBasedSearch {
             LabAssignment assign = prob.getLab(depth - maxCourses);
             if (labMatch.containsKey(assign.getLab())) {
                 prob.assignLab(depth - maxCourses, labMatch.get(assign.getLab()));
+                // recursive call 
                 if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses, courseMatch, labMatch)){
                     return true;
                 }
@@ -84,6 +119,7 @@ public class OrTreeBasedSearch {
             Collections.shuffle(copy);
             for (LabSlot labSlot: copy) {
                 prob.assignLab(depth - maxCourses, labSlot);
+                // recursivel call 
                 if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses, courseMatch, labMatch)){
                     return true;
                 }
