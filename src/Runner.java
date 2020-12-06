@@ -10,7 +10,9 @@ public class Runner {
 
     public static void main(String[] args) {
         Department department = Parser.parse("./src/Search_Instances/Department1.txt");
+        System.out.println("here");
         GenePool pool = new GenePool(department, new ArrayList<>(), 50);
+        System.out.println("here");
         Prob bestIndividual = pool.getBestAssignment();
         for (int i = 0; i < generations; i++) {
             System.out.println("Generation: " + Integer.toString(i));
