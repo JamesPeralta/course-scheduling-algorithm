@@ -13,6 +13,8 @@ public class Runner {
         GenePool pool = new GenePool(department, new ArrayList<>(), 50);
         Prob bestIndividual = pool.getBestAssignment();
         for (int i = 0; i < generations; i++) {
+            System.out.println("Generation: " + Integer.toString(i));
+            System.out.println(bestIndividual);
             pool.nextGeneration();
             Prob latestBest = pool.getBestAssignment();
 
