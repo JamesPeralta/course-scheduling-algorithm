@@ -4,7 +4,6 @@ CourseSections
 Course slots:
 MO, 8:00, 5, 0
 MO, 9:00, 5, 0
-MO, 10:00, 5, 0
 
 Lab slots:
 MO, 8:00, 5, 0
