@@ -65,10 +65,10 @@ public class Parser {
             ClassElement a,b;
             cleanRow(row);
 
-            if(row[0].contains("TUT") || row[0].contains("LAB")) a = department.findLab(parseLab(row[0]));
+            if(isTutorial(row[0])) a = department.findLab(parseLab(row[0]));
             else a = department.findCourse(parseCourse(row[0]));
 
-            if(row[1].contains("TUT") || row[1].contains("LAB")) b = department.findLab(parseLab(row[1]));
+            if(isTutorial(row[1])) b = department.findLab(parseLab(row[1]));
             else b = department.findCourse(parseCourse(row[1]));
 
             a.addNonCompatible(b);
@@ -84,7 +84,7 @@ public class Parser {
             String[] row = line.split(",");
             cleanRow(row);
 
-            if(row[0].contains("TUT") || row[0].contains("LAB")) {
+            if(isTutorial(row[0])) {
                 department.findLab(parseLab(row[0])).addUnwanted(
                     department.findLabSlot(Static.days.indexOf(row[1]), Static.times.indexOf(row[2])));
             } else department.findCourse(parseCourse(row[0])).addUnwanted(
@@ -100,7 +100,7 @@ public class Parser {
             String[] row = line.split(",");
             cleanRow(row);
 
-            if(row[2].contains("TUT") || row[2].contains("LAB")) {
+            if(isTutorial(row[2])) {
                 department.findLab(parseLab(row[2])).addPreference(
                     department.findLabSlot(Static.days.indexOf(row[0]), Static.times.indexOf(row[1])), Integer.parseInt(row[3]));
             } else department.findCourse(parseCourse(row[2])).addPreference(
@@ -116,10 +116,10 @@ public class Parser {
             ClassElement a,b;
             cleanRow(row);
 
-            if(row[0].contains("TUT") || row[0].contains("LAB")) a = department.findLab(parseLab(row[0]));
+            if(isTutorial(row[0])) a = department.findLab(parseLab(row[0]));
             else a = department.findCourse(parseCourse(row[0]));
 
-            if(row[1].contains("TUT") || row[1].contains("LAB")) b = department.findLab(parseLab(row[1]));
+            if(isTutorial(row[1]) b = department.findLab(parseLab(row[1]));
             else b = department.findCourse(parseCourse(row[1]));
             
             a.addCompatible(b);
@@ -136,19 +136,15 @@ public class Parser {
             String[] row = line.split(",");
             cleanRow(row);
 
-
-            if(row[0].contains("TUT") || row[0].contains("LAB")) {
-                department.findLab(parseLab(row[0]));
-                LabAssignment la = new LabAssignment(department.findLab(parseLab(row[0])));
-                la.assignSlot(department.findLabSlot(Static.days.indexOf(row[1]), Static.times.indexOf(row[2])));
+            if(isTutorial(row[0])) {
+                department.partAssignLab(department.findLab(parseLab(row[0])), 
+                    department.findLabSlot(Static.days.indexOf(row[1]), Static.times.indexOf(row[2])));
             }
             else {
-                department.findCourse(parseCourse(row[0]));
-                CourseAssignment la = new CourseAssignment(department.findCourse(parseCourse(row[0])));
-                la.assignSlot(department.findCourseSlot(Static.days.indexOf(row[1]), Static.times.indexOf(row[2])));
+                department.partAssignCourse(department.findCourse(parseCourse(row[0])), 
+                    department.findCourseSlot(Static.days.indexOf(row[1]), Static.times.indexOf(row[2])));
             }
-
-            department.addLab(parseLab(line));
+            
             line = reader.readLine();
         }
     }
@@ -209,5 +205,9 @@ public class Parser {
         for (int i = 0; i < rowArr.length; i++) {
             rowArr[i] = rowArr[i].trim();
         }
+    }
+
+    public static boolean isTutorial(String str) {
+        return str.contains("TUT") || str.contains("LAB");
     }
 }

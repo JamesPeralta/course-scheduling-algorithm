@@ -11,8 +11,8 @@ public class Department {
     private HashMap<String,ArrayList<CourseInstance>> courses = new HashMap<String,ArrayList<CourseInstance>>();
     private HashMap<String,ArrayList<LabSection>> labs = new HashMap<String,ArrayList<LabSection>>();
 
-    private ArrayList<LabAssignment> assignedLabs = new ArrayList<>();
-    private ArrayList<CourseAssignment> assignedCourses = new ArrayList<>();
+    private HashMap<LabSection,LabSlot> assignedLabs = new HashMap<>();
+    private HashMap<CourseInstance,CourseSlot> assignedCourses = new HashMap<>();
 
     public Department() {}
 
@@ -55,12 +55,12 @@ public class Department {
         courseSlots.add(cs);
     }
 
-    public void partAssignCourse(CourseAssignment ca) {
-        assignedCourses.add(ca);
+    public void partAssignCourse(CourseInstance ca, CourseSlot cs) {
+        assignedCourses.put(ca, cs);
     }
 
-    public void partAssignLab(LabAssignment la) {
-        assignedLabs.add(la);
+    public void partAssignLab(LabSection la, LabSlot ls) {
+        assignedLabs.put(la, ls);
     }
 
     public ArrayList<CourseInstance> getCourses() {
@@ -121,11 +121,11 @@ public class Department {
     	return this.labs;
     }
 
-    public ArrayList<CourseAssignment> getAssignedCourses() {
-        return assignedCourses;
+    public HashMap<LabSection,LabSlot> getAssignedLabs() {
+        return assignedLabs;
     }
 
-    public ArrayList<LabAssignment> getAssignedLabs() {
-        return assignedLabs;
+    public HashMap<CourseInstance,CourseSlot> getAssignedCourses() {
+        return assignedCourses;
     }
 }
