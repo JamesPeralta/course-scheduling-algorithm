@@ -70,6 +70,7 @@ public class OrTreeBasedSearch {
     	// figure out if we have a valid assigment here 
         Constr constr = new Constr(prob);
         if (!constr.isValid()) {
+        	System.out.println("invalid");
             return false;
         }
         
@@ -83,21 +84,23 @@ public class OrTreeBasedSearch {
         if (!prob.coursesFilled()) {
             // Try assigning what it was matched to before
             CourseAssignment assign = prob.getCourse(depth);
+            // when the assign in not in the course match map 
             if (courseMatch.containsKey(assign.getCourse())) {
                 prob.assignCourse(depth, courseMatch.get(assign.getCourse()));
-                
+                System.out.println("1");
                 // recursivel call 
                 if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses, courseMatch, labMatch)){
                     return true;
                 }
                 prob.unassignCourse(depth);
             }
-
+            // get a new random assigment for 
             List<CourseSlot> copy = new ArrayList<>(courseSlots);
             Collections.shuffle(copy);
             for (CourseSlot courseSlot: copy) {
                 prob.assignCourse(depth, courseSlot);
                 // recursive call 
+                System.out.println("2");
                 if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses, courseMatch, labMatch)){
                     return true;
                 }
@@ -109,6 +112,7 @@ public class OrTreeBasedSearch {
             if (labMatch.containsKey(assign.getLab())) {
                 prob.assignLab(depth - maxCourses, labMatch.get(assign.getLab()));
                 // recursive call 
+                System.out.println("3");
                 if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses, courseMatch, labMatch)){
                     return true;
                 }
@@ -120,6 +124,7 @@ public class OrTreeBasedSearch {
             for (LabSlot labSlot: copy) {
                 prob.assignLab(depth - maxCourses, labSlot);
                 // recursivel call 
+                System.out.println("4");
                 if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses, courseMatch, labMatch)){
                     return true;
                 }
