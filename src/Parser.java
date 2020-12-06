@@ -119,7 +119,7 @@ public class Parser {
             if(isTutorial(row[0])) a = department.findLab(parseLab(row[0]));
             else a = department.findCourse(parseCourse(row[0]));
 
-            if(isTutorial(row[1]) b = department.findLab(parseLab(row[1]));
+            if(isTutorial(row[1])) b = department.findLab(parseLab(row[1]));
             else b = department.findCourse(parseCourse(row[1]));
             
             a.addCompatible(b);
@@ -144,7 +144,7 @@ public class Parser {
                 department.partAssignCourse(department.findCourse(parseCourse(row[0])), 
                     department.findCourseSlot(Static.days.indexOf(row[1]), Static.times.indexOf(row[2])));
             }
-            
+
             line = reader.readLine();
         }
     }
