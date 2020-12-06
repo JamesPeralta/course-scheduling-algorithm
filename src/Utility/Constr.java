@@ -7,31 +7,35 @@ import Or_Tree.Prob;
 public class Constr {
 
     private boolean valid;
-    private ArrayList<CourseAssignment> course;
-    private ArrayList<LabAssignment> lab;
+    private ArrayList<CourseAssignment> courseAssigments;
+    private ArrayList<LabAssignment> labAssigments;
 
     private HashMap<CourseSlot, Integer> assignedinCourses;
     private HashMap<LabSlot, Integer> assignedinLabs;
-    private ArrayList<CourseSlot> scheduled500;
+    private ArrayList<CourseAssignment> scheduled500;
     private HashMap<ClassElement, Slot> assignedSlot;
 
     public Constr(Prob prob) {
 
-        this.course = prob.getCourses();
-        this.lab = prob.getLabs();
+        this.courseAssigments = prob.getCourses();
+        this.labAssigments = prob.getLabs();
         valid = true;
 
         assignedinCourses = new HashMap<CourseSlot, Integer>();
         assignedinLabs = new HashMap<LabSlot, Integer>();
-        scheduled500 = new ArrayList<CourseSlot>();
+        scheduled500 = new ArrayList<CourseAssignment>();
 
-        assignedSlot = new  HashMap<ClassElement,Slot>();
+        this.assignedSlot = new  HashMap<ClassElement,Slot>();
+        
+        
 		// we need to build our class elements to slot thing so we know 
-		for(CourseAssignment courses: this.course) {
+		for(CourseAssignment courses: this.courseAssigments) {
+			//System.out.println(courses);
+			//System.out.println(courses.getCourseSlot());
 			this.assignedSlot.put(courses.getCourse(), courses.getCurrentSlot());
 		}
 		// do it for the labs too 
-		for(var labs: this.lab) {
+		for(var labs: this.labAssigments) {
 			this.assignedSlot.put(labs.getLab(), labs.getCurrentSlot());
 		}
 
@@ -48,22 +52,22 @@ public class Constr {
     }
     //checks if courseMax is borken
     public void checkCourseMax() {
-        for (int i = 0; i < course.size(); i++) {
-            Integer value = assignedinCourses.get(course.get(i).getCourseSlot());
+        for (int i = 0; i < courseAssigments.size(); i++) {
+            Integer value = assignedinCourses.get(courseAssigments.get(i).getCourseSlot());
             if (value == null){
-                assignedinCourses.put(course.get(i).getCourseSlot(), 1); //if new to the hashmap value will be null and we add new key to the hashmap and assign a value of 1
+                assignedinCourses.put(courseAssigments.get(i).getCourseSlot(), 1); //if new to the hashmap value will be null and we add new key to the hashmap and assign a value of 1
             }
             else{
-                assignedinCourses.put(course.get(i).getCourseSlot(), assignedinCourses.get(course.get(i).getCourseSlot()) + 1); //updates value 
+                assignedinCourses.put(courseAssigments.get(i).getCourseSlot(), assignedinCourses.get(courseAssigments.get(i).getCourseSlot()) + 1); //updates value 
             }
         }
 
-        for (int i = 0; i < course.size(); i++){
-            if (course.get(i).getCourseSlot() == null) {
+        for (int i = 0; i < courseAssigments.size(); i++){
+            if (courseAssigments.get(i).getCourseSlot() == null) {
                 continue;
             }
 
-            if(course.get(i).getCourseSlot().getCoursemax() < assignedinCourses.get(course.get(i).getCourseSlot())){ //check each course in the hashmap and see if coursemax is broken
+            if(courseAssigments.get(i).getCourseSlot().getCoursemax() < assignedinCourses.get(courseAssigments.get(i).getCourseSlot())){ //check each course in the hashmap and see if coursemax is broken
                 valid = false;
                 break;
             }
@@ -72,21 +76,21 @@ public class Constr {
 
     //check if labMax is broken, similar to courseMax
     public void checkLabMax() {
-        for (int i = 0; i < lab.size(); i++) {
-            Integer value = assignedinLabs.get(lab.get(i).getLabSlot()); 
+        for (int i = 0; i < labAssigments.size(); i++) {
+            Integer value = assignedinLabs.get(labAssigments.get(i).getLabSlot()); 
             if (value == null){
-                assignedinLabs.put(lab.get(i).getLabSlot(), 1);
+                assignedinLabs.put(labAssigments.get(i).getLabSlot(), 1);
             }
             else{
-                assignedinLabs.put(lab.get(i).getLabSlot(), assignedinLabs.get(lab.get(i).getLabSlot()) + 1);
+                assignedinLabs.put(labAssigments.get(i).getLabSlot(), assignedinLabs.get(labAssigments.get(i).getLabSlot()) + 1);
             }
         }
-        for (int i = 0; i < lab.size(); i++){
-            if (lab.get(i).getLabSlot() == null) {
+        for (int i = 0; i < labAssigments.size(); i++){
+            if (labAssigments.get(i).getLabSlot() == null) {
                 continue;
             }
 
-            if(lab.get(i).getLabSlot().getCoursemax() < assignedinLabs.get(lab.get(i).getLabSlot())){
+            if(labAssigments.get(i).getLabSlot().getCoursemax() < assignedinLabs.get(labAssigments.get(i).getLabSlot())){
                 valid = false;
                 break;
             }
@@ -95,16 +99,16 @@ public class Constr {
 
     //checks if a course and lab are assigned to the same slot
     public void checkAssign(){
-        for(int i = 0; i < course.size(); i++){
-            for(int j = 0; j < lab.size(); j++){
-                if (course.get(i).getCourseSlot() == null || lab.get(j).getLabSlot() == null) {
+        for(int i = 0; i < courseAssigments.size(); i++){
+            for(int j = 0; j < labAssigments.size(); j++){
+                if (courseAssigments.get(i).getCourseSlot() == null || labAssigments.get(j).getLabSlot() == null) {
                     continue;
                 }
 
-                if((course.get(i).getCourseSlot().getDay()) == (lab.get(j).getLabSlot().getDay()) && (course.get(i).getCourseSlot().getTime()) == (lab.get(j).getLabSlot().getTime())){ //check if the course has the same day and time as a lab
-                    if(course.get(i).getCourse().getCourseName().equals(lab.get(j).getLab().getOfCourse())){ //checks if the lab corresponds to the same course and are the same section
-                        if (!lab.get(j).getLab().getOfSection().equals("")){
-                            if (course.get(i).getCourse().getSectionString().equals(lab.get(j).getLab().getOfSection())) {
+                if((courseAssigments.get(i).getCourseSlot().getDay()) == (labAssigments.get(j).getLabSlot().getDay()) && (courseAssigments.get(i).getCourseSlot().getTime()) == (labAssigments.get(j).getLabSlot().getTime())){ //check if the course has the same day and time as a lab
+                    if(courseAssigments.get(i).getCourse().getCourseName().equals(labAssigments.get(j).getLab().getOfCourse())){ //checks if the lab corresponds to the same course and are the same section
+                        if (!labAssigments.get(j).getLab().getOfSection().equals("")){
+                            if (courseAssigments.get(i).getCourse().getSectionString().equals(labAssigments.get(j).getLab().getOfSection())) {
                                 valid = false;
                                 break;
                             }
@@ -120,14 +124,14 @@ public class Constr {
     }
 
     public void checkUnwanted(){
-        for (int i = 0; i < course.size(); i++){
-            if(course.get(i).getCourseSlot() == null){
+        for (int i = 0; i < courseAssigments.size(); i++){
+            if(courseAssigments.get(i).getCourseSlot() == null){
                 continue;
             }
             else{
-                ArrayList<CourseSlot> unwantedList = course.get(i).getCourse().getUnwanted();
+                ArrayList<CourseSlot> unwantedList = courseAssigments.get(i).getCourse().getUnwanted();
                 for (int j = 0; j < unwantedList.size(); j++){
-                    if (course.get(i).getCourseSlot().equals(unwantedList.get(j))){
+                    if (courseAssigments.get(i).getCourseSlot().equals(unwantedList.get(j))){
                         valid = false;
                         break;
                     }
@@ -139,60 +143,175 @@ public class Constr {
         }
 
     }
+    /**
+     * will need testing but i belive that this should check everything 
+     */
     public void checkCompatible(){
-        for (int i = 0; i < course.size(); i++){//checks all compatible for courses
-            if(course.get(i).getCourse() == null){
-                continue;
-            }
-            ArrayList<ClassElement> nonCompatible = course.get(i).getCourse().getNonCompatible();
-            for(int j = 0; j < nonCompatible.size(); j++){
-                Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
-                Slot masterSlot = assignedSlot.get(course.get(i));
-
-                if(pairSlot.getDay() == masterSlot.getDay()){
-                    if(pairSlot.getTime() == masterSlot.getTime()){
-                        valid = false;
-                        break;
-                    }
-                }
-                
-            }
-            if(valid == false){
+    	
+    	// lets redo this loop
+    	
+    	// for each course assigment to its unwanted pairs 
+    	for(CourseAssignment course: courseAssigments) {
+    		// for the compadible 
+    		for(ClassElement pair: course.getCourse().getNonCompatible()) {
+    			if(this.assignedSlot.get(pair) == null || course.getCurrentSlot() == null) {
+    				continue;
+    			}
+    			// get the pair and master slot 
+    			Slot pairSlot = this.assignedSlot.get(pair);
+                Slot masterSlot = course.getCurrentSlot();
+    			// make sure both of them match 
+                //System.out.println(pairSlot);
+                //System.out.println(course.getCurrentSlot());
+                boolean dayMatch = pairSlot.getDayString().equals(masterSlot.getDayString());
+				boolean timeMatch = pairSlot.getTimeString().equals(masterSlot.getTimeString());
+				
+				// if they are at the same time then this is not valid 
+				if(dayMatch && timeMatch) {
+					valid = false;
+                    break;
+				}
+    			
+    		}
+    		if(valid == false){
                 break;
             }
-        }
-
-        for (int i = 0; i < lab.size(); i++){ //checks all compatible for labs
-            if(lab.get(i).getLab() == null){
-                continue;
-            }
-            ArrayList<ClassElement> nonCompatible = lab.get(i).getLab().getNonCompatible();
-            for(int j = 0; j < nonCompatible.size(); j++){
-                Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
-                Slot masterSlot = assignedSlot.get(lab.get(i));
-
-                if(pairSlot.getDay() == masterSlot.getDay()){
-                    if(pairSlot.getTime() == masterSlot.getTime()){
-                        valid = false;
-                        break;
-                    }
-                }
-                
-            }
-            if(valid == false){
+    	}
+    	
+    	
+    	
+    	
+    	// then here we check the labs against its unwanted pairs 
+    	for(LabAssignment lab: labAssigments) {
+    		// for the compadible 
+    		for(ClassElement pair: lab.getLab().getNonCompatible()) {
+    			if(this.assignedSlot.get(pair) == null || lab.getCurrentSlot() == null) {
+    				continue;
+    			}
+    			// get the pair and master slot 
+    			Slot pairSlot = assignedSlot.get(pair);
+                Slot masterSlot = lab.getCurrentSlot();
+    			// make sure both of them match 
+                boolean dayMatch = pairSlot.getDayString().equals(masterSlot.getDayString());
+				boolean timeMatch = pairSlot.getTimeString().equals(masterSlot.getTimeString());
+				
+				// if they are at the same time then this is not valid 
+				if(dayMatch && timeMatch) {
+					valid = false;
+                    break;
+				}
+    			
+    		}
+    		if(valid == false){
                 break;
             }
-        }
+    	}
+    	
+    	
+//        for (int i = 0; i < courseAssigments.size(); i++){//checks all compatible for course vs course
+//            if(courseAssigments.get(i).getCourse() == null){
+//                continue;
+//            }
+//            ArrayList<ClassElement> nonCompatible = courseAssigments.get(i).getCourse().getNonCompatible();
+//            for(int j = 0; j < nonCompatible.size(); j++){
+//                
+//                Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
+//                Slot masterSlot = assignedSlot.get(courseAssigments.get(i));
+//                // need to do a null check incase 
+//                if(pairSlot.getDay() == masterSlot.getDay()){
+//                    if(pairSlot.getTime() == masterSlot.getTime()){
+//                        valid = false;
+//                        break;
+//                    }
+//                }
+//                
+//            }
+//            if(valid == false){
+//                break;
+//            }
+//        }
+//
+//        for (int i = 0; i < labAssigments.size(); i++){ //checks all compatible for lab vs lab
+//            if(labAssigments.get(i).getLab() == null){
+//                continue;
+//            }
+//            ArrayList<ClassElement> nonCompatible = labAssigments.get(i).getLab().getNonCompatible();
+//            for(int j = 0; j < nonCompatible.size(); j++){
+//                 
+//                Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
+//                Slot masterSlot = assignedSlot.get(labAssigments.get(i));
+//
+//                if(pairSlot.getDay() == masterSlot.getDay()){
+//                    if(pairSlot.getTime() == masterSlot.getTime()){
+//                        valid = false;
+//                        break;
+//                    }
+//                }
+//                 
+//            }
+//            if(valid == false){
+//                break;
+//            }
+//        }
+//
+//        for (int i = 0; i < courseAssigments.size(); i++){ //checks all compatible for lab vs course
+//            if(courseAssigments.get(i).getCourse() == null){
+//                continue;
+//            }
+//            ArrayList<ClassElement> nonCompatible = courseAssigments.get(i).getCourse().getNonCompatible();
+//            for(int j = 0; j < nonCompatible.size(); j++){
+//                
+//                Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
+//                Slot masterSlot = assignedSlot.get(labAssigments.get(i));
+//
+//                if(pairSlot.getDay() == masterSlot.getDay()){
+//                    if(pairSlot.getTime() == masterSlot.getTime()){
+//                        valid = false;
+//                        break;
+//                    }
+//                }
+//                  
+//            }
+//            if(valid == false){
+//                break;
+//            }
+//        }
+//
+//        for (int i = 0; i < labAssigments.size(); i++){//checks all compatible for course vs lab
+//        	if(labAssigments.get(i).getLab() == null){
+//                continue;
+//            }
+//            
+//            // why are we getting the lab here based on a course index 
+//            ArrayList<ClassElement> nonCompatible = labAssigments.get(i).getLab().getNonCompatible();
+//            for(int j = 0; j < nonCompatible.size(); j++){
+//                try{
+//                    Slot pairSlot = assignedSlot.get(nonCompatible.get(j));
+//                    Slot masterSlot = assignedSlot.get(courseAssigments.get(i));
+//                    if(pairSlot.getDay() == masterSlot.getDay()){
+//                        if(pairSlot.getTime() == masterSlot.getTime()){
+//                            valid = false;
+//                            break;
+//                        }
+//                    }
+//                }
+//                catch(NullPointerException npe){
+//                }    
+//            }
+//            if(valid == false){
+//                break;
+//            }
+//        }
     }
 
     //checks if a course is on tuesday at 11:00
     public void checkTuesEleven(){
-        for (int i = 0; i < course.size(); i++){
-            if (course.get(i).getCourseSlot() == null) {
+        for (int i = 0; i < courseAssigments.size(); i++){
+            if (courseAssigments.get(i).getCourseSlot() == null) {
                 continue;
             }
 
-            if (course.get(i).getCourseSlot().getTimeString().equals("11:00") && course.get(i).getCourseSlot().getDayString().equals("TU")){ //checks if course is at 11:00 and on a tuesday
+            if (courseAssigments.get(i).getCourseSlot().getTimeString().equals("11:00") && courseAssigments.get(i).getCourseSlot().getDayString().equals("TU")){ //checks if course is at 11:00 and on a tuesday
                 valid = false; 
                 break;    
             }
@@ -201,13 +320,15 @@ public class Constr {
 
     //checks if lecture number ends in 9, it must be assigned to an evening slot
     public void checkLectureNine(){
-        for (int i = 0; i < course.size(); i++){
-            if (course.get(i).getCourse() == null) {
+        for (int i = 0; i < courseAssigments.size(); i++){
+            if (courseAssigments.get(i).getCourse() == null){
                 continue;
             }
-
-            if (course.get(i).getCourse().getSectionNumber() == 9){
-                if(course.get(i).getCourseSlot().getTime() < 18){
+            if (courseAssigments.get(i).getCourseSlot() == null) {
+                continue;
+            }
+            if (courseAssigments.get(i).getCourse().getSectionNumber() == 9){
+                if(courseAssigments.get(i).getCourseSlot().getTime() < 13){
                     valid = false;
                     break;
                 }
@@ -218,26 +339,26 @@ public class Constr {
 
     //checks for 813 and if it is assigned at 18:00, and is not associated with any course or lab for 313
     public void check813(){
-        for (int i = 0; i < course.size(); i++){
-            if (course.get(i).getCourse() == null) {
+        for (int i = 0; i < courseAssigments.size(); i++){
+            if (courseAssigments.get(i).getCourse() == null) {
                 continue;
             }
 
-            if (course.get(i).getCourse().getCourseName().equals("813")){
-                if (course.get(i).getCourseSlot().getTimeString().equals("18:00") && course.get(i).getCourseSlot().getDayString().equals("TU")){ //checks if course is assigned to 18:00 and on tuesday
+            if (courseAssigments.get(i).getCourse().getCourseName().equals("813")){
+                if (courseAssigments.get(i).getCourseSlot().getTimeString().equals("18:00") && courseAssigments.get(i).getCourseSlot().getDayString().equals("TU")){ //checks if course is assigned to 18:00 and on tuesday
                 }
                 else{
                     valid = false;
                     break;
                 }
-                for(int j = 0; j < course.size(); j++){
-                    if(course.get(j).getCourse().getCourseName().equals("313") && course.get(j).getCourseSlot().equals(course.get(i).getCourseSlot())){//checks if 313 course is assigned to the same slot
+                for(int j = 0; j < courseAssigments.size(); j++){
+                    if(courseAssigments.get(j).getCourse().getCourseName().equals("313") && courseAssigments.get(j).getCourseSlot().equals(courseAssigments.get(i).getCourseSlot())){//checks if 313 course is assigned to the same slot
                         valid = false;
                         break;
                     }
                 }
-                for(int j = 0; j < course.size(); j++){
-                    if(lab.get(j).getLab().getOfCourse().equals("313") && lab.get(j).getLabSlot().toString().equals(course.get(i).getCourseSlot().toString())){//checks if 313 lab is assigned to the same slot
+                for(int j = 0; j < courseAssigments.size(); j++){
+                    if(labAssigments.get(j).getLab().getOfCourse().equals("313") && labAssigments.get(j).getLabSlot().toString().equals(courseAssigments.get(i).getCourseSlot().toString())){//checks if 313 lab is assigned to the same slot
                         valid = false;
                         break;
                     }
@@ -248,26 +369,26 @@ public class Constr {
     
     //similar to check813 but for 913 
     public void check913(){
-        for (int i = 0; i < course.size(); i++){
-            if (course.get(i).getCourse() == null) {
+        for (int i = 0; i < courseAssigments.size(); i++){
+            if (courseAssigments.get(i).getCourse() == null) {
                 continue;
             }
 
-            if (course.get(i).getCourse().getCourseName().equals("913")){
-                if (course.get(i).getCourseSlot().getTimeString().equals("18:00") && course.get(i).getCourseSlot().getDayString().equals("TU")){//checks if course is assigned to 18:00 and on tuesday
+            if (courseAssigments.get(i).getCourse().getCourseName().equals("913")){
+                if (courseAssigments.get(i).getCourseSlot().getTimeString().equals("18:00") && courseAssigments.get(i).getCourseSlot().getDayString().equals("TU")){//checks if course is assigned to 18:00 and on tuesday
                 }
                 else{
                     valid = false;
                     break;
                 }
-                for(int j = 0; j < course.size(); j++){
-                    if(course.get(j).getCourse().getCourseName().equals("413") && course.get(j).getCourseSlot().equals(course.get(i).getCourseSlot())){//checks if 413 course is assigned to the same slot
+                for(int j = 0; j < courseAssigments.size(); j++){
+                    if(courseAssigments.get(j).getCourse().getCourseName().equals("413") && courseAssigments.get(j).getCourseSlot().equals(courseAssigments.get(i).getCourseSlot())){//checks if 413 course is assigned to the same slot
                         valid = false;
                         break;
                     }
                 }
-                for(int j = 0; j < course.size(); j++){
-                    if(lab.get(j).getLab().getOfCourse().equals("413") && lab.get(j).getLabSlot().toString().equals(course.get(i).getCourseSlot().toString())){//checks if 413 lab is assigned to the same slot
+                for(int j = 0; j < courseAssigments.size(); j++){
+                    if(labAssigments.get(j).getLab().getOfCourse().equals("413") && labAssigments.get(j).getLabSlot().toString().equals(courseAssigments.get(i).getCourseSlot().toString())){//checks if 413 lab is assigned to the same slot
                         valid = false;
                         break;
                     }
@@ -276,23 +397,34 @@ public class Constr {
         }
     }
     public void check500(){
-        for (int i = 0; i < course.size(); i++){
-            if(course.get(i).getCourse() == null){
+        for (int i = 0; i < courseAssigments.size(); i++){
+            if(courseAssigments.get(i).getCourse() == null){
                 continue;
             }
-            String courseName = course.get(i).getCourse().getCourseName();
-            char firstDigit = courseName.charAt(0);
-            if(firstDigit == '5'){
-                scheduled500.add(course.get(i).getCourseSlot());
+            if(courseAssigments.get(i).getCourseSlot() == null){
+                continue;
             }
+            String courseName = courseAssigments.get(i).getCourse().getCourseName();
+            char firstDigit = courseName.charAt(5);
+            
+            if(firstDigit == '5'){
+                scheduled500.add(courseAssigments.get(i));
+            }   
         }
+
         for (int i = 0; i < scheduled500.size(); i++){
-            for (int j = 0; j < scheduled500.size(); j++){
-                if(scheduled500.get(i).equals(scheduled500.get(j))){
+            try{ 
+                if(scheduled500.get(i).getCourseSlot().getTime() == scheduled500.get(i+1).getCourseSlot().getTime()){
+                    if(scheduled500.get(i).getCourseSlot().getDay() == scheduled500.get(i+1).getCourseSlot().getDay()){
                     valid = false;
                     break;
+                    }
                 }
             }
+            catch(IndexOutOfBoundsException ioe){
+                
+            }
+
         }
     }
 
@@ -300,5 +432,3 @@ public class Constr {
         return this.valid;
     }
 }
-
-

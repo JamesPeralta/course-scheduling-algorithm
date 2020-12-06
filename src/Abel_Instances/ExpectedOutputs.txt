@@ -15,7 +15,7 @@ CPSC 433 TUT 01 TUT 01      : MO, 8:00
 
   
 Preferences Output:
-Eval-value: 0
+Eval-value: 11 // will be 11 since only one gets monday 9:00
 CPSC 313 LEC 01             : MO, 9:00 
 CPSC 313 LEC 01 TUT 01      : TU, 8:00
 CPSC 433 LEC 01             : MO, 8:00

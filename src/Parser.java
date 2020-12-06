@@ -11,7 +11,6 @@ public class Parser {
         while(line.trim().length() > 0) {
             String[] row = line.split(",");
             cleanRow(row);
-            System.out.println(Arrays.toString(row));
             if(isCourse) department.addCourseSlot(new CourseSlot(Static.days.indexOf(row[0]), Static.times.indexOf(row[1]), 
                                                     Integer.parseInt(row[2]), Integer.parseInt(row[3])));
             else department.addLabSlot(new LabSlot(Static.days.indexOf(row[0]), Static.times.indexOf(row[1]), 

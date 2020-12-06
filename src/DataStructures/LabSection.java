@@ -62,11 +62,7 @@ public class LabSection extends ClassElement {
     }
 
     public void addPreference(LabSlot ls, int value) {
-    	System.out.println("Adding a preffernec");
-    	System.out.println(ls);
-    	System.out.println(value);
         if(ls != null) preferences.put(ls, value);
-        System.out.println(preferences);
     }
 
     @Override
@@ -90,5 +86,9 @@ public class LabSection extends ClassElement {
         }
 
         return str.toString();
+    }
+    
+    public HashMap<LabSlot,Integer> getPreference() {
+    	return this.preferences;
     }
 }
