@@ -370,21 +370,21 @@ public class Constr {
     //similar to check813 but for 913 
     // 
     public void check913(){
-    	System.out.println("=================================================");
+    	//System.out.println("=================================================");
     	// check to see if there is 
     	for(CourseAssignment courseAssignment: this.courseAssigments) {
     		// null check
     		if(courseAssignment == null) {
     			continue;
     		}
-    		System.out.println(courseAssignment.getCourse().getCourseName());
+    		//System.out.println(courseAssignment.getCourse().getCourseName());
     		// check if it is 913 course 
     		if(courseAssignment.getCourse().getCourseName().equals("CPSC 913")) {
     			// if it is see if it is in the correct slot 
     			
     			// null check for this part
     			if(courseAssignment.getCourseSlot() != null) {
-    				System.out.println(courseAssignment.getCourseSlot().getDayString());
+    				//System.out.println(courseAssignment.getCourseSlot().getDayString());
     				
     				// if it is not assigned to the 1800 slot then we 
     				boolean hourMatch = courseAssignment.getCourseSlot().getTimeString().equals("18:00");
@@ -453,7 +453,7 @@ public class Constr {
 			if(labAssigment.getLabSlot() != null &&
 					labAssigment.getLab().getTutString().contains("TUT") &&
 					labAssigment.getLab().getTutString().contains("CPSC 413")) {
-				System.out.println(labAssigment.getLab().getFullTutName());
+				//System.out.println(labAssigment.getLab().getFullTutName());
 				
 				// find the 913 and make sure it is not at the same time 
 				for(CourseAssignment conflictingCourse: this.courseAssigments) {
