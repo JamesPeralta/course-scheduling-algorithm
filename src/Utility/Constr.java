@@ -425,8 +425,6 @@ public class Constr {
 		    			
 		    			// null check for this part
 		    			if(conflictingCourse.getCourseSlot() != null) {
-		    				
-		    				
 		    				boolean dayMatch = conflictingCourse.getCurrentSlot().getDayString().equals(labAssigment.getCurrentSlot().getDayString());
 							boolean timeMatch = conflictingCourse.getCurrentSlot().getTimeString().equals(labAssigment.getCurrentSlot().getTimeString());
 							// if it occurs on a differnt slot then we want it too we should add
