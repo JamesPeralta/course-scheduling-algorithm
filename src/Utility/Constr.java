@@ -490,13 +490,13 @@ public class Constr {
     				for(CourseAssignment conflictingCourse: this.courseAssigments) {
     					if(conflictingCourse.getCourse().getCourseName().equals("CPSC 913")) {
     		    			// check the slot 
-    		    			
+    		    			 
     		    			// null check for this part
     		    			if(conflictingCourse.getCourseSlot() != null) {
     		    				boolean dayMatch = conflictingCourse.getCurrentSlot().getDayString().equals(courseAssignment.getCurrentSlot().getDayString());
     							boolean timeMatch = conflictingCourse.getCurrentSlot().getTimeString().equals(courseAssignment.getCurrentSlot().getTimeString());
     		    				// make sure they are not on the same slot 
-    		    				if(!( dayMatch && timeMatch )) {
+    		    				if(( dayMatch && timeMatch )) {
     		    					valid = false;
     		                        break;
     		    				}
