@@ -286,7 +286,9 @@ public class Eval {
 					
 					// then we can check it to the assugment slot
 					Slot masterSlot =  courseAssigment.getCurrentSlot();
-					
+					if(masterSlot == null || pairSlot==null) {
+						continue;
+					}
 					// then see if the 2 slots are the same 
 					boolean dayMatch = pairSlot.getDayString().equals(masterSlot.getDayString());
 					boolean timeMatch = pairSlot.getTimeString().equals(masterSlot.getTimeString());
@@ -311,7 +313,9 @@ public class Eval {
 					Slot pairSlot = this.assigments.get(pair);
 					
 					Slot masterSlot =  labAssigment.getCurrentSlot();
-					
+					if(masterSlot == null|| pairSlot==null) {
+						continue;
+					}
 					
 					boolean dayMatch = pairSlot.getDayString().equals(masterSlot.getDayString());
 					boolean timeMatch = pairSlot.getTimeString().equals(masterSlot.getTimeString());
