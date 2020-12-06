@@ -426,11 +426,18 @@ public class Constr {
 		    			// null check for this part
 		    			if(conflictingCourse.getCourseSlot() != null) {
 		    				
-		    				// make sure they are not on the same slot  TODO this may not actual check
-		    				if(conflictingCourse.getCurrentSlot() == labAssigment.getCurrentSlot()) {
-		    					valid = false;
+		    				
+		    				boolean dayMatch = conflictingCourse.getCurrentSlot().getDayString().equals(labAssigment.getCurrentSlot().getDayString());
+							boolean timeMatch = conflictingCourse.getCurrentSlot().getTimeString().equals(labAssigment.getCurrentSlot().getTimeString());
+							// if it occurs on a differnt slot then we want it too we should add
+							// the penalty value 
+							
+							if(!( dayMatch && timeMatch )){
+								// the pair occurs on a different time slot 
+								valid = false;
 		                        break;
-		    				}
+							}
+		    			 
 		    				
 		    			}
 		    		}
@@ -488,9 +495,10 @@ public class Constr {
     		    			
     		    			// null check for this part
     		    			if(conflictingCourse.getCourseSlot() != null) {
-    		    				
+    		    				boolean dayMatch = conflictingCourse.getCurrentSlot().getDayString().equals(courseAssignment.getCurrentSlot().getDayString());
+    							boolean timeMatch = conflictingCourse.getCurrentSlot().getTimeString().equals(courseAssignment.getCurrentSlot().getTimeString());
     		    				// make sure they are not on the same slot 
-    		    				if(conflictingCourse.getCourseSlot() == courseAssignment.getCourseSlot()) {
+    		    				if(!( dayMatch && timeMatch )) {
     		    					valid = false;
     		                        break;
     		    				}
