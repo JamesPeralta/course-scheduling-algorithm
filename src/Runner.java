@@ -11,16 +11,28 @@ public class Runner {
     private static double mutationRate = 0.20;
     private static double rouletteFactor = 0.80;
 
-    public static void main(String[] args) {
-        Department department = Parser.parse("./src/Abel_Instances/Part-Assign.txt");
-        GenePool pool = new GenePool(department, new ArrayList<>(), populationSize, mutationRate, rouletteFactor);
-        System.out.println("Courses parsed and Gene pool is good ");
+    public static void main(String[] args) throws Exception {
+        Department department = Parser.parse("./src/Tests/parallelpen.txt");
+        Prob newProb = OrTreeBasedSearch.generateSample(department);
+        System.out.println(newProb);
+        GenePool pool = null;
+        try {
+            pool = new GenePool(department, new ArrayList<>(), populationSize, mutationRate, rouletteFactor);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        System.out.println("Courses parsed and Gene pool is good");
         Prob bestIndividual = pool.getBestAssignment();
         for (int i = 0; i < generations; i++) {
-        	
+
             System.out.println("Generation: " + Integer.toString(i));
             System.out.println(bestIndividual);
-            pool.nextGeneration();
+            try {
+                pool.nextGeneration();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             Prob latestBest = pool.getBestAssignment();
 
             if (bestIndividual.getFitness() > latestBest.getFitness()) {

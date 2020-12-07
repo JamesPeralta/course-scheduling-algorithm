@@ -118,8 +118,11 @@ public class Constr {
     			if(courseAssigment.getCourse().getCourseName().equals(labAssigment.getLab().getOfCourse())) {
     				
     				// if it is not for a specific sections 
-    				if(!labAssigment.getLab().getOfSection().equals("") // make sure that the thing matches 
-    						&& courseAssigment.getCourse().getSectionString().equals(labAssigment.getLab().getOfSection())) {
+    				if(!labAssigment.getLab().getOfSection().equals("")) {
+    					// if they are not the same section they can appear at the same time
+    					if(courseAssigment.getCourse().getSectionString().equals(labAssigment.getLab().getOfSection())) {
+    						continue;
+    					}
     					// check to make sure it does not overlap for that course 
     					boolean dayMatch = (courseAssigment.getCourseSlot().getDay()) == (labAssigment.getLabSlot().getDay());
     					// the hour match is a littler trickier 
@@ -422,18 +425,14 @@ public class Constr {
     //checks if lecture number ends in 9, it must be assigned to an evening slot
     public void checkLectureNine(){
         for (int i = 0; i < courseAssigments.size(); i++){
-            if (courseAssigments.get(i).getCourse() == null){
-                continue;
-            }
             if (courseAssigments.get(i).getCourseSlot() == null) {
                 continue;
             }
-            if (courseAssigments.get(i).getCourse().getSectionNumber() == 9){
-                if(courseAssigments.get(i).getCourseSlot().getTime() < 13){
+            if (courseAssigments.get(i).getCourse().getSectionNumber() >= 9){
+                if(courseAssigments.get(i).getCourseSlot().getTime() < 18){
                     valid = false;
                     break;
                 }
-
             }
         }
     }
@@ -583,7 +582,6 @@ public class Constr {
 
 			// check to see that it is not at the same time as the 413 class 
     		if(courseAssignment.getCourse().getCourseName().equals("CPSC 413")) {
-    			
     			//	null check 
     			if(courseAssignment.getCourseSlot() != null) {
     				// make sure it is not at the same time 
@@ -604,23 +602,9 @@ public class Constr {
     		    				
     		    			}
     		    		}
-    					
     				}
-    				
     			}
-    			
-    			
-    			
-    			
     		}
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
     	}
     	
     	
@@ -659,12 +643,7 @@ public class Constr {
      * assume this is broken 
      */
     public void check500(){
-    	
-    	
         for (int i = 0; i < courseAssigments.size(); i++){
-            if(courseAssigments.get(i).getCourse() == null){
-                continue;
-            }
             if(courseAssigments.get(i).getCourseSlot() == null){
                 continue;
             }
@@ -677,18 +656,14 @@ public class Constr {
         }
 
         for (int i = 0; i < scheduled500.size(); i++){
-            try{ 
-                if(scheduled500.get(i).getCourseSlot().getTime() == scheduled500.get(i+1).getCourseSlot().getTime()){
-                    if(scheduled500.get(i).getCourseSlot().getDay() == scheduled500.get(i+1).getCourseSlot().getDay()){
-                    valid = false;
-                    break;
+            for (int j = i + 1; j < scheduled500.size(); j++) {
+                if(scheduled500.get(i).getCourseSlot().getTime() == scheduled500.get(j).getCourseSlot().getTime()){
+                    if(scheduled500.get(i).getCourseSlot().getDay() == scheduled500.get(j).getCourseSlot().getDay()){
+                        valid = false;
+                        break;
                     }
                 }
             }
-            catch(IndexOutOfBoundsException ioe){
-                
-            }
-
         }
     }
 

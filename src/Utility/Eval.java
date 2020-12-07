@@ -305,7 +305,6 @@ public class Eval {
 		
 		// repeart the same thing above but for labs 
 		for(LabAssignment labAssigment: this.labs) {
-			
 			// see if each one has some comparable
 			// then we should check to see if 
 			if(labAssigment.getLab().getCompatible().size() > 0) {
@@ -320,14 +319,9 @@ public class Eval {
 					boolean dayMatch = pairSlot.getDayString().equals(masterSlot.getDayString());
 					boolean timeMatch = pairSlot.getTimeString().equals(masterSlot.getTimeString());
 					
-					if(dayMatch && timeMatch) {
-						// then we have found that the pair is at the same time 
-						
-						// 
-					}else {
-						// the lab does not appear at the same time so we igore it 
+					if (!(dayMatch && timeMatch)){
+						// the lab does not appear at the same time so we igore it
 						localBound += this.pen_pair;
-						
 					}
 				}
 			}
