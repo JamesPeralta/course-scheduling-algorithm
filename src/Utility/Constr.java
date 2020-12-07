@@ -120,7 +120,7 @@ public class Constr {
     				// if it is not for a specific sections 
     				if(!labAssigment.getLab().getOfSection().equals("")) {
     					// if they are not the same section they can appear at the same time
-    					if(courseAssigment.getCourse().getSectionString().equals(labAssigment.getLab().getOfSection())) {
+    					if(!(courseAssigment.getCourse().getSectionString().equals(labAssigment.getLab().getOfSection()))) {
     						continue;
     					}
     					// check to make sure it does not overlap for that course 
