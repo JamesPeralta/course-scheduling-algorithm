@@ -3,11 +3,11 @@ Part-Assign
 
 Course slots:
 MO, 8:00, 2, 1
-MO,9:00,1, 1
+MO,9:00, 1, 1
 
 Lab slots:
 MO, 8:00, 2, 1
-TU, 10:00,2,1
+TU, 10:00, 2, 1
 
 Courses:
 CPSC 313 LEC 01
@@ -26,4 +26,4 @@ Preferences:
 Pair:
 
 Partial assignments:
-MO, 8:00, CPSC 313 LEC 01 
+CPSC 313 LEC 01, MO, 8:00

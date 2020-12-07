@@ -12,7 +12,10 @@ public class OrTreeBasedSearch {
         Set<LabSlot> labSlots = new HashSet<>(department.getLabSlots());
         Prob newInstance = new Prob(department);
         Iterator iterator = new Iterator();
-        Boolean found = erw(newInstance, courseSlots, labSlots, new HashMap<>(), new HashMap<>(), iterator);
+        HashMap<CourseInstance, CourseSlot> partAssignCourses = department.getAssignedCourses();
+        HashMap<LabSection, LabSlot> partAssignLabs = department.getAssignedLabs();
+        Boolean found = erw(newInstance, courseSlots, labSlots, new HashMap<>(), new HashMap<>(), partAssignCourses, partAssignLabs, iterator);
+
         if (!found) {
             throw new Exception("Can't make valid instance");
         }
@@ -36,14 +39,15 @@ public class OrTreeBasedSearch {
         // this will run in TODO find out 
         Prob newInstance = new Prob(department);
         
-        // these are all linear an non looping 
-        int maxDepth = department.getCourses().size();
+        // these are all linear an non looping
         HashMap<CourseInstance, CourseSlot> courseAssignments = prob.getCourseAssignments();
         HashMap<LabSection, LabSlot> labAssignments = prob.getLabAssignments();
 //        System.out.println("Preforming ERW");
 
         Iterator iterator = new Iterator();
-        Boolean found = erw(newInstance, courseSlots, labSlots,courseAssignments, labAssignments, iterator);
+        HashMap<CourseInstance, CourseSlot> partAssignCourses = department.getAssignedCourses();
+        HashMap<LabSection, LabSlot> partAssignLabs = department.getAssignedLabs();
+        Boolean found = erw(newInstance, courseSlots, labSlots, courseAssignments, labAssignments, partAssignCourses, partAssignLabs, iterator);
         if (!found) {
             throw new Exception("Can't fix this instance");
         }
@@ -70,6 +74,8 @@ public class OrTreeBasedSearch {
                               Set<LabSlot> labSlots,
                               HashMap<CourseInstance, CourseSlot> courseMatch,
                               HashMap<LabSection, LabSlot> labMatch,
+                              HashMap<CourseInstance, CourseSlot> partAssignCourses,
+                              HashMap<LabSection, LabSlot> partAssignLabs,
                               Iterator depth){
 
         depth.incrementCount();
@@ -95,23 +101,31 @@ public class OrTreeBasedSearch {
         if (!prob.coursesFilled()) {
             // Try assigning what it was matched to before
             CourseAssignment assign = prob.getCourse();
+
+            // If theres a part assign we need to make this assignment no matter what.
+            if (partAssignCourses.containsKey(assign.getCourse())) {
+                assign.assignSlot(partAssignCourses.get(assign.getCourse()));
+                return erw(prob, courseSlots, labSlots, courseMatch, labMatch, partAssignCourses, partAssignLabs, depth);
+            }
+
             // when the assign in not in the course match map 
             if (courseMatch.containsKey(assign.getCourse())) {
                 assign.assignSlot(courseMatch.get(assign.getCourse()));
 //                System.out.println("1");
                 // recursivel call 
-                if (erw(prob, courseSlots, labSlots, courseMatch, labMatch, depth)){
+                if (erw(prob, courseSlots, labSlots, courseMatch, labMatch, partAssignCourses, partAssignLabs, depth)){
                     return true;
                 }
                 assign.unassignSlot();
             }
+
             // get a new random assigment for 
             List<CourseSlot> copy = new ArrayList<>(courseSlots);
             Collections.shuffle(copy);
             for (CourseSlot courseSlot: copy) {
                 assign.assignSlot(courseSlot);
                 // recursive call
-                if (erw(prob, courseSlots, labSlots, courseMatch, labMatch, depth)){
+                if (erw(prob, courseSlots, labSlots, courseMatch, labMatch,partAssignCourses, partAssignLabs, depth)){
                     return true;
                 }
                 assign.unassignSlot();
@@ -119,11 +133,18 @@ public class OrTreeBasedSearch {
         }
         else {
             LabAssignment assign = prob.getLab();
+
+            // If theres a part assign we need to make this assignment no matter what.
+            if (partAssignLabs.containsKey(assign.getLab())) {
+                assign.assignSlot(partAssignLabs.get(assign.getLab()));
+                return erw(prob, courseSlots, labSlots, courseMatch, labMatch, partAssignCourses, partAssignLabs, depth);
+            }
+
             if (labMatch.containsKey(assign.getLab())) {
                 assign.assignSlot(labMatch.get(assign.getLab()));
                 // recursive call 
 //                System.out.println("3");
-                if (erw(prob, courseSlots, labSlots, courseMatch, labMatch, depth)){
+                if (erw(prob, courseSlots, labSlots, courseMatch, labMatch, partAssignCourses, partAssignLabs, depth)){
                     return true;
                 }
                 assign.unassignSlot();
@@ -135,7 +156,7 @@ public class OrTreeBasedSearch {
                 assign.assignSlot(labSlot);
                 // recursivel call 
 //                System.out.println("4");
-                if (erw(prob, courseSlots, labSlots, courseMatch, labMatch, depth)){
+                if (erw(prob, courseSlots, labSlots, courseMatch, labMatch, partAssignCourses, partAssignLabs, depth)){
                     return true;
                 }
                 assign.unassignSlot();
