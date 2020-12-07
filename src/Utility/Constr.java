@@ -659,12 +659,7 @@ public class Constr {
      * assume this is broken 
      */
     public void check500(){
-    	
-    	
         for (int i = 0; i < courseAssigments.size(); i++){
-            if(courseAssigments.get(i).getCourse() == null){
-                continue;
-            }
             if(courseAssigments.get(i).getCourseSlot() == null){
                 continue;
             }
@@ -677,18 +672,14 @@ public class Constr {
         }
 
         for (int i = 0; i < scheduled500.size(); i++){
-            try{ 
-                if(scheduled500.get(i).getCourseSlot().getTime() == scheduled500.get(i+1).getCourseSlot().getTime()){
-                    if(scheduled500.get(i).getCourseSlot().getDay() == scheduled500.get(i+1).getCourseSlot().getDay()){
-                    valid = false;
-                    break;
+            for (int j = i + 1; j < scheduled500.size(); j++) {
+                if(scheduled500.get(i).getCourseSlot().getTime() == scheduled500.get(j).getCourseSlot().getTime()){
+                    if(scheduled500.get(i).getCourseSlot().getDay() == scheduled500.get(j).getCourseSlot().getDay()){
+                        valid = false;
+                        break;
                     }
                 }
             }
-            catch(IndexOutOfBoundsException ioe){
-                
-            }
-
         }
     }
 
