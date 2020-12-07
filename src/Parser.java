@@ -123,7 +123,7 @@ public class Parser {
             else b = department.findCourse(parseCourse(row[1]));
             
             a.addCompatible(b);
-            b.addCompatible(a);
+//            b.addCompatible(a);
 
             line = reader.readLine();
         }
