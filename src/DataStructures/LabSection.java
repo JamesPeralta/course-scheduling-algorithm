@@ -60,6 +60,10 @@ public class LabSection extends ClassElement {
     public void addUnwanted(LabSlot ls) {
         this.unwanted.add(ls);
     }
+    
+    public ArrayList<LabSlot> getUnwanted(){
+        return this.unwanted;
+    }
 
     public void addPreference(LabSlot ls, int value) {
         if(ls != null) preferences.put(ls, value);
