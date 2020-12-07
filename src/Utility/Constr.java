@@ -118,8 +118,11 @@ public class Constr {
     			if(courseAssigment.getCourse().getCourseName().equals(labAssigment.getLab().getOfCourse())) {
     				
     				// if it is not for a specific sections 
-    				if(!labAssigment.getLab().getOfSection().equals("") // make sure that the thing matches 
-    						&& courseAssigment.getCourse().getSectionString().equals(labAssigment.getLab().getOfSection())) {
+    				if(!labAssigment.getLab().getOfSection().equals("")) {
+    					// if they are not the same section they can appear at the same time
+    					if(courseAssigment.getCourse().getSectionString().equals(labAssigment.getLab().getOfSection())) {
+    						continue;
+    					}
     					// check to make sure it does not overlap for that course 
     					boolean dayMatch = (courseAssigment.getCourseSlot().getDay()) == (labAssigment.getLabSlot().getDay());
     					// the hour match is a littler trickier 

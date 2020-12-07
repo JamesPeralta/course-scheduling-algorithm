@@ -72,13 +72,25 @@ public class GenePool {
 
         // Fix All of them
         for (int i = 0; i < this.populationSize; i++) {
+<<<<<<< HEAD
+        	// start a new thread 
+//        	System.out.println("Fixing the mutation while keeping the assigments the same " + (i+1) + "/" + this.populationSize);
+=======
+>>>>>>> e9493c43ca9a54a44964488b35782237eb30c367
             try {
                 newPool.set(i, OrTreeBasedSearch.fixSample(newPool.get(i), this.department));
             } catch (InvalidChildException e) {
                 Prob newClone = selectRandom();
                 newPool.set(i, newClone.clone(department));
             }
+            
+            
         }
+<<<<<<< HEAD
+        // threads join
+//        System.out.println("Mutation crossover is done ");
+=======
+>>>>>>> e9493c43ca9a54a44964488b35782237eb30c367
 
         // Sort them
         Collections.sort(pool);
