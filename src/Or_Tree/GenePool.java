@@ -67,6 +67,7 @@ public class GenePool {
 //        System.out.println("All childern Mutated");
         // Fix All of them
         for (int i = 0; i < this.populationSize; i++) {
+        	// start a new thread 
 //        	System.out.println("Fixing the mutation while keeping the assigments the same " + (i+1) + "/" + this.populationSize);
             try {
                 newPool.set(i, OrTreeBasedSearch.fixSample(newPool.get(i), this.department));
@@ -74,7 +75,10 @@ public class GenePool {
                 Prob newClone = selectRandom();
                 newPool.set(i, newClone.clone(department));
             }
+            
+            
         }
+        // threads join
 //        System.out.println("Mutation crossover is done ");
 
         // Sort them

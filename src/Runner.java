@@ -12,7 +12,7 @@ public class Runner {
     private static double rouletteFactor = 0.80;
 
     public static void main(String[] args) {
-        Department department = Parser.parse("./src/Search_Instances/Department1.txt");
+        Department department = Parser.parse("./src/Abel_Instances/Part-Assign.txt");
         GenePool pool = new GenePool(department, new ArrayList<>(), populationSize, mutationRate, rouletteFactor);
         System.out.println("Courses parsed and Gene pool is good ");
         Prob bestIndividual = pool.getBestAssignment();
