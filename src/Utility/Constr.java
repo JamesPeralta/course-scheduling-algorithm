@@ -35,7 +35,7 @@ public class Constr {
 			this.assignedSlot.put(courses.getCourse(), courses.getCurrentSlot());
 		}
 		// do it for the labs too 
-		for(var labs: this.labAssigments) {
+		for(LabAssignment labs: this.labAssigments) {
 			this.assignedSlot.put(labs.getLab(), labs.getCurrentSlot());
 		}
 

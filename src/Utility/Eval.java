@@ -13,13 +13,13 @@ import DataStructures.LabSection;
 import DataStructures.LabSlot;
 import DataStructures.Slot;
 import Or_Tree.Prob;
-
-// the eval class
+ 
 public class Eval {
 	
 	// our courses and labs 
 	private ArrayList<CourseAssignment> courses;
     private ArrayList<LabAssignment> labs;
+    public static HashMap<String, ArrayList<String>> params = new HashMap<String, ArrayList<String>>();
     
     
     // we need the array list of the slots so we can get the min and max 
@@ -37,18 +37,32 @@ public class Eval {
     
     
     // here are the different penalties for each bound
-    private int pen_coursemin = 1;
-    private int pen_labsmin = 1;
-    private int pen_pair = 1;
-    private int pen_section = 1;
+    private int pen_coursemin ;
+    private int pen_labsmin ;
+    private int pen_pair ;
+    private int pen_section ;;
 
     // Different weights for each soft constraint
-	private int wMinFilled = 1;
-	private int wPref = 1;
-	private int wPair = 1;
-	private int wSecDiff = 1;
+	private int wMinFilled  ;
+	private int wPref  ;
+	private int wPair;
+	private int wSecDiff ;
 
 	public Eval(Prob prob, Department department){
+		 
+		// make sure to get the values 
+		pen_coursemin = Integer.parseInt(Eval.params.get("pen_coursemin").get(0));
+	    pen_labsmin = Integer.parseInt(Eval.params.get("pen_labsmin").get(0));
+	    pen_pair = Integer.parseInt(Eval.params.get("pen_pair").get(0));
+	    pen_section = Integer.parseInt(Eval.params.get("pen_section").get(0));;
+
+	    // Different weights for each soft constraint
+		wMinFilled = Integer.parseInt(Eval.params.get("wMinFilled").get(0));;
+		wPref = Integer.parseInt(Eval.params.get("wPerf").get(0));;
+		wPair = Integer.parseInt(Eval.params.get("wPair").get(0));;
+		wSecDiff = Integer.parseInt(Eval.params.get("wSecDiff").get(0));;
+		
+		
 		this.courses = prob.getCourses();
 		this.labs = prob.getLabs();
 		this.department = department;
