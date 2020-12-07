@@ -1,5 +1,8 @@
 package Or_Tree;
 
+import CustomExceptions.InvalidChildException;
+import CustomExceptions.NoValidAssignmentException;
+import CustomExceptions.RunningTooLongException;
 import DataStructures.Department;
 import Utility.Eval;
 import Utility.RandomChoice;
@@ -13,7 +16,7 @@ public class GenePool {
     private Department department;
     private double mutationRate;
 
-    public GenePool(Department department, ArrayList<Prob> individuals, int populationSize, double mutationRate, double rouletteFactor) {
+    public GenePool(Department department, ArrayList<Prob> individuals, int populationSize, double mutationRate, double rouletteFactor) throws Exception {
         this.pool = individuals;
         this.populationSize = populationSize;
         this.department = department;
@@ -23,8 +26,12 @@ public class GenePool {
             while (pool.size() < populationSize) {
                 try {
                     pool.add(OrTreeBasedSearch.generateSample(department));
-                } catch (Exception e) {
-                    e.printStackTrace();
+                }
+                catch (RunningTooLongException e) {
+                    System.out.println("Running too long: Retry individual");
+                }
+                catch (NoValidAssignmentException e) {
+                    throw new NoValidAssignmentException("No valid assignment for this individual");
                 }
             }
         }
@@ -48,8 +55,7 @@ public class GenePool {
         return pool.get(randomChoice.pickIndex());
     }
 
-    public void nextGeneration() {
-//    	System.out.println("starting next generation");
+    public void nextGeneration() throws Exception {
         ArrayList<Prob> newPool = new ArrayList<>();
         // Crossover All of them
         for (int i = 0; i < this.populationSize; i++) {
@@ -58,29 +64,25 @@ public class GenePool {
             Prob child = parent_one.crossover(parent_two, this.department);
             newPool.add(child);
         }
-        
-//        System.out.println("All childern created");
+
         // Mutate all of them
         for (int i = 0; i < this.populationSize; i++) {
             newPool.get(i).mutate(this.department, mutationRate);
         }
-//        System.out.println("All childern Mutated");
+
         // Fix All of them
         for (int i = 0; i < this.populationSize; i++) {
-//        	System.out.println("Fixing the mutation while keeping the assigments the same " + (i+1) + "/" + this.populationSize);
             try {
                 newPool.set(i, OrTreeBasedSearch.fixSample(newPool.get(i), this.department));
-            } catch (Exception e) {
+            } catch (InvalidChildException e) {
                 Prob newClone = selectRandom();
                 newPool.set(i, newClone.clone(department));
             }
         }
-//        System.out.println("Mutation crossover is done ");
 
         // Sort them
         Collections.sort(pool);
-        
-//        System.out.println("sorted the stuff ");
+
         pool = newPool;
     }
 

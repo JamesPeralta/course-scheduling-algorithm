@@ -1,4 +1,6 @@
 package Or_Tree;
+import CustomExceptions.NoValidAssignmentException;
+import CustomExceptions.RunningTooLongException;
 import DataStructures.*;
 import DataStructures.Iterator;
 import Utility.Constr;
@@ -10,14 +12,23 @@ public class OrTreeBasedSearch {
     public static Prob generateSample(Department department) throws Exception {
         Set<CourseSlot> courseSlots  = new HashSet<>(department.getCourseSlots());
         Set<LabSlot> labSlots = new HashSet<>(department.getLabSlots());
-        Prob newInstance = new Prob(department);
-        Iterator iterator = new Iterator();
+        Prob newInstance;
         HashMap<CourseInstance, CourseSlot> partAssignCourses = department.getAssignedCourses();
         HashMap<LabSection, LabSlot> partAssignLabs = department.getAssignedLabs();
-        Boolean found = erw(newInstance, courseSlots, labSlots, new HashMap<>(), new HashMap<>(), partAssignCourses, partAssignLabs, iterator);
 
-        if (!found) {
-            throw new Exception("Can't make valid instance");
+        while (true) {
+            try {
+                newInstance = new Prob(department);
+                Iterator iterator = new Iterator();
+                Boolean found = erw(newInstance, courseSlots, labSlots, new HashMap<>(), new HashMap<>(), partAssignCourses, partAssignLabs, iterator);
+                if (!found) {
+                    throw new NoValidAssignmentException("Cannot find a valid assignment");
+                }
+                break;
+            }
+            catch (RunningTooLongException e) {
+                System.out.println("Running too long.");
+            }
         }
 
         Eval eval = new Eval(newInstance, department);
@@ -35,30 +46,31 @@ public class OrTreeBasedSearch {
     	// inializers these are good 
         Set<CourseSlot> courseSlots  = new HashSet<>(department.getCourseSlots());
         Set<LabSlot> labSlots = new HashSet<>(department.getLabSlots());
-//        System.out.println("creating a new instance based of the departments");
-        // this will run in TODO find out 
-        Prob newInstance = new Prob(department);
         
         // these are all linear an non looping
         HashMap<CourseInstance, CourseSlot> courseAssignments = prob.getCourseAssignments();
         HashMap<LabSection, LabSlot> labAssignments = prob.getLabAssignments();
-//        System.out.println("Preforming ERW");
-
-        Iterator iterator = new Iterator();
         HashMap<CourseInstance, CourseSlot> partAssignCourses = department.getAssignedCourses();
         HashMap<LabSection, LabSlot> partAssignLabs = department.getAssignedLabs();
-        Boolean found = erw(newInstance, courseSlots, labSlots, courseAssignments, labAssignments, partAssignCourses, partAssignLabs, iterator);
-        if (!found) {
-            throw new Exception("Can't fix this instance");
+
+        Prob newInstance = new Prob(department);
+        Iterator iterator = new Iterator();
+
+        try {
+            Boolean found = erw(newInstance, courseSlots, labSlots, courseAssignments, labAssignments, partAssignCourses, partAssignLabs, iterator);
+            if (!found) {
+                throw new NoValidAssignmentException("Cannot find a valid assignment");
+            }
         }
-        // eval runs in a known time 
-//        System.out.println("Running eval");
+        catch (RunningTooLongException e) {
+            throw new InvalidPropertiesFormatException("Child is too hard to fix.");
+        }
+
         Eval eval = new Eval(newInstance, department);
-//        System.out.println("Settings the fitness of the new instance ");
         newInstance.setFitness(eval.getBound());
-//        System.out.println("Done fixing sample");
         return newInstance;
     }
+
     /**
      * 
      * @param prob
@@ -76,11 +88,11 @@ public class OrTreeBasedSearch {
                               HashMap<LabSection, LabSlot> labMatch,
                               HashMap<CourseInstance, CourseSlot> partAssignCourses,
                               HashMap<LabSection, LabSlot> partAssignLabs,
-                              Iterator depth){
+                              Iterator depth) throws RunningTooLongException {
 
         depth.incrementCount();
         if (depth.getCount() > 50000) {
-            return false;
+            throw new RunningTooLongException("Running for too many iterations");
         }
 
     	//System.out.println("running ERW");
@@ -154,8 +166,7 @@ public class OrTreeBasedSearch {
             Collections.shuffle(copy);
             for (LabSlot labSlot: copy) {
                 assign.assignSlot(labSlot);
-                // recursivel call 
-//                System.out.println("4");
+
                 if (erw(prob, courseSlots, labSlots, courseMatch, labMatch, partAssignCourses, partAssignLabs, depth)){
                     return true;
                 }
