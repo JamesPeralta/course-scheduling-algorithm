@@ -6,14 +6,16 @@ import Utility.Static;
 public class CourseSlot extends Slot{
 
     private int day;
-    private int time;
+    private int start_time;
+    private int end_time;
     private int coursemax;
     private int coursemin;
     private int assigned = 0;
 
     public CourseSlot(int day, int time, int coursemax, int coursemin) {
         this.day = day;
-        this.time = time;
+        this.start_time = time;
+        this.end_time = Static.courseEndTimes[day][time];
         this.coursemax = coursemax;
         this.coursemin = coursemin;
     }
@@ -23,7 +25,7 @@ public class CourseSlot extends Slot{
     }
 
     public int getTime() {
-        return time;
+        return start_time;
     }
 
     public int getCoursemax() {
@@ -40,10 +42,10 @@ public class CourseSlot extends Slot{
 
     public String getDayString() {return Static.days.get(day);}
 
-    public String getTimeString() {return Static.times.get(time);}
+    public String getTimeString() {return Static.times.get(start_time);}
 
     public boolean equalByValue(int day, int time) {
-        return this.day == day && this.time == time;
+        return this.day == day && this.start_time == time;
     }
 
     @Override
@@ -52,6 +54,6 @@ public class CourseSlot extends Slot{
     }
 
     public String toStringMin() {
-        return Static.days.get(day) + ", " + Static.times.get(time);
+        return Static.days.get(day) + ", " + Static.times.get(start_time);
     }
 }
