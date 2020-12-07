@@ -96,31 +96,106 @@ public class Constr {
             }
         }
     }
-
+    
+    /**
+     * This is what i need to check here
+     * it breaks on a certain case where tuesady the thing is 15 min longer 
+     */
     //checks if a course and lab are assigned to the same slot
     public void checkAssign(){
-        for(int i = 0; i < courseAssigments.size(); i++){
-            for(int j = 0; j < labAssigments.size(); j++){
-                if (courseAssigments.get(i).getCourseSlot() == null || labAssigments.get(j).getLabSlot() == null) {
+    	
+    	// for each course
+    		// and for each lab 
+    	for(CourseAssignment courseAssigment: courseAssigments) {
+    		for(LabAssignment labAssigment: labAssigments) {
+    			
+    			// null check 
+    			if (courseAssigment.getCourseSlot() == null || labAssigment.getLabSlot() == null) {
                     continue;
                 }
-
-                if((courseAssigments.get(i).getCourseSlot().getDay()) == (labAssigments.get(j).getLabSlot().getDay()) && (courseAssigments.get(i).getCourseSlot().getTime()) == (labAssigments.get(j).getLabSlot().getTime())){ //check if the course has the same day and time as a lab
-                    if(courseAssigments.get(i).getCourse().getCourseName().equals(labAssigments.get(j).getLab().getOfCourse())){ //checks if the lab corresponds to the same course and are the same section
-                        if (!labAssigments.get(j).getLab().getOfSection().equals("")){
-                            if (courseAssigments.get(i).getCourse().getSectionString().equals(labAssigments.get(j).getLab().getOfSection())) {
-                                valid = false;
-                                break;
-                            }
-                        }
-                        else {
-                            valid = false;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+    			
+    			// check to see if the tutrial equals the queore 
+    			if(courseAssigment.getCourse().getCourseName().equals(labAssigment.getLab().getOfCourse())) {
+    				
+    				// if it is not for a specific sections 
+    				if(!labAssigment.getLab().getOfSection().equals("") // make sure that the thing matches 
+    						&& courseAssigment.getCourse().getSectionString().equals(labAssigment.getLab().getOfSection())) {
+    					// check to make sure it does not overlap for that course 
+    					boolean dayMatch = (courseAssigment.getCourseSlot().getDay()) == (labAssigment.getLabSlot().getDay());
+    					// the hour match is a littler trickier 
+    					
+    					// check to see if the hours match 
+    					boolean hourMatch = (courseAssigment.getCourseSlot().getTime()) == (labAssigment.getLabSlot().getTime()); 
+    					if(courseAssigment.getCourseSlot().getDayString().equals("TU")) {
+    						// hour and 15 slots exists 
+    						 
+    						String hourString = courseAssigment.getCourseSlot().getTimeString().split(":")[0];
+    				 
+    						hourMatch = hourMatch || Integer.toString((Integer.parseInt(hourString)+1)).equals(labAssigment.getLabSlot().getTimeString().split(":")[0]);
+    						// check if the tutiral overlaps this hour or next hour 
+    						 
+    					} 
+    					if(dayMatch && hourMatch) {
+    						 valid = false;
+                             break;
+    					}
+    					
+    				}else {
+    					// now check to see if there is any overlap with the class since they are the same 
+    					boolean dayMatch = (courseAssigment.getCourseSlot().getDay()) == (labAssigment.getLabSlot().getDay());
+    					// the hour match is a littler trickier 
+    					boolean hourMatch = (courseAssigment.getCourseSlot().getTime()) == (labAssigment.getLabSlot().getTime());
+    					if(courseAssigment.getCourseSlot().getDayString().equals("TU")) {
+    				 
+    						// hour and 15 slots exists 
+    							// so have to check if it overlaps 2 slot 
+    						String hourString = courseAssigment.getCourseSlot().getTimeString().split(":")[0];
+    						
+    						hourMatch = hourMatch || Integer.toString((Integer.parseInt(hourString)+1)).equals(labAssigment.getLabSlot().getTimeString().split(":")[0]);
+    					}
+    					
+    					if(dayMatch && hourMatch) {
+    						 valid = false;
+                             break;
+    					}
+    					
+    				}
+    				
+    				// 
+    				
+    			}
+        		
+        	}
+    	}
+//        for(int i = 0; i < courseAssigments.size(); i++){
+//            for(int j = 0; j < labAssigments.size(); j++){
+//                if (courseAssigments.get(i).getCourseSlot() == null || labAssigments.get(j).getLabSlot() == null) {
+//                    continue;
+//                }
+//                System.out.println("============================================================");
+//                System.out.println(courseAssigments.get(i).getCourseSlot().getTimeString());
+//                System.out.println(courseAssigments.get(i).getCourseSlot().getTime());
+//                System.out.println(labAssigments.get(j).getLabSlot().getTimeString());
+//               
+//                System.out.println(labAssigments.get(j).getLabSlot().getTime());
+//                if((courseAssigments.get(i).getCourseSlot().getDay()) == (labAssigments.get(j).getLabSlot().getDay()) && (courseAssigments.get(i).getCourseSlot().getTime()) == (labAssigments.get(j).getLabSlot().getTime())){ 
+//                	//check if the course has the same day and time as a lab
+//                    if(courseAssigments.get(i).getCourse().getCourseName().equals(labAssigments.get(j).getLab().getOfCourse())){ 
+//                    	//checks if the lab corresponds to the same course and are the same section
+//                        if (!labAssigments.get(j).getLab().getOfSection().equals("")){
+//                            if (courseAssigments.get(i).getCourse().getSectionString().equals(labAssigments.get(j).getLab().getOfSection())) {
+//                                valid = false;
+//                                break;
+//                            }
+//                        }
+//                        else {
+//                            valid = false;
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     public void checkUnwanted(){
@@ -320,7 +395,12 @@ public class Constr {
 //            }
 //        }
     }
-
+    
+    
+    
+    /**
+     * assume this is broken 
+     */
     //checks if a course is on tuesday at 11:00
     public void checkTuesEleven(){
         for (int i = 0; i < courseAssigments.size(); i++){
@@ -334,6 +414,10 @@ public class Constr {
             }
         }
     }
+    
+    /**
+     * assume this is broken 
+     */
 
     //checks if lecture number ends in 9, it must be assigned to an evening slot
     public void checkLectureNine(){
@@ -571,6 +655,9 @@ public class Constr {
 		}
 
     }
+    /**
+     * assume this is broken 
+     */
     public void check500(){
     	
     	
