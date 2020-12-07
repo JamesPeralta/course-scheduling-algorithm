@@ -157,7 +157,7 @@ public class Constr {
     					// now check to see if there is any overlap with the class since they are the same 
     					boolean dayMatch = (courseAssigment.getCourseSlot().getDay()) == (labAssigment.getLabSlot().getDay());
     					// the hour match is a littler trickier 
-    					boolean hourMatch = (courseAssigment.getCourseSlot().getTime()) == (labAssigment.getLabSlot().getTime());
+    					boolean hourMatch = (courseAssigment.getCourseSlot().getTimeString().split(":")[0]).equals(labAssigment.getLabSlot().getTimeString().split(":")[0]);
     					if(courseAssigment.getCourseSlot().getDayString().equals("TU")) {
     				 
     						// hour and 15 slots exists 
@@ -170,6 +170,15 @@ public class Constr {
     					if(dayMatch && hourMatch) {
     						 valid = false;
                              break;
+    					}
+					if(labAssigment.getLabSlot().getDayString().equals("FR")){
+						String hourString = labAssigment.getLabSlot().getTimeString().split(":")[0];
+						
+						hourMatch = hourMatch || Integer.toString((Integer.parseInt(hourString)+1)).equals(courseAssigment.getCourseSlot().getTimeString().split(":")[0]);
+					}
+    					if(dayMatch && hourMatch) {
+    						 valid = false;
+                             			 break;
     					}
     					
     				}
