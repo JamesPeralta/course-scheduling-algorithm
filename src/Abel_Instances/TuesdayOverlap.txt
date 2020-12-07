@@ -1,0 +1,26 @@
+Name:
+Example
+
+Course slots:
+TU, 14:00, 1, 0
+
+Lab slot:
+TU, 15:00, 1, 0
+
+Courses:
+CPSC 433 LEC 01
+
+Labs:
+CPSC 433 LEC 01 TUT 01
+
+
+Not compatible:
+
+Unwanted:
+
+Preferences:
+
+
+Pair:
+
+Partial assignments:
