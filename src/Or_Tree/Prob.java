@@ -193,6 +193,24 @@ public class Prob implements Comparable<Prob>{
         }
     }
 
+    public Prob clone(Department department) {
+        Prob child = new Prob(department);
+        this.orderProb();
+        child.orderProb();
+
+        // Crossover Course Slots
+        for (int i = 0; i < courses.size(); i++) {
+            child.assignCourse(i, this.courses.get(i).getCourseSlot());
+        }
+
+        // Crossover Lab Slots
+        for (int i = 0; i < labs.size(); i++) {
+            child.assignLab(i, this.labs.get(i).getLabSlot());
+        }
+
+        return child;
+    }
+
     public void orderProb() {
         Collections.sort(courses);
         Collections.sort(labs);

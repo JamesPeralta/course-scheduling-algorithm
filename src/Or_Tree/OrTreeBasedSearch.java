@@ -1,5 +1,6 @@
 package Or_Tree;
 import DataStructures.*;
+import DataStructures.Iterator;
 import Utility.Constr;
 import Utility.Eval;
 
@@ -10,8 +11,8 @@ public class OrTreeBasedSearch {
         Set<CourseSlot> courseSlots  = new HashSet<>(department.getCourseSlots());
         Set<LabSlot> labSlots = new HashSet<>(department.getLabSlots());
         Prob newInstance = new Prob(department);
-        int maxDepth = department.getCourses().size();
-        Boolean found = erw(newInstance, courseSlots, labSlots, 0, maxDepth, new HashMap<>(), new HashMap<>());
+        Iterator iterator = new Iterator();
+        Boolean found = erw(newInstance, courseSlots, labSlots, new HashMap<>(), new HashMap<>(), iterator);
         if (!found) {
             throw new Exception("Can't make valid instance");
         }
@@ -40,8 +41,9 @@ public class OrTreeBasedSearch {
         HashMap<CourseInstance, CourseSlot> courseAssignments = prob.getCourseAssignments();
         HashMap<LabSection, LabSlot> labAssignments = prob.getLabAssignments();
         System.out.println("Preforming ERW");
-        // 
-        Boolean found = erw(newInstance, courseSlots, labSlots, 0, maxDepth, courseAssignments, labAssignments);
+
+        Iterator iterator = new Iterator();
+        Boolean found = erw(newInstance, courseSlots, labSlots,courseAssignments, labAssignments, iterator);
         if (!found) {
             throw new Exception("Can't fix this instance");
         }
@@ -59,7 +61,6 @@ public class OrTreeBasedSearch {
      * @param courseSlots
      * @param labSlots
      * @param depth
-     * @param maxCourses
      * @param courseMatch
      * @param labMatch
      * @return
@@ -67,16 +68,20 @@ public class OrTreeBasedSearch {
     public static Boolean erw(Prob prob,
                               Set<CourseSlot> courseSlots,
                               Set<LabSlot> labSlots,
-                              int depth,
-                              int maxCourses,
                               HashMap<CourseInstance, CourseSlot> courseMatch,
-                              HashMap<LabSection, LabSlot> labMatch){
+                              HashMap<LabSection, LabSlot> labMatch,
+                              Iterator depth){
+
+        depth.incrementCount();
+        if (depth.getCount() > 50000) {
+            return false;
+        }
+
     	//System.out.println("running ERW");
     	// figure out if we have a valid assigment here 
         Constr constr = new Constr(prob);
         if (!constr.isValid()) {
-        	System.out.println("invalid ");
-            System.out.println(prob);
+        	System.out.println("invalid " + Integer.toString(depth.getCount()));
             return false;
         }
         
@@ -95,7 +100,7 @@ public class OrTreeBasedSearch {
                 assign.assignSlot(courseMatch.get(assign.getCourse()));
                 System.out.println("1");
                 // recursivel call 
-                if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses, courseMatch, labMatch)){
+                if (erw(prob, courseSlots, labSlots, courseMatch, labMatch, depth)){
                     return true;
                 }
                 assign.unassignSlot();
@@ -105,12 +110,8 @@ public class OrTreeBasedSearch {
             Collections.shuffle(copy);
             for (CourseSlot courseSlot: copy) {
                 assign.assignSlot(courseSlot);
-                // recursive call 
-                System.out.println("2 " + Integer.toString(depth));
-//                if (40 < depth && depth < 50){
-//                    System.out.println(prob);
-//                }
-                if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses, courseMatch, labMatch)){
+                // recursive call
+                if (erw(prob, courseSlots, labSlots, courseMatch, labMatch, depth)){
                     return true;
                 }
                 assign.unassignSlot();
@@ -122,7 +123,7 @@ public class OrTreeBasedSearch {
                 assign.assignSlot(labMatch.get(assign.getLab()));
                 // recursive call 
                 System.out.println("3");
-                if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses, courseMatch, labMatch)){
+                if (erw(prob, courseSlots, labSlots, courseMatch, labMatch, depth)){
                     return true;
                 }
                 assign.unassignSlot();
@@ -134,7 +135,7 @@ public class OrTreeBasedSearch {
                 assign.assignSlot(labSlot);
                 // recursivel call 
                 System.out.println("4");
-                if (erw(prob, courseSlots, labSlots, depth + 1, maxCourses, courseMatch, labMatch)){
+                if (erw(prob, courseSlots, labSlots, courseMatch, labMatch, depth)){
                     return true;
                 }
                 assign.unassignSlot();

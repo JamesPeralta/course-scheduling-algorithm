@@ -6,7 +6,7 @@ import Or_Tree.Prob;
 import java.util.ArrayList;
 
 public class Runner {
-    private static int generations = 200;
+    private static int generations = 100;
     private static int populationSize = 50;
 
     public static void main(String[] args) {

@@ -18,7 +18,7 @@ public class GenePool {
         this.department = department;
 
         if (pool.size() == 0) {
-            for (int i = 0; i < populationSize; i++) {
+            while (pool.size() < populationSize) {
                 try {
                     pool.add(OrTreeBasedSearch.generateSample(department));
                 } catch (Exception e) {
@@ -69,7 +69,8 @@ public class GenePool {
             try {
                 newPool.set(i, OrTreeBasedSearch.fixSample(newPool.get(i), this.department));
             } catch (Exception e) {
-                e.printStackTrace();
+                Prob newClone = selectRandom();
+                newPool.set(i, newClone.clone(department));
             }
         }
         System.out.println("Mutation crossover is done ");
