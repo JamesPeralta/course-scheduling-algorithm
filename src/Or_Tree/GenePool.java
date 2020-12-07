@@ -72,19 +72,23 @@ public class GenePool {
 
         // Fix All of them
         for (int i = 0; i < this.populationSize; i++) {
+<<<<<<< HEAD
 
  
+=======
+>>>>>>> d5297e8fc0178a29857f386f30e029f0c5ff34fb
             try {
                 newPool.set(i, OrTreeBasedSearch.fixSample(newPool.get(i), this.department));
             } catch (InvalidChildException e) {
                 Prob newClone = selectRandom();
                 newPool.set(i, newClone.clone(department));
             }
-            
-            
         }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> d5297e8fc0178a29857f386f30e029f0c5ff34fb
         // Sort them
         Collections.sort(pool);
 

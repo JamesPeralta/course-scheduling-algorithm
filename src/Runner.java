@@ -20,6 +20,7 @@ public class Runner {
     
 
     public static void main(String[] args) throws Exception {
+<<<<<<< HEAD
     	
     	// parse commadn line args  
 
@@ -96,6 +97,9 @@ public class Runner {
     	}
     	
         Department department = Parser.parse(Eval.params.get("case").get(0));
+=======
+        Department department = Parser.parse("./src/Tests/eval4.txt");
+>>>>>>> d5297e8fc0178a29857f386f30e029f0c5ff34fb
         Prob newProb = OrTreeBasedSearch.generateSample(department);
         System.out.println(newProb);
         GenePool pool = null;

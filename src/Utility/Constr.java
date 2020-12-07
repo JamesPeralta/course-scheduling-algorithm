@@ -128,7 +128,7 @@ public class Constr {
     					// the hour match is a littler trickier 
     					
     					// check to see if the hours match 
-    					boolean hourMatch = (courseAssigment.getCourseSlot().getTime()) == (labAssigment.getLabSlot().getTime()); 
+    					boolean hourMatch = (courseAssigment.getCourseSlot().getTimeString().split(":")[0]) == (labAssigment.getLabSlot().getTimeString().split(":")[0]); 
     					if(courseAssigment.getCourseSlot().getDayString().equals("TU")) {
     						// hour and 15 slots exists 
     						 
@@ -138,9 +138,19 @@ public class Constr {
     						// check if the tutiral overlaps this hour or next hour 
     						 
     					} 
+					if(dayMatch && hourMatch) {
+    						 valid = false;
+                             			 break;
+    					}
+					
+					if(labAssigment.getLabSlot().getDayString().equals("FR")){
+						String hourString = labAssigment.getLabSlot().getTimeString().split(":")[0];
+						
+						hourMatch = hourMatch || Integer.toString((Integer.parseInt(hourString)+1)).equals(courseAssigment.getCourseSlot().getTimeString().split(":")[0]);
+					}
     					if(dayMatch && hourMatch) {
     						 valid = false;
-                             break;
+                             			 break;
     					}
     					
     				}else {
