@@ -141,6 +141,23 @@ public class Constr {
                 break;
             }
         }
+	for (int i = 0; i < labAssigments.size(); i++){
+            if(labAssigments.get(i).getLabSlot() == null){
+                continue;
+            }
+            else{
+                ArrayList<LabSlot> unwantedList = labAssigments.get(i).getLab().getUnwanted();
+                for (int j = 0; j < unwantedList.size(); j++){
+                    if (labAssigments.get(i).getLabSlot().equals(unwantedList.get(j))){
+                        valid = false;
+                        break;
+                    }
+                }
+            }
+            if(valid == false){
+                break;
+            }
+        }
 
     }
     /**
