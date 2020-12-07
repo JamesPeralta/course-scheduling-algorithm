@@ -208,6 +208,7 @@ public class Prob implements Comparable<Prob>{
             child.assignLab(i, this.labs.get(i).getLabSlot());
         }
 
+        child.setFitness(this.getFitness());
         return child;
     }
 
