@@ -422,18 +422,14 @@ public class Constr {
     //checks if lecture number ends in 9, it must be assigned to an evening slot
     public void checkLectureNine(){
         for (int i = 0; i < courseAssigments.size(); i++){
-            if (courseAssigments.get(i).getCourse() == null){
-                continue;
-            }
             if (courseAssigments.get(i).getCourseSlot() == null) {
                 continue;
             }
-            if (courseAssigments.get(i).getCourse().getSectionNumber() == 9){
-                if(courseAssigments.get(i).getCourseSlot().getTime() < 13){
+            if (courseAssigments.get(i).getCourse().getSectionNumber() >= 9){
+                if(courseAssigments.get(i).getCourseSlot().getTime() < 18){
                     valid = false;
                     break;
                 }
-
             }
         }
     }
@@ -583,7 +579,6 @@ public class Constr {
 
 			// check to see that it is not at the same time as the 413 class 
     		if(courseAssignment.getCourse().getCourseName().equals("CPSC 413")) {
-    			
     			//	null check 
     			if(courseAssignment.getCourseSlot() != null) {
     				// make sure it is not at the same time 
@@ -604,23 +599,9 @@ public class Constr {
     		    				
     		    			}
     		    		}
-    					
     				}
-    				
     			}
-    			
-    			
-    			
-    			
     		}
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
     	}
     	
     	
