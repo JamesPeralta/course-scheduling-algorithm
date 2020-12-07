@@ -162,7 +162,7 @@ public class Prob implements Comparable<Prob>{
 
         // Crossover Lab Slots
         for (int i = 0; i < labs.size(); i++) {
-            if (i < (courses.size() / 2)) {
+            if (i < (labs.size() / 2)) {
                 child.assignLab(i, this.labs.get(i).getLabSlot());
             }
             else {
@@ -173,21 +173,21 @@ public class Prob implements Comparable<Prob>{
         return child;
     }
 
-    public void mutate(Department department) {
+    public void mutate(Department department, double mutationRate) {
         Random rand = new Random();
         ArrayList<CourseSlot> courseSlots = department.getCourseSlots();
         ArrayList<LabSlot> labSlots = department.getLabSlots();
 
         // Mutate Course Slots
         for (int i = 0; i < courses.size(); i++) {
-            if (rand.nextDouble() < 0.07) {
+            if (rand.nextDouble() < mutationRate) {
                 this.assignCourse(i, courseSlots.get(rand.nextInt(courseSlots.size())));
             }
         }
 
         // Mutate Lab Slots
         for (int i = 0; i < labs.size(); i++) {
-            if (rand.nextDouble() < 0.07) {
+            if (rand.nextDouble() < mutationRate) {
                 this.assignLab(i, labSlots.get(rand.nextInt(labSlots.size())));
             }
         }

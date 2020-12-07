@@ -11,11 +11,13 @@ public class GenePool {
     private RandomChoice randomChoice;
     private int populationSize;
     private Department department;
+    private double mutationRate;
 
-    public GenePool(Department department, ArrayList<Prob> individuals, int populationSize) {
+    public GenePool(Department department, ArrayList<Prob> individuals, int populationSize, double mutationRate, double rouletteFactor) {
         this.pool = individuals;
         this.populationSize = populationSize;
         this.department = department;
+        this.mutationRate = mutationRate;
 
         if (pool.size() == 0) {
             while (pool.size() < populationSize) {
@@ -30,7 +32,7 @@ public class GenePool {
         double[] weights = new double[populationSize];
         weights[0] = 1.0;
         for (int i = 1; i < populationSize; i++) {
-            weights[i] = weights[i - 1] * 0.90;
+            weights[i] = weights[i - 1] * rouletteFactor;
         }
         randomChoice = new RandomChoice(weights);
 
@@ -60,7 +62,7 @@ public class GenePool {
 //        System.out.println("All childern created");
         // Mutate all of them
         for (int i = 0; i < this.populationSize; i++) {
-            newPool.get(i).mutate(this.department);
+            newPool.get(i).mutate(this.department, mutationRate);
         }
 //        System.out.println("All childern Mutated");
         // Fix All of them

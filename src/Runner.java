@@ -8,10 +8,12 @@ import java.util.ArrayList;
 public class Runner {
     private static int generations = 100;
     private static int populationSize = 50;
+    private static double mutationRate = 0.20;
+    private static double rouletteFactor = 0.80;
 
     public static void main(String[] args) {
         Department department = Parser.parse("./src/Search_Instances/Department1.txt");
-        GenePool pool = new GenePool(department, new ArrayList<>(), populationSize);
+        GenePool pool = new GenePool(department, new ArrayList<>(), populationSize, mutationRate, rouletteFactor);
         System.out.println("Courses parsed and Gene pool is good ");
         Prob bestIndividual = pool.getBestAssignment();
         for (int i = 0; i < generations; i++) {
