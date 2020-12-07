@@ -12,7 +12,7 @@ public class Runner {
     private static double rouletteFactor = 0.80;
 
     public static void main(String[] args) throws Exception {
-        Department department = Parser.parse("./src/Tests/parallelpen.txt");
+        Department department = Parser.parse("./src/Tests/eval4.txt");
         Prob newProb = OrTreeBasedSearch.generateSample(department);
         System.out.println(newProb);
         GenePool pool = null;
