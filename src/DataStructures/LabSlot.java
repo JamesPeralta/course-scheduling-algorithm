@@ -8,6 +8,7 @@ public class LabSlot extends Slot{
 
     private int day;
     private int start_time;
+    private int end_time;
     private int coursemax;
     private int coursemin;
     private int assigned;
@@ -17,6 +18,7 @@ public class LabSlot extends Slot{
         this.start_time = time;
         this.coursemax = coursemax;
         this.coursemin = coursemin;
+        this.end_time = Static.labEndTimes[day][time];
     }
 
     public int getCoursemax() {
