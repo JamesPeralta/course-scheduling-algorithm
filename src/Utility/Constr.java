@@ -128,7 +128,7 @@ public class Constr {
     					// the hour match is a littler trickier 
     					
     					// check to see if the hours match 
-    					boolean hourMatch = (courseAssigment.getCourseSlot().getTimeString().split(":")[0]) == (labAssigment.getLabSlot().getTimeString().split(":")[0]); 
+    					boolean hourMatch = (courseAssigment.getCourseSlot().getTimeString().split(":")[0]).equals(labAssigment.getLabSlot().getTimeString().split(":")[0]); 
     					if(courseAssigment.getCourseSlot().getDayString().equals("TU")) {
     						// hour and 15 slots exists 
     						 
