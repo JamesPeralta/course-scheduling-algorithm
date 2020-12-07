@@ -47,7 +47,7 @@ public class GenePool {
     }
 
     public void nextGeneration() {
-    	System.out.println("starting next generation");
+//    	System.out.println("starting next generation");
         ArrayList<Prob> newPool = new ArrayList<>();
         // Crossover All of them
         for (int i = 0; i < this.populationSize; i++) {
@@ -57,15 +57,15 @@ public class GenePool {
             newPool.add(child);
         }
         
-        System.out.println("All childern created");
+//        System.out.println("All childern created");
         // Mutate all of them
         for (int i = 0; i < this.populationSize; i++) {
             newPool.get(i).mutate(this.department);
         }
-        System.out.println("All childern Mutated");
+//        System.out.println("All childern Mutated");
         // Fix All of them
         for (int i = 0; i < this.populationSize; i++) {
-        	System.out.println("Fixing the mutation while keeping the assigments the same " + (i+1) + "/" + this.populationSize);
+//        	System.out.println("Fixing the mutation while keeping the assigments the same " + (i+1) + "/" + this.populationSize);
             try {
                 newPool.set(i, OrTreeBasedSearch.fixSample(newPool.get(i), this.department));
             } catch (Exception e) {
@@ -73,12 +73,12 @@ public class GenePool {
                 newPool.set(i, newClone.clone(department));
             }
         }
-        System.out.println("Mutation crossover is done ");
+//        System.out.println("Mutation crossover is done ");
 
         // Sort them
         Collections.sort(pool);
         
-        System.out.println("sorted the stuff ");
+//        System.out.println("sorted the stuff ");
         pool = newPool;
     }
 

@@ -17,7 +17,7 @@ public class Runner {
         for (int i = 0; i < generations; i++) {
         	
             System.out.println("Generation: " + Integer.toString(i));
-            //System.out.println(bestIndividual);
+            System.out.println(bestIndividual);
             pool.nextGeneration();
             Prob latestBest = pool.getBestAssignment();
 

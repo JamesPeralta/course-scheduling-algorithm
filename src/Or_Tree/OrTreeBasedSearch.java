@@ -32,7 +32,7 @@ public class OrTreeBasedSearch {
     	// inializers these are good 
         Set<CourseSlot> courseSlots  = new HashSet<>(department.getCourseSlots());
         Set<LabSlot> labSlots = new HashSet<>(department.getLabSlots());
-        System.out.println("creating a new instance based of the departments");
+//        System.out.println("creating a new instance based of the departments");
         // this will run in TODO find out 
         Prob newInstance = new Prob(department);
         
@@ -40,7 +40,7 @@ public class OrTreeBasedSearch {
         int maxDepth = department.getCourses().size();
         HashMap<CourseInstance, CourseSlot> courseAssignments = prob.getCourseAssignments();
         HashMap<LabSection, LabSlot> labAssignments = prob.getLabAssignments();
-        System.out.println("Preforming ERW");
+//        System.out.println("Preforming ERW");
 
         Iterator iterator = new Iterator();
         Boolean found = erw(newInstance, courseSlots, labSlots,courseAssignments, labAssignments, iterator);
@@ -48,11 +48,11 @@ public class OrTreeBasedSearch {
             throw new Exception("Can't fix this instance");
         }
         // eval runs in a known time 
-        System.out.println("Running eval");
+//        System.out.println("Running eval");
         Eval eval = new Eval(newInstance, department);
-        System.out.println("Settings the fitness of the new instance ");
+//        System.out.println("Settings the fitness of the new instance ");
         newInstance.setFitness(eval.getBound());
-        System.out.println("Done fixing sample");
+//        System.out.println("Done fixing sample");
         return newInstance;
     }
     /**
@@ -81,7 +81,7 @@ public class OrTreeBasedSearch {
     	// figure out if we have a valid assigment here 
         Constr constr = new Constr(prob);
         if (!constr.isValid()) {
-        	System.out.println("invalid " + Integer.toString(depth.getCount()));
+//        	System.out.println("invalid " + Integer.toString(depth.getCount()));
             return false;
         }
         
@@ -98,7 +98,7 @@ public class OrTreeBasedSearch {
             // when the assign in not in the course match map 
             if (courseMatch.containsKey(assign.getCourse())) {
                 assign.assignSlot(courseMatch.get(assign.getCourse()));
-                System.out.println("1");
+//                System.out.println("1");
                 // recursivel call 
                 if (erw(prob, courseSlots, labSlots, courseMatch, labMatch, depth)){
                     return true;
@@ -122,7 +122,7 @@ public class OrTreeBasedSearch {
             if (labMatch.containsKey(assign.getLab())) {
                 assign.assignSlot(labMatch.get(assign.getLab()));
                 // recursive call 
-                System.out.println("3");
+//                System.out.println("3");
                 if (erw(prob, courseSlots, labSlots, courseMatch, labMatch, depth)){
                     return true;
                 }
@@ -134,7 +134,7 @@ public class OrTreeBasedSearch {
             for (LabSlot labSlot: copy) {
                 assign.assignSlot(labSlot);
                 // recursivel call 
-                System.out.println("4");
+//                System.out.println("4");
                 if (erw(prob, courseSlots, labSlots, courseMatch, labMatch, depth)){
                     return true;
                 }
