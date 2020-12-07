@@ -143,7 +143,7 @@ public class Constr {
                              			 break;
     					}
 					
-					if(labAssigment.getLabSlot.getDayString().equals("FR"){
+					if(labAssigment.getLabSlot.getDayString().equals("FR")){
 						String hourString = labAssigment.getLabSlot().getTimeString().split(":")[0];
 						
 						hourMatch = hourMatch || Integer.toString((Integer.parseInt(hourString)+1)).equals(courseAssigment.getCourseSlot().getTimeString().split(":")[0]);
