@@ -5,29 +5,25 @@ import DataStructures.*;
 import Or_Tree.Prob;
 
 public class Constr {
-
     private boolean valid;
     private ArrayList<CourseAssignment> courseAssigments;
     private ArrayList<LabAssignment> labAssigments;
-
     private HashMap<CourseSlot, Integer> assignedinCourses;
     private HashMap<LabSlot, Integer> assignedinLabs;
     private ArrayList<CourseAssignment> scheduled500;
     private HashMap<ClassElement, Slot> assignedSlot;
 
     public Constr(Prob prob) {
-
         this.courseAssigments = prob.getCourses();
         this.labAssigments = prob.getLabs();
         valid = true;
 
-        assignedinCourses = new HashMap<CourseSlot, Integer>();
-        assignedinLabs = new HashMap<LabSlot, Integer>();
-        scheduled500 = new ArrayList<CourseAssignment>();
+        assignedinCourses = new HashMap<>();
+        assignedinLabs = new HashMap<>();
+        scheduled500 = new ArrayList<>();
 
-        this.assignedSlot = new  HashMap<ClassElement,Slot>();
-        
-        
+        this.assignedSlot = new  HashMap<>();
+
 		// we need to build our class elements to slot thing so we know 
 		for(CourseAssignment courses: this.courseAssigments) {
 			//System.out.println(courses);
@@ -39,16 +35,16 @@ public class Constr {
 			this.assignedSlot.put(labs.getLab(), labs.getCurrentSlot());
 		}
 
-        if (valid == true) checkCourseMax();
-        if (valid == true) checkLabMax();
-        if (valid == true) checkAssign();
-        if (valid == true) checkTuesEleven();
-        if (valid == true) checkUnwanted();
-        if (valid == true) checkCompatible();
-        if (valid == true) checkLectureNine();
-        if (valid == true) check813();
-        if (valid == true) check913();
-        if (valid == true) check500();
+        if (valid) checkCourseMax();
+        if (valid) checkLabMax();
+        if (valid) checkAssign();
+        if (valid) checkTuesEleven();
+        if (valid) checkUnwanted();
+        if (valid) checkCompatible();
+        if (valid) checkLectureNine();
+        if (valid) check813();
+        if (valid) check913();
+        if (valid) check500();
     }
     //checks if courseMax is borken
     public void checkCourseMax() {
@@ -101,12 +97,10 @@ public class Constr {
      * This is what i need to check here
      * it breaks on a certain case where tuesady the thing is 15 min longer 
      */
-    //checks if a course and lab are assigned to the same slot
     public void checkAssign(){
 
     	for(CourseAssignment courseAssigment: courseAssigments) {
     		for(LabAssignment labAssigment: labAssigments) {
-    			
     			// null check 
     			if (courseAssigment.getCourseSlot() == null || labAssigment.getLabSlot() == null) {
                     continue;
@@ -180,11 +174,7 @@ public class Constr {
     					}
     					
     				}
-    				
-    				// 
-    				
     			}
-        		
         	}
     	}
     }
@@ -230,12 +220,9 @@ public class Constr {
      * will need testing but i belive that this should check everything 
      */
     public void checkCompatible(){
-    	
-    	// lets redo this loop
-    	
     	// for each course assigment to its unwanted pairs 
     	for(CourseAssignment course: courseAssigments) {
-    		// for the compadible 
+    		// for the compatible
     		for(ClassElement pair: course.getCourse().getNonCompatible()) {
     			if(this.assignedSlot.get(pair) == null || course.getCurrentSlot() == null) {
     				continue;
@@ -243,9 +230,8 @@ public class Constr {
     			// get the pair and master slot 
     			Slot pairSlot = this.assignedSlot.get(pair);
                 Slot masterSlot = course.getCurrentSlot();
-    			// make sure both of them match 
-                //System.out.println(pairSlot);
-                //System.out.println(course.getCurrentSlot());
+
+    			// make sure both of them match
                 boolean dayMatch = pairSlot.getDayString().equals(masterSlot.getDayString());
 				boolean timeMatch = pairSlot.getTimeString().equals(masterSlot.getTimeString());
 				
@@ -256,7 +242,7 @@ public class Constr {
 				}
     			
     		}
-    		if(valid == false){
+    		if(!valid){
                 break;
             }
     	}
@@ -282,7 +268,7 @@ public class Constr {
 				}
     			
     		}
-    		if(valid == false){
+    		if(!valid){
                 break;
             }
     	}
@@ -340,8 +326,6 @@ public class Constr {
     			
     			// null check for this part
     			if(courseAssignment.getCourseSlot() != null) {
-    				//System.out.println(courseAssignment.getCourseSlot().getDayString());
-    				
     				// if it is not assigned to the 1800 slot then we 
     				boolean hourMatch = courseAssignment.getCourseSlot().getTimeString().equals("18:00");
     				boolean dayMatch = courseAssignment.getCourseSlot().getDayString().equals("TU");
@@ -375,9 +359,7 @@ public class Constr {
     		    				
     		    			}
     		    		}
-    					
     				}
-    				
     			}
     		}
 
@@ -390,7 +372,6 @@ public class Constr {
 			if(labAssigment.getLabSlot() != null &&
 					labAssigment.getLab().getTutString().contains("TUT") &&
 					labAssigment.getLab().getTutString().contains("CPSC 313")) {
-				//System.out.println(labAssigment.getLab().getFullTutName());
 				
 				// find the 813 and make sure it is not at the same time 
 				for(CourseAssignment conflictingCourse: this.courseAssigments) {
@@ -433,8 +414,6 @@ public class Constr {
     			
     			// null check for this part
     			if(courseAssignment.getCourseSlot() != null) {
-    				//System.out.println(courseAssignment.getCourseSlot().getDayString());
-    				
     				// if it is not assigned to the 1800 slot then we 
     				boolean hourMatch = courseAssignment.getCourseSlot().getTimeString().equals("18:00");
     				boolean dayMatch = courseAssignment.getCourseSlot().getDayString().equals("TU");
@@ -480,8 +459,7 @@ public class Constr {
 			if(labAssigment.getLabSlot() != null &&
 					labAssigment.getLab().getTutString().contains("TUT") &&
 					labAssigment.getLab().getTutString().contains("CPSC 413")) {
-				//System.out.println(labAssigment.getLab().getFullTutName());
-				
+
 				// find the 913 and make sure it is not at the same time 
 				for(CourseAssignment conflictingCourse: this.courseAssigments) {
 					if(conflictingCourse.getCourse().getCourseName().equals("CPSC 913")) {
@@ -489,8 +467,7 @@ public class Constr {
 		    			
 		    			// null check for this part
 		    			if(conflictingCourse.getCourseSlot() != null) {
-		    				
-		    				// make sure they are not on the same slot  TODO this may not actual check
+
 		    				if(conflictingCourse.getCurrentSlot() == labAssigment.getCurrentSlot()) {
 		    					valid = false;
 		                        break;
