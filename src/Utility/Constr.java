@@ -448,7 +448,7 @@ public class Constr {
                 continue;
             }
             if (courseAssigments.get(i).getCourse().getSectionNumber() >= 9){
-                if(courseAssigments.get(i).getCourseSlot().getTime() < 18){
+                if(Integer.parseInt(courseAssigments.get(i).getCourseSlot().getTimeString().split(":")[0]) < 18){
                     valid = false;
                     break;
                 }
