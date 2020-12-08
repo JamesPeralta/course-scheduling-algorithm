@@ -73,7 +73,7 @@ public class Eval {
 			this.assigments.put(course.getCourse(), course.getCurrentSlot());
 		}
 		// do it for the labs too 
-		for(var lab: this.labs) {
+		for(LabAssignment lab: this.labs) {
 			this.assigments.put(lab.getLab(), lab.getCurrentSlot());
 		}
 		
