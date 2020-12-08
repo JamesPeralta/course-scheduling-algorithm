@@ -226,7 +226,7 @@ public class Constr {
     			}
                 String courseName = course.getCourse().getCourseName();
                 // If the course is 413, then make sure it and any of it's compatibles aren't on Tuesday 18:00
-                if (courseName.equals("CPSC 413") || course.equals("CPSC 313")) {
+                if (courseName.equals("CPSC 413") || courseName.equals("CPSC 313")) {
                     boolean checkItself = check813and913(course.getCourse());
                     boolean checkOther = check813and913(pair);
 
