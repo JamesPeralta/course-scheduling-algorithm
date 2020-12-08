@@ -559,30 +559,12 @@ public class Constr {
     //similar to check813 but for 913 
     // 
     public void check913(){
-    	//System.out.println("=================================================");
-    	// check to see if there is
-        System.out.println("YOOOOOO");
     	for(CourseAssignment courseAssignment: this.courseAssigments) {
     		// null check
     		if(courseAssignment == null) {
     			continue;
     		}
-            if(courseAssignment.getCourse().getCourseName().equals("CPSC 413")) {
-                System.out.println("Here");
-                boolean foundOther = false;
-                for(CourseAssignment otherAssignment: this.courseAssigments) {
-                    if(otherAssignment.getCourse().getCourseName().equals("CPSC 913")) {
-                        foundOther = true;
-                    }
-                }
 
-                if (!foundOther) {
-                    valid = false;
-                    break;
-                }
-            }
-
-    		//System.out.println(courseAssignment.getCourse().getCourseName());
     		// check if it is 913 course 
     		if(courseAssignment.getCourse().getCourseName().equals("CPSC 913")) {
     			// if it is see if it is in the correct slot 
@@ -599,11 +581,7 @@ public class Constr {
     					valid = false;
                         break;
     				}
-    				
-    				
     			}
-    			
-    			
     		}
 
 			// check to see that it is not at the same time as the 413 class 
