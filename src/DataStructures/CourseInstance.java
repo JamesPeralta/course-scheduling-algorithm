@@ -13,6 +13,7 @@ public class CourseInstance extends ClassElement {
     public CourseInstance(String course, int section) {
         this.course = course;
         this.section = section;
+        this.setElementType("Course");
     }
 
     public String getCourseName() {

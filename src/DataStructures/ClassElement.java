@@ -6,9 +6,18 @@ public class ClassElement {
     private ArrayList<ClassElement> nonCompatible = new ArrayList<>();
     // these are the ones that should happen at the same time but dont have too ? 
     private ArrayList<ClassElement> compatible = new ArrayList<>();
+    private String elementType;
 
     public ClassElement() {
     	
+    }
+
+    public void setElementType(String s){
+        elementType = s;
+    }
+
+    public String getElementType(){
+        return elementType;
     }
 
     public void addNonCompatible(ClassElement e) {

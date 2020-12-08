@@ -42,8 +42,6 @@ public class Constr {
         if (valid) checkUnwanted();
         if (valid) checkCompatible();
         if (valid) checkLectureNine();
-        if (valid) check813();
-        if (valid) check913();
         if (valid) check500();
     }
     //checks if courseMax is borken
@@ -222,13 +220,23 @@ public class Constr {
     public void checkCompatible(){
     	// for each course assigment to its unwanted pairs 
     	for(CourseAssignment course: courseAssigments) {
-    		// for the compatible
     		for(ClassElement pair: course.getCourse().getNonCompatible()) {
     			if(this.assignedSlot.get(pair) == null || course.getCurrentSlot() == null) {
     				continue;
     			}
-    			// get the pair and master slot 
-    			Slot pairSlot = this.assignedSlot.get(pair);
+                String courseName = course.getCourse().getCourseName();
+                // If the course is 413, then make sure it and any of it's compatibles aren't on Tuesday 18:00
+                if (courseName.equals("CPSC 413") || course.equals("CPSC 313")) {
+                    boolean checkItself = check813and913(course.getCourse());
+                    boolean checkOther = check813and913(pair);
+
+                    if (!checkItself || !checkOther) {
+                        return;
+                    }
+                }
+
+                // get the pair and master slot
+                Slot pairSlot = this.assignedSlot.get(pair);
                 Slot masterSlot = course.getCurrentSlot();
 
     			// make sure both of them match
@@ -240,7 +248,6 @@ public class Constr {
 					valid = false;
                     break;
 				}
-    			
     		}
     		if(!valid){
                 break;
@@ -313,178 +320,30 @@ public class Constr {
     }
 
     //checks for 813 and if it is assigned at 18:00, and is not associated with any course or lab for 313
-    public void check813(){
-    	for(CourseAssignment courseAssignment: this.courseAssigments) {
-    		// null check
-    		if(courseAssignment == null) {
-    			continue;
-    		}
-    		//System.out.println(courseAssignment.getCourse().getCourseName());
-    		// check if it is 813 course 
-    		if(courseAssignment.getCourse().getCourseName().equals("CPSC 813")) {
-    			// if it is see if it is in the correct slot 
-    			
-    			// null check for this part
-    			if(courseAssignment.getCourseSlot() != null) {
-    				// if it is not assigned to the 1800 slot then we 
-    				boolean hourMatch = courseAssignment.getCourseSlot().getTimeString().equals("18:00");
-    				boolean dayMatch = courseAssignment.getCourseSlot().getDayString().equals("TU");
-    				
-    				if(!(hourMatch && dayMatch)) {
-    					valid = false;
-                        break;
-    				}
-    			}
-    		}
+    // TODO: If 313 or any of it's non-compatibles go into 18:00 we say invalid
+    public boolean check813and913(ClassElement element){
+        Slot pairSlot = this.assignedSlot.get(element);
+        if (element.getElementType().equals("Lab")) {
+            String dayString = pairSlot.getDayString();
+            String timeString = pairSlot.getTimeString();
+            if (dayString.equals("TU") && timeString.equals("18:00")) {
+                valid = false;
+                return false;
+            }
+        }
+        else {
+            String dayString = pairSlot.getDayString();
+            String timeString = pairSlot.getTimeString();
+            if (dayString.equals("TU")) {
+                if (timeString.equals("17:00") ||  timeString.equals("18:30"))
+                valid = false;
+                return false;
+            }
+        }
 
-			// check to see that it is not at the same time as the 313 class 
-    		if(courseAssignment.getCourse().getCourseName().equals("CPSC 313")) {
-    			
-    			//	null check 
-    			if(courseAssignment.getCourseSlot() != null) {
-    				// make sure it is not at the same time 
-    				
-    				for(CourseAssignment conflictingCourse: this.courseAssigments) {
-    					if(conflictingCourse.getCourse().getCourseName().equals("CPSC 813")) {
-    		    			// check the slot 
-    		    			
-    		    			// null check for this part
-    		    			if(conflictingCourse.getCourseSlot() != null) {
-    		    				
-    		    				// make sure they are not on the same slot 
-    		    				if(conflictingCourse.getCourseSlot() == courseAssignment.getCourseSlot()) {
-    		    					valid = false;
-    		                        break;
-    		    				}
-    		    				
-    		    			}
-    		    		}
-    				}
-    			}
-    		}
-
-    	}
-    	
-    	
-    	// check to make sure it is not at the same time as the tutorial 
-		for(LabAssignment labAssigment: this.labAssigments) {
-			// null check and check if it is a 313 tutoral 
-			if(labAssigment.getLabSlot() != null &&
-					labAssigment.getLab().getTutString().contains("TUT") &&
-					labAssigment.getLab().getTutString().contains("CPSC 313")) {
-				
-				// find the 813 and make sure it is not at the same time 
-				for(CourseAssignment conflictingCourse: this.courseAssigments) {
-					if(conflictingCourse.getCourse().getCourseName().equals("CPSC 813")) {
-		    			// check the slot 
-		    			
-		    			// null check for this part
-		    			if(conflictingCourse.getCourseSlot() != null) {
-		    				boolean dayMatch = conflictingCourse.getCurrentSlot().getDayString().equals(labAssigment.getCurrentSlot().getDayString());
-							boolean timeMatch = conflictingCourse.getCurrentSlot().getTimeString().equals(labAssigment.getCurrentSlot().getTimeString());
-							// if it occurs on a differnt slot then we want it too we should add
-							// the penalty value 
-							
-							if(!( dayMatch && timeMatch )){
-								// the pair occurs on a different time slot 
-								valid = false;
-		                        break;
-							}
-		    			}
-		    		}
-					
-				}
-				
-			}
-		}
+        return true;
     }
-    
-    //similar to check813 but for 913 
-    // 
-    public void check913(){
-    	for(CourseAssignment courseAssignment: this.courseAssigments) {
-    		// null check
-    		if(courseAssignment == null) {
-    			continue;
-    		}
 
-    		// check if it is 913 course 
-    		if(courseAssignment.getCourse().getCourseName().equals("CPSC 913")) {
-    			// if it is see if it is in the correct slot 
-    			
-    			// null check for this part
-    			if(courseAssignment.getCourseSlot() != null) {
-    				// if it is not assigned to the 1800 slot then we 
-    				boolean hourMatch = courseAssignment.getCourseSlot().getTimeString().equals("18:00");
-    				boolean dayMatch = courseAssignment.getCourseSlot().getDayString().equals("TU");
-    				
-    				if(!(hourMatch && dayMatch)) {
-    					valid = false;
-                        break;
-    				}
-    			}
-    		}
-
-			// check to see that it is not at the same time as the 413 class 
-    		if(courseAssignment.getCourse().getCourseName().equals("CPSC 413")) {
-    			//	null check 
-    			if(courseAssignment.getCourseSlot() != null) {
-    				// make sure it is not at the same time 
-    				
-    				for(CourseAssignment conflictingCourse: this.courseAssigments) {
-    					if(conflictingCourse.getCourse().getCourseName().equals("CPSC 913")) {
-    		    			// check the slot 
-    		    			 
-    		    			// null check for this part
-    		    			if(conflictingCourse.getCourseSlot() != null) {
-    		    				boolean dayMatch = conflictingCourse.getCurrentSlot().getDayString().equals(courseAssignment.getCurrentSlot().getDayString());
-    							boolean timeMatch = conflictingCourse.getCurrentSlot().getTimeString().equals(courseAssignment.getCurrentSlot().getTimeString());
-    		    				// make sure they are not on the same slot 
-    		    				if(( dayMatch && timeMatch )) {
-    		    					valid = false;
-    		                        break;
-    		    				}
-    		    				
-    		    			}
-    		    		}
-    				}
-    			}
-    		}
-    	}
-    	
-    	
-    	// check to make sure it is not at the same time as the tutorial 
-		for(LabAssignment labAssigment: this.labAssigments) {
-			// null check and check if it is a 413 tutoral 
-			if(labAssigment.getLabSlot() != null &&
-					labAssigment.getLab().getTutString().contains("TUT") &&
-					labAssigment.getLab().getTutString().contains("CPSC 413")) {
-
-				// find the 913 and make sure it is not at the same time 
-				for(CourseAssignment conflictingCourse: this.courseAssigments) {
-					if(conflictingCourse.getCourse().getCourseName().equals("CPSC 913")) {
-		    			// check the slot 
-		    			
-		    			// null check for this part
-		    			if(conflictingCourse.getCourseSlot() != null) {
-
-		    				if(conflictingCourse.getCurrentSlot() == labAssigment.getCurrentSlot()) {
-		    					valid = false;
-		                        break;
-		    				}
-		    				
-		    			}
-		    		}
-					
-				}
-				
-			}
-		}
-
-    }
-    /**
-     * assume this is broken 
-     */
     public void check500(){
         for (int i = 0; i < courseAssigments.size(); i++){
             if(courseAssigments.get(i).getCourseSlot() == null){

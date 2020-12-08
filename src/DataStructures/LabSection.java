@@ -14,6 +14,7 @@ public class LabSection extends ClassElement {
         this.ofCourse = course;
         this.ofSection = section;
         this.tut = tut;
+        this.setElementType("Lab");
     }
 
     public LabSection(String course, int tut) {
