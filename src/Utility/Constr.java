@@ -518,14 +518,7 @@ public class Constr {
     			
     			
     		}
-    		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
+
     	}
     	
     	
@@ -554,8 +547,6 @@ public class Constr {
 								valid = false;
 		                        break;
 							}
-		    			 
-		    				
 		    			}
 		    		}
 					
@@ -569,12 +560,28 @@ public class Constr {
     // 
     public void check913(){
     	//System.out.println("=================================================");
-    	// check to see if there is 
+    	// check to see if there is
+        System.out.println("YOOOOOO");
     	for(CourseAssignment courseAssignment: this.courseAssigments) {
     		// null check
     		if(courseAssignment == null) {
     			continue;
     		}
+            if(courseAssignment.getCourse().getCourseName().equals("CPSC 413")) {
+                System.out.println("Here");
+                boolean foundOther = false;
+                for(CourseAssignment otherAssignment: this.courseAssigments) {
+                    if(otherAssignment.getCourse().getCourseName().equals("CPSC 913")) {
+                        foundOther = true;
+                    }
+                }
+
+                if (!foundOther) {
+                    valid = false;
+                    break;
+                }
+            }
+
     		//System.out.println(courseAssignment.getCourse().getCourseName());
     		// check if it is 913 course 
     		if(courseAssignment.getCourse().getCourseName().equals("CPSC 913")) {
