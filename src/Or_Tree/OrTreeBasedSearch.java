@@ -71,16 +71,6 @@ public class OrTreeBasedSearch {
         return newInstance;
     }
 
-    /**
-     * 
-     * @param prob
-     * @param courseSlots
-     * @param labSlots
-     * @param depth
-     * @param courseMatch
-     * @param labMatch
-     * @return
-     */
     public static Boolean erw(Prob prob,
                               Set<CourseSlot> courseSlots,
                               Set<LabSlot> labSlots,
@@ -92,21 +82,21 @@ public class OrTreeBasedSearch {
 
         depth.incrementCount();
 
-    	//System.out.println("running ERW");
-    	// figure out if we have a valid assigment here 
+        if (depth.getCount() % 1000000 == 0) {
+            System.out.println(depth.getCount());
+            System.out.println(prob);
+        }
+
         Constr constr = new Constr(prob);
         if (!constr.isValid()) {
-//        	System.out.println("invalid " + Integer.toString(depth.getCount()));
             return false;
         }
-        
-        // make sure we have assgined all the classes here 
+
         if (prob.coursesFilled() && prob.labsFilled()) {
             return true;
         }
         
-        
-        // 
+
         if (!prob.coursesFilled()) {
             // Try assigning what it was matched to before
             CourseAssignment assign = prob.getCourse();
@@ -120,20 +110,17 @@ public class OrTreeBasedSearch {
             // when the assign in not in the course match map 
             if (courseMatch.containsKey(assign.getCourse())) {
                 assign.assignSlot(courseMatch.get(assign.getCourse()));
-//                System.out.println("1");
-                // recursivel call 
                 if (erw(prob, courseSlots, labSlots, courseMatch, labMatch, partAssignCourses, partAssignLabs, depth)){
                     return true;
                 }
                 assign.unassignSlot();
             }
 
-            // get a new random assigment for 
+            // get a new random assigment for this course
             List<CourseSlot> copy = new ArrayList<>(courseSlots);
             Collections.shuffle(copy);
             for (CourseSlot courseSlot: copy) {
                 assign.assignSlot(courseSlot);
-                // recursive call
                 if (erw(prob, courseSlots, labSlots, courseMatch, labMatch,partAssignCourses, partAssignLabs, depth)){
                     return true;
                 }
@@ -149,16 +136,16 @@ public class OrTreeBasedSearch {
                 return erw(prob, courseSlots, labSlots, courseMatch, labMatch, partAssignCourses, partAssignLabs, depth);
             }
 
+            // Try matching parent
             if (labMatch.containsKey(assign.getLab())) {
                 assign.assignSlot(labMatch.get(assign.getLab()));
-                // recursive call 
-//                System.out.println("3");
                 if (erw(prob, courseSlots, labSlots, courseMatch, labMatch, partAssignCourses, partAssignLabs, depth)){
                     return true;
                 }
                 assign.unassignSlot();
             }
 
+            // Try new random slot for this assignment
             List<LabSlot> copy = new ArrayList<>(labSlots);
             Collections.shuffle(copy);
             for (LabSlot labSlot: copy) {
