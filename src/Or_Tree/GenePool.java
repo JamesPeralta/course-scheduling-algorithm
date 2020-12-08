@@ -79,6 +79,7 @@ public class GenePool {
                 newPool.set(i, newClone.clone(department));
             }
         }
+
         // Sort them
         Collections.sort(pool);
 

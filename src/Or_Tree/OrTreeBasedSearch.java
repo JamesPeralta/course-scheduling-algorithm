@@ -29,7 +29,6 @@ public class OrTreeBasedSearch {
                 break;
             }
             catch (RunningTooLongException e) {
-//                System.out.println("Running too long.");
             }
         }
 
@@ -38,12 +37,7 @@ public class OrTreeBasedSearch {
         return newInstance;
     }
     
-    /**
-     * this will make an infinite loop sometime 
-     * @param prob
-     * @param department
-     * @return
-     */
+
     public static Prob fixSample(Prob prob, Department department) throws Exception {
     	// inializers these are good 
         Set<CourseSlot> courseSlots  = new HashSet<>(department.getCourseSlots());
