@@ -91,9 +91,6 @@ public class OrTreeBasedSearch {
                               Iterator depth) throws RunningTooLongException {
 
         depth.incrementCount();
-        if (depth.getCount() > 50000) {
-            throw new RunningTooLongException("Running for too many iterations");
-        }
 
     	//System.out.println("running ERW");
     	// figure out if we have a valid assigment here 
