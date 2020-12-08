@@ -153,7 +153,7 @@ public class Prob implements Comparable<Prob>{
 
         // Crossover Course Slots
         for (int i = 0; i < courses.size(); i++) {
-            if (i < rand.nextInt(courses.size() - 1)) {
+            if (i < rand.nextInt(courses.size())) {
                 child.assignCourse(i, this.courses.get(i).getCourseSlot());
             }
             else {
@@ -163,7 +163,7 @@ public class Prob implements Comparable<Prob>{
 
         // Crossover Lab Slots
         for (int i = 0; i < labs.size(); i++) {
-            if (i < rand.nextInt(labs.size() - 1)) {
+            if (i < rand.nextInt(labs.size())) {
                 child.assignLab(i, this.labs.get(i).getLabSlot());
             }
             else {
