@@ -15,24 +15,17 @@ import DataStructures.Slot;
 import Or_Tree.Prob;
  
 public class Eval {
-	
 	// our courses and labs 
 	private ArrayList<CourseAssignment> courses;
     private ArrayList<LabAssignment> labs;
     public static HashMap<String, ArrayList<String>> params = new HashMap<String, ArrayList<String>>();
-    
-    
-    // we need the array list of the slots so we can get the min and max 
-   
-    
+
+    // we need the array list of the slots so we can get the min and max
     private HashMap<ClassElement,Slot> assigments; 
-    
-    // here are the course elements 
-   
-    
+
     // the department 
     private Department department;
-    
+
     private int bound;
     
     
@@ -49,8 +42,6 @@ public class Eval {
 	private int wSecDiff ;
 
 	public Eval(Prob prob, Department department){
-		 
-		// make sure to get the values 
 		pen_coursemin = Integer.parseInt(Eval.params.get("pen_coursemin").get(0));
 	    pen_labsmin = Integer.parseInt(Eval.params.get("pen_labsmin").get(0));
 	    pen_pair = Integer.parseInt(Eval.params.get("pen_pair").get(0));
@@ -61,8 +52,7 @@ public class Eval {
 		wPref = Integer.parseInt(Eval.params.get("wPerf").get(0));;
 		wPair = Integer.parseInt(Eval.params.get("wPair").get(0));;
 		wSecDiff = Integer.parseInt(Eval.params.get("wSecDiff").get(0));;
-		
-		
+
 		this.courses = prob.getCourses();
 		this.labs = prob.getLabs();
 		this.department = department;
@@ -80,12 +70,9 @@ public class Eval {
 		// Check courses
 		int evalMinFilled = this.checkNumOfAssigment() * wMinFilled;
 		int evalPref = this.checkPreference() * wPref;
-		
 		int evalPair = this.checkPaired() * wPair;
-		
 		int evalSecDiff = this.checkSimilarSections() * wSecDiff;
-		
-		
+
 		// add the bounds with the weight 
 		this.bound = evalMinFilled + evalPref + evalPair + evalSecDiff;
 	}
@@ -97,35 +84,26 @@ public class Eval {
 	
 	private int checkNumOfAssigment() {
 		int localBound = 0;
-//		System.out.println("=========================================");
 
 		HashMap<CourseSlot, Integer> coursesPer = new HashMap<>();
 		for(CourseAssignment assigment: this.courses) {
 			CourseSlot courseSlot = assigment.getCourseSlot();
 			if (courseSlot == null) {
-				
 				continue;
 			}
 			 
 			if(coursesPer.containsKey(courseSlot)) {
-				 
 				coursesPer.put(courseSlot, coursesPer.get(courseSlot) + 1);
 			}
 			else {
-//				System.out.println("We found a new one so set it to 1");
 				coursesPer.put(courseSlot, 1);
 			}
 		}
-//		System.out.println(coursesPer);
+
 		// modify this loop so that it counts all the slots not just the ones in the maop 
 		for(CourseSlot slot: this.department.getCourseSlots()) {
-//			System.out.println(slot);
-//			System.out.println(coursesPer.get(slot));
-//			System.out.println(slot.getCoursemin());
-			
 			// if the slot does not exists then we need to see if its min is bigger than 0
 			if(!coursesPer.containsKey(slot)) {
-				
 				if(slot.getCoursemin() != 0) {
 					localBound += this.pen_coursemin;
 				}
@@ -183,11 +161,7 @@ public class Eval {
 					courseSlotMap.get(slot).put(course.getCourse(),perference.get(slot) ); 
 				}
 			}
-			
-			
 		}
-		//System.out.println(slotMap);
-		
 		
 		// for each slot we need to sum 
 		for(CourseSlot slot: courseSlotMap.keySet()) {
@@ -276,7 +250,6 @@ public class Eval {
 			
 			localSum += sum;
 		}
-		
 
 		return localSum;
 	}
@@ -361,9 +334,7 @@ public class Eval {
 				for(int j=i;j<courseSet.size();j++) {
 					// just dont check yourself i dont want to get any duplicate values 
 					if(i!=j) {
-						
-						// if they are at the same time then we need to add the bound 
-						
+						// if they are at the same time then we need to add the bound
 						Slot course1 = null;
 						Slot course2 = null;
 						

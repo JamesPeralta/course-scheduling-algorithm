@@ -11,8 +11,8 @@ import java.util.HashMap;
 public class Runner {
     private static int generations = 1000;
     private static int populationSize = 2000;
-    private static double mutationRate = 0.05;
-    private static double rouletteFactor = 0.90;
+    private static double mutationRate = 0.20;
+    private static double rouletteFactor = 0.80;
 
     public static void main(String[] args) throws Exception {
     	// parse command line args
