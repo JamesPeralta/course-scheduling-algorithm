@@ -8,21 +8,14 @@ import Utility.Eval;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-
-
 public class Runner {
-    private static int generations = 100;
-    private static int populationSize = 50;
-    private static double mutationRate = 0.20;
-    private static double rouletteFactor = 0.80;
-    
-    
+    private static int generations = 1000;
+    private static int populationSize = 2000;
+    private static double mutationRate = 0.05;
+    private static double rouletteFactor = 0.90;
 
     public static void main(String[] args) throws Exception {
- 
-    	
-    	// parse commadn line args  
+    	// parse command line args
 
     	ArrayList<String> options = null;
     	for (int i = 0; i < args.length; i++) {
@@ -97,9 +90,6 @@ public class Runner {
     	}
     	
         Department department = Parser.parse(Eval.params.get("case").get(0));
-
-        Prob newProb = OrTreeBasedSearch.generateSample(department);
-        System.out.println(newProb);
         GenePool pool = null;
         try {
             pool = new GenePool(department, new ArrayList<>(), populationSize, mutationRate, rouletteFactor);
@@ -107,6 +97,7 @@ public class Runner {
             e.printStackTrace();
             return;
         }
+
         System.out.println("Courses parsed and Gene pool is good");
         Prob bestIndividual = pool.getBestAssignment();
         for (int i = 0; i < generations; i++) {

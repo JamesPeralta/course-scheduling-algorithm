@@ -145,6 +145,7 @@ public class Prob implements Comparable<Prob>{
     Genetic Operators
     */
     public Prob crossover(Prob mate, Department department) {
+        Random rand = new Random();
         Prob child = new Prob(department);
         this.orderProb();
         mate.orderProb();
@@ -152,7 +153,7 @@ public class Prob implements Comparable<Prob>{
 
         // Crossover Course Slots
         for (int i = 0; i < courses.size(); i++) {
-            if (i < (courses.size() / 2)) {
+            if (i < rand.nextInt(courses.size() - 1)) {
                 child.assignCourse(i, this.courses.get(i).getCourseSlot());
             }
             else {
@@ -162,7 +163,7 @@ public class Prob implements Comparable<Prob>{
 
         // Crossover Lab Slots
         for (int i = 0; i < labs.size(); i++) {
-            if (i < (labs.size() / 2)) {
+            if (i < rand.nextInt(labs.size() - 1)) {
                 child.assignLab(i, this.labs.get(i).getLabSlot());
             }
             else {

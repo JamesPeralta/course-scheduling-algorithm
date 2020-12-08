@@ -1,4 +1,5 @@
 package Or_Tree;
+import CustomExceptions.InvalidChildException;
 import CustomExceptions.NoValidAssignmentException;
 import CustomExceptions.RunningTooLongException;
 import DataStructures.*;
@@ -16,10 +17,11 @@ public class OrTreeBasedSearch {
         HashMap<CourseInstance, CourseSlot> partAssignCourses = department.getAssignedCourses();
         HashMap<LabSection, LabSlot> partAssignLabs = department.getAssignedLabs();
 
+        Iterator iterator;
         while (true) {
             try {
                 newInstance = new Prob(department);
-                Iterator iterator = new Iterator();
+                iterator = new Iterator();
                 Boolean found = erw(newInstance, courseSlots, labSlots, new HashMap<>(), new HashMap<>(), partAssignCourses, partAssignLabs, iterator);
                 if (!found) {
                     throw new NoValidAssignmentException("Cannot find a valid assignment");
@@ -27,7 +29,7 @@ public class OrTreeBasedSearch {
                 break;
             }
             catch (RunningTooLongException e) {
-                System.out.println("Running too long.");
+//                System.out.println("Running too long.");
             }
         }
 
@@ -63,7 +65,7 @@ public class OrTreeBasedSearch {
             }
         }
         catch (RunningTooLongException e) {
-            throw new InvalidPropertiesFormatException("Child is too hard to fix.");
+            throw new InvalidChildException("Child is too hard to fix.");
         }
 
         Eval eval = new Eval(newInstance, department);
@@ -82,9 +84,8 @@ public class OrTreeBasedSearch {
 
         depth.incrementCount();
 
-        if (depth.getCount() % 1000000 == 0) {
-            System.out.println(depth.getCount());
-            System.out.println(prob);
+        if (depth.getCount() > 500 ) {
+            throw new RunningTooLongException("Taking too long to find a random-valid solution");
         }
 
         Constr constr = new Constr(prob);
